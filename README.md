@@ -19,7 +19,7 @@ Tên nhóm: Nhóm con gà
 Dự án phát triển hệ thống tra cứu và quản lí điểm môn học dành cho sinh viên và giảng viên.
 - Đề tài: Grade Portal
 - Nhiệm vụ: Backend Kotlin
-- 
+
 ### TÍNH NĂNG
 
 - `Admin` : Quản lý hệ thống, tạo và phân quyền cho giáo viên.
