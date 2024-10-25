@@ -20,7 +20,7 @@ Dự án phát triển hệ thống tra cứu và quản lí điểm môn học 
 - Đề tài: Grade Portal
 - Nhiệm vụ: Backend Kotlin
 
-### TÍNH NĂNG
+### Tính năng
 
 - `Admin` : Quản lý hệ thống, tạo và phân quyền cho giáo viên.
 - `Teacher` : Tạo môn học, tải lên file CSV chứa bảng điểm. Hệ thống tự động theo dõi và cập nhật điểm từ file CSV (nếu có phiên bản mới) trong vòng 6 tháng.
