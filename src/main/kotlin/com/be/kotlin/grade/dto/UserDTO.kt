@@ -3,7 +3,7 @@ package hcmut.example.gradeportalbe.dto
 import jakarta.validation.constraints.NotBlank
 
 data class UserDTO (
-    var id: Long,
+    var id: Long? = null,
     @NotBlank(message = "Name is required")
     var name: String,
     var faculty: String? = null,
