@@ -1,15 +1,19 @@
 package hcmut.example.gradeportalbe.dto
 
-data class Response (
-    val statusCode: Int,
-    val message: String,
-    val role: String,
-    val token: String,
+import com.be.kotlin.grade.dto.SubjectDTO
 
-    //DTO response
+data class Response(
+    var statusCode: Int,
+    var message: String,
+    var role: String? = null,
+    var token: String? = null,
 
-    //Pagination
-    val totalPages: Int,
-    val totalElements: Int,
-    val currentPage: Int
+    // DTO response
+    var userDTO: UserDTO? = null,
+    var subjectDTO: SubjectDTO? = null,
+
+    // Pagination
+    var totalPages: Int? = null,
+    var totalElements: Int? = null,
+    var currentPage: Int? = null
 )
