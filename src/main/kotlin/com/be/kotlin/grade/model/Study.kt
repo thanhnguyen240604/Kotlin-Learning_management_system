@@ -1,10 +1,10 @@
-package hcmut.example.gradeportalbe.model
+package com.be.kotlin.grade.model
 
 import jakarta.persistence.*
 
 @Entity
 @Table(name = "study")
-class Study (
+data class Study (
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,

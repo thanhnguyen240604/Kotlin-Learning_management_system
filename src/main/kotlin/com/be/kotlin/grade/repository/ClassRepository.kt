@@ -1,6 +1,9 @@
 package com.be.kotlin.grade.repository
 
+import com.be.kotlin.grade.model.Class
 import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.stereotype.Repository
 
-interface ClassRepository: JpaRepository<ClassRepository, Long> {
+@Repository
+interface ClassRepository: JpaRepository<Class, Long> {
 }
