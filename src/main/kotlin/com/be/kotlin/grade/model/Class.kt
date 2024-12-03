@@ -1,4 +1,4 @@
-package com.be.kotlin.grade.model
+package com.be.kotlin.grade
 
 import jakarta.persistence.*
 
@@ -10,7 +10,7 @@ data class Class (
     var id: Long? = null,
 
     @Column(name = "class_name", nullable = false)
-    var name: String,
+    var name: String = "",
 
     @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     @JoinColumn(name = "class_id")
@@ -18,5 +18,5 @@ data class Class (
 
     @OneToOne
     @JoinColumn(name = "subject_id", referencedColumnName = "id", nullable = false)
-    val subject: Subject
+    val subject: Subject = Subject(),
 )

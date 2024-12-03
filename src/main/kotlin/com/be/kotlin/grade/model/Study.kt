@@ -1,4 +1,4 @@
-package com.be.kotlin.grade.model
+package com.be.kotlin.grade
 
 import jakarta.persistence.*
 
@@ -11,18 +11,18 @@ data class Study (
 
     @OneToOne
     @JoinColumn(name = "student_id", referencedColumnName = "student_id", nullable = false)
-    val student: Student,
+    val student: Student = Student(),
 
     @OneToOne
     @JoinColumn(name = "subject_id", referencedColumnName = "id", nullable = false)
-    val subject: Subject,
+    val subject: Subject = Subject(),
 
     @OneToOne
     @JoinColumn(name = "class_id", referencedColumnName = "id", nullable = false)
-    val studyClass: Class,
+    val studyClass: Class = Class(),
 
     @Column(name = "semester", nullable = false)
-    val semester: Int,
+    val semester: Int = 0,
 
     var score: Float? = null,
 

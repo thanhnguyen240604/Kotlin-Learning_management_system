@@ -5,12 +5,11 @@ import com.be.kotlin.grade.dto.SubjectDTO
 import com.be.kotlin.grade.repository.SubjectRepository
 import com.be.kotlin.grade.service.interf.SubjectInterface
 
-import org.mapstruct.factory.Mappers
 import org.springframework.stereotype.Service
 
 @Service
 class SubjectImplement (
-    val subjectRepository: SubjectRepository,
+    private val subjectRepository: SubjectRepository,
 ): SubjectInterface {
     override fun addSubject(subject: SubjectDTO): Response {
         return Response(

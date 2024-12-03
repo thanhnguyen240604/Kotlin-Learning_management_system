@@ -1,21 +1,21 @@
-package com.be.kotlin.grade.model
+package com.be.kotlin.grade
 
 import jakarta.persistence.*
 
 @Entity
 @Table(name = "student")
-data class Student (
+class Student (
     @Id
     @Column(name = "student_id", nullable = false)
     val studentId: Long? = null,
 
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
-    var user: User,
+    var user: User = User(),
 
     @Column(name = "major", nullable = false)
-    var major: String,
+    var major: String = "",
 
     @Column(name = "enrolled_course", nullable = false)
-    var enrolledCourse: Int
+    var enrolledCourse: Int = 0
 )

@@ -1,4 +1,4 @@
-package com.be.kotlin.grade.model
+package com.be.kotlin.grade
 
 import jakarta.persistence.*
 
@@ -9,16 +9,16 @@ data class User (
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,
     @Column(name = "name", nullable = false)
-    var name: String,
+    var name: String = "",
 
     var faculty: String? = null,
 
     @Column(name = "role", nullable = false)
-    val role: String,
+    val role: String = "",
 
     @Column(name = "username", unique = true, nullable = false)
-    val username: String,
+    val username: String = "",
 
     @Column(name = "password", nullable = false)
-    var password: String
+    var password: String = ""
 )
