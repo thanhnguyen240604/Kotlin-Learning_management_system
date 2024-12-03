@@ -12,6 +12,8 @@ data class Response(
     var userDTO: UserDTO? = null,
     var subjectDTO: SubjectDTO? = null,
 
+    // List DTO response
+
     // Pagination
     var totalPages: Int? = null,
     var totalElements: Int? = null,
