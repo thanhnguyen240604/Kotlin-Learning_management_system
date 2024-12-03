@@ -1,5 +1,7 @@
 package com.be.kotlin.grade.dto
 
+import com.be.kotlin.grade.dto.SubjectDTO
+
 data class Response(
     var statusCode: Int,
     var message: String,
@@ -7,8 +9,10 @@ data class Response(
     var token: String? = null,
 
     // DTO response
-    var user: UserDTO? = null,
+    var userDTO: UserDTO? = null,
     var subjectDTO: SubjectDTO? = null,
+
+    // List DTO response
 
     // Pagination
     var totalPages: Int? = null,

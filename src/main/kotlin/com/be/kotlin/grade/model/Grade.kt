@@ -1,4 +1,4 @@
-package com.be.kotlin.grade.model
+package com.be.kotlin.grade
 
 import jakarta.persistence.*
 
@@ -10,8 +10,8 @@ data class Grade (
     val id: Long? = null,
 
     @Column(name = "score", nullable = false)
-    var score: Float,
+    var score: Float = 0f,
 
     @Column(name = "weight", nullable = false)
-    var weight: Float,
+    var weight: Float = 0f,
 )
