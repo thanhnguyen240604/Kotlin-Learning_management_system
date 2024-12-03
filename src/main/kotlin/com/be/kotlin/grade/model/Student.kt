@@ -1,10 +1,10 @@
-package hcmut.example.gradeportalbe.model
+package com.be.kotlin.grade.model
 
 import jakarta.persistence.*
 
 @Entity
 @Table(name = "student")
-class Student (
+data class Student (
     @Id
     @Column(name = "student_id", nullable = false)
     val studentId: Long? = null,

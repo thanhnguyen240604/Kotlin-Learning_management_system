@@ -1,6 +1,4 @@
-package hcmut.example.gradeportalbe.dto
-
-import com.be.kotlin.grade.dto.SubjectDTO
+package com.be.kotlin.grade.dto
 
 data class Response(
     var statusCode: Int,
@@ -9,7 +7,7 @@ data class Response(
     var token: String? = null,
 
     // DTO response
-    var userDTO: UserDTO? = null,
+    var user: UserDTO? = null,
     var subjectDTO: SubjectDTO? = null,
 
     // Pagination
