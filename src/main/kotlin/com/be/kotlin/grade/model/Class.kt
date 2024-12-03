@@ -1,16 +1,17 @@
-package hcmut.example.gradeportalbe.model
+package com.be.kotlin.grade
 
 import jakarta.persistence.*
 
+
 @Entity
 @Table(name = "class")
-class Class (
+data class Class (
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,
 
     @Column(name = "class_name", nullable = false)
-    var name: String,
+    var name: String = "",
 
     @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     @JoinColumn(name = "class_id")
@@ -18,5 +19,5 @@ class Class (
 
     @OneToOne
     @JoinColumn(name = "subject_id", referencedColumnName = "id", nullable = false)
-    val subject: Subject
+    val subject: Subject = Subject(),
 )

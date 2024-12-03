@@ -1,4 +1,4 @@
-package hcmut.example.gradeportalbe.model
+package com.be.kotlin.grade
 
 import jakarta.persistence.*
 
@@ -11,11 +11,11 @@ class Student (
 
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
-    var user: User,
+    var user: User = User(),
 
     @Column(name = "major", nullable = false)
-    var major: String,
+    var major: String = "",
 
     @Column(name = "enrolled_course", nullable = false)
-    var enrolledCourse: Int
+    var enrolledCourse: Int = 0
 )

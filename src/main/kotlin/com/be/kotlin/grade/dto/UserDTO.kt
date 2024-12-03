@@ -1,4 +1,4 @@
-package hcmut.example.gradeportalbe.dto
+package com.be.kotlin.grade.dto
 
 import jakarta.validation.constraints.NotBlank
 
