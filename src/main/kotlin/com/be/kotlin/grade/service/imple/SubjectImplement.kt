@@ -3,6 +3,8 @@ package com.be.kotlin.grade.service.imple
 import com.be.kotlin.grade.dto.Response
 import com.be.kotlin.grade.dto.subjectDTO.DeleteSubjectDTO
 import com.be.kotlin.grade.dto.subjectDTO.FullSubjectDTO
+import com.be.kotlin.grade.exception.AppException
+import com.be.kotlin.grade.exception.ErrorCode
 import com.be.kotlin.grade.mapper.SubjectMapper
 import com.be.kotlin.grade.repository.SubjectRepository
 import com.be.kotlin.grade.service.interf.SubjectInterface
@@ -16,10 +18,7 @@ class SubjectImplement(
 ): SubjectInterface {
     override fun addSubject(subject: FullSubjectDTO): Response {
         if (subjectRepository.findById(subject.id).isPresent) {
-            return Response(
-                statusCode = 300,
-                message = "Subject already exists"
-            )
+            throw AppException(ErrorCode.SUBJECT_EXISTED)
         }
 
         val newSubject = subjectMapper.toSubject(subject)
@@ -33,10 +32,7 @@ class SubjectImplement(
 
     override fun deleteSubject(@RequestBody subject: DeleteSubjectDTO): Response {
         if (!subjectRepository.findById(subject.id).isPresent)
-            return Response(
-                statusCode = 404,
-                message = "Subject not found"
-            )
+            throw AppException(ErrorCode.SUBJECT_NOT_FOUND)
 
         val deletedSubject = subjectRepository.findById(subject.id).get()
 
@@ -50,10 +46,7 @@ class SubjectImplement(
 
     override fun updateSubject(subject: FullSubjectDTO): Response {
         if (!subjectRepository.findById(subject.id).isPresent)
-            return Response(
-                statusCode = 404,
-                message = "Subject not found"
-            )
+            throw AppException(ErrorCode.SUBJECT_NOT_FOUND)
 
         val updatedSubject = subjectMapper.toSubject(subject)
         subjectRepository.save(updatedSubject)
