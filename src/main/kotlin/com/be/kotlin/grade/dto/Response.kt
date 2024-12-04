@@ -1,6 +1,6 @@
 package com.be.kotlin.grade.dto
 
-import com.be.kotlin.grade.dto.SubjectDTO
+import com.be.kotlin.grade.dto.subjectDTO.FullSubjectDTO
 
 data class Response(
     var statusCode: Int = 0,
@@ -13,7 +13,7 @@ data class Response(
     var authenticateDTO: AuthenticateDTO? = null,
     var introspectDTO: IntrospectDTO? = null,
     var userDTO: UserDTO? = null,
-    var subjectDTO: SubjectDTO? = null,
+    var fullSubjectDTO: FullSubjectDTO? = null,
 
     // List DTO response
 

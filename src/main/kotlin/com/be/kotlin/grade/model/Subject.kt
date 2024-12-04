@@ -1,4 +1,4 @@
-package com.be.kotlin.grade
+package com.be.kotlin.grade.model
 
 import jakarta.persistence.*
 
@@ -6,14 +6,10 @@ import jakarta.persistence.*
 @Table(name = "subject")
 data class Subject (
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long = 0,
+    var id: String = "",
 
     @Column(name = "subject_name", nullable = false)
-    val name: String = "",
-
-    @Column(name = "subject_code", nullable = false)
-    val code: String = "",
+    var name: String = "",
 
     @Column(name = "subject_credits", nullable = false)
     var credits: Int = 0,
