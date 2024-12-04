@@ -131,14 +131,14 @@
 						<plugin>spring</plugin>
 					</compilerPlugins>
 					<annotationProcessorPaths>
-						<path>
+						<annotationProcessorPath>
 							<!-- https://mvnrepository.com/artifact/org.mapstruct/mapstruct-processor -->
 							<dependency>
 								<groupId>org.mapstruct</groupId>
 								<artifactId>mapstruct-processor</artifactId>
 								<version>1.5.3.Final</version>
 							</dependency>
-						</path>
+						</annotationProcessorPath>
 					</annotationProcessorPaths>
 				</configuration>
 				<dependencies>
