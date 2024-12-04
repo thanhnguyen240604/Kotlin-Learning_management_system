@@ -1,8 +1,8 @@
 package com.be.kotlin.grade.service.imple
 
 import com.be.kotlin.grade.dto.Response
-import com.be.kotlin.grade.dto.subjectDTO.DeleteSubjectDTO
-import com.be.kotlin.grade.dto.subjectDTO.FullSubjectDTO
+import com.be.kotlin.grade.dto.subjectDTO.SubjectIdDTO
+import com.be.kotlin.grade.dto.subjectDTO.SubjectDTO
 import com.be.kotlin.grade.exception.AppException
 import com.be.kotlin.grade.exception.ErrorCode
 import com.be.kotlin.grade.mapper.SubjectMapper
@@ -16,7 +16,7 @@ class SubjectImplement(
     private val subjectRepository: SubjectRepository,
     private val subjectMapper: SubjectMapper,
 ): SubjectInterface {
-    override fun addSubject(subject: FullSubjectDTO): Response {
+    override fun addSubject(subject: SubjectDTO): Response {
         if (subjectRepository.findById(subject.id).isPresent) {
             throw AppException(ErrorCode.SUBJECT_EXISTED)
         }
@@ -25,12 +25,12 @@ class SubjectImplement(
         subjectRepository.save(newSubject)
 
         return Response(
-            fullSubjectDTO = subject,
+            subjectDTO = subject,
             statusCode = 200,
             message = "Subject added successfully")
     }
 
-    override fun deleteSubject(@RequestBody subject: DeleteSubjectDTO): Response {
+    override fun deleteSubject(@RequestBody subject: SubjectIdDTO): Response {
         if (!subjectRepository.findById(subject.id).isPresent)
             throw AppException(ErrorCode.SUBJECT_NOT_FOUND)
 
@@ -38,13 +38,13 @@ class SubjectImplement(
 
         subjectRepository.deleteById(subject.id)
         return Response(
-            fullSubjectDTO = subjectMapper.toFullSubjectDTO(deletedSubject),
+            subjectDTO = subjectMapper.toSubjectDTO(deletedSubject),
             statusCode = 200,
             message = "Subject deleted successfully"
         )
     }
 
-    override fun updateSubject(subject: FullSubjectDTO): Response {
+    override fun updateSubject(subject: SubjectDTO): Response {
         if (!subjectRepository.findById(subject.id).isPresent)
             throw AppException(ErrorCode.SUBJECT_NOT_FOUND)
 
@@ -52,8 +52,21 @@ class SubjectImplement(
         subjectRepository.save(updatedSubject)
 
         return Response(
-            fullSubjectDTO = subject,
+            subjectDTO = subject,
             statusCode = 200,
             message = "Subject updated successfully")
+    }
+
+    override fun getSubjectById(subject: SubjectIdDTO): Response {
+        val subjectGot = subjectRepository.findById(subject.id)
+            .orElseThrow { AppException(ErrorCode.SUBJECT_NOT_FOUND) }
+
+        val subjectDTO = subjectMapper.toSubjectDTO(subjectGot);
+
+        return Response(
+            statusCode = 200,
+            message = "Subject found successfully",
+            subjectDTO = subjectDTO
+        )
     }
 }

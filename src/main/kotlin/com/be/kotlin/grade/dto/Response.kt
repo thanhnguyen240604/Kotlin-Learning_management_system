@@ -1,6 +1,11 @@
 package com.be.kotlin.grade.dto
 
-import com.be.kotlin.grade.dto.subjectDTO.FullSubjectDTO
+import com.be.kotlin.grade.dto.securityDTO.AuthenticateDTO
+import com.be.kotlin.grade.dto.securityDTO.IntrospectDTO
+import com.be.kotlin.grade.dto.studyDTO.StudyDTO
+import com.be.kotlin.grade.dto.subjectDTO.SubjectDTO
+import com.be.kotlin.grade.dto.userDTO.UserRequestDTO
+import com.be.kotlin.grade.dto.userDTO.UserResponseDTO
 
 data class Response(
     var statusCode: Int = 0,
@@ -12,14 +17,15 @@ data class Response(
     // DTO response
     var authenticateDTO: AuthenticateDTO? = null,
     var introspectDTO: IntrospectDTO? = null,
-    var userDTO: UserDTO? = null,
-    var fullSubjectDTO: FullSubjectDTO? = null,
+    var userDTO: UserResponseDTO? = null,
+    var subjectDTO: SubjectDTO? = null,
     var studyDTO: StudyDTO? = null,
 
     // List DTO response
+    var listUserDTO: List<UserResponseDTO>? = null,
 
     // Pagination
     var totalPages: Int? = null,
-    var totalElements: Int? = null,
+    var totalElements: Long? = null,
     var currentPage: Int? = null
 )

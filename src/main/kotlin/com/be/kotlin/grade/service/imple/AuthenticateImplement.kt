@@ -1,8 +1,8 @@
 package com.be.kotlin.grade.service.imple
 
 import com.be.kotlin.grade.User
-import com.be.kotlin.grade.dto.AuthenticateDTO
-import com.be.kotlin.grade.dto.IntrospectDTO
+import com.be.kotlin.grade.dto.securityDTO.AuthenticateDTO
+import com.be.kotlin.grade.dto.securityDTO.IntrospectDTO
 import com.be.kotlin.grade.dto.Response
 import com.be.kotlin.grade.exception.AppException
 import com.be.kotlin.grade.exception.ErrorCode
