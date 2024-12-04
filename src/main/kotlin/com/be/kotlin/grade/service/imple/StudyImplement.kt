@@ -2,6 +2,8 @@ package com.be.kotlin.grade.service.imple
 
 import com.be.kotlin.grade.dto.Response
 import com.be.kotlin.grade.dto.StudyDTO
+import com.be.kotlin.grade.exception.AppException
+import com.be.kotlin.grade.exception.ErrorCode
 import com.be.kotlin.grade.mapper.StudyMapper
 import com.be.kotlin.grade.repository.StudyRepository
 import com.be.kotlin.grade.service.interf.StudyInterface
@@ -26,10 +28,7 @@ class StudyImplement(
         }
 
         if (existingStudy != null) {
-            return Response(
-                statusCode = 300,
-                message = "Study already exists"
-            )
+            throw AppException(ErrorCode.STUDY_EXISTED)
         }
         studyRepository.save(newStudy)
 
