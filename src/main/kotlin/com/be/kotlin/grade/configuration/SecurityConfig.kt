@@ -30,8 +30,8 @@ class SecurityConfig (
     @Bean
     fun filterChain(httpSecurity: HttpSecurity): SecurityFilterChain {
         httpSecurity.authorizeHttpRequests { request ->
-            request.requestMatchers(HttpMethod.POST).permitAll()
-                .anyRequest().authenticated()
+            request.requestMatchers("/auth/**", "users/register").permitAll()
+                .anyRequest().permitAll()
         }
 
         httpSecurity.oauth2ResourceServer { oauth2 ->
@@ -79,6 +79,6 @@ class SecurityConfig (
 
     @Bean
     fun passwordEncoder(): PasswordEncoder {
-        return BCryptPasswordEncoder() // Hoặc bạn có thể chọn các encoder khác như NoOpPasswordEncoder
+        return BCryptPasswordEncoder()
     }
 }

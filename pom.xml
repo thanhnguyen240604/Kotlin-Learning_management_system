@@ -64,18 +64,6 @@
 			<groupId>org.jetbrains.kotlin</groupId>
 			<artifactId>kotlin-stdlib</artifactId>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.mapstruct/mapstruct -->
-		<dependency>
-			<groupId>org.mapstruct</groupId>
-			<artifactId>mapstruct</artifactId>
-			<version>1.5.5.Final</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.mapstruct/mapstruct-processor -->
-		<dependency>
-			<groupId>org.mapstruct</groupId>
-			<artifactId>mapstruct-processor</artifactId>
-			<version>1.5.3.Final</version>
-		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
