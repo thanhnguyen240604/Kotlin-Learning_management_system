@@ -14,6 +14,7 @@ data class Response(
     var introspectDTO: IntrospectDTO? = null,
     var userDTO: UserDTO? = null,
     var fullSubjectDTO: FullSubjectDTO? = null,
+    var studyDTO: StudyDTO? = null,
 
     // List DTO response
 
