@@ -1,8 +1,9 @@
 package com.be.kotlin.grade.repository
 
-import com.be.kotlin.grade.model.Subject
+import com.be.kotlin.grade.Student
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface SubjectRepository : JpaRepository<Subject, String>
+interface StudentRepository: JpaRepository<Student, Long> {
+}
