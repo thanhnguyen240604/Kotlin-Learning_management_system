@@ -1,7 +1,7 @@
 package com.be.kotlin.grade.service.imple
 
 import com.be.kotlin.grade.dto.Response
-import com.be.kotlin.grade.dto.StudyDTO
+import com.be.kotlin.grade.dto.studyDTO.StudyDTO
 import com.be.kotlin.grade.exception.AppException
 import com.be.kotlin.grade.exception.ErrorCode
 import com.be.kotlin.grade.mapper.StudyMapper

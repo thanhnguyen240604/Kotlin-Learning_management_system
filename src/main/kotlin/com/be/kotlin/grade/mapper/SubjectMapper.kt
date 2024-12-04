@@ -1,12 +1,12 @@
 package com.be.kotlin.grade.mapper
 
 import com.be.kotlin.grade.model.Subject
-import com.be.kotlin.grade.dto.subjectDTO.FullSubjectDTO
+import com.be.kotlin.grade.dto.subjectDTO.SubjectDTO
 import org.springframework.stereotype.Component
 
 @Component
 class SubjectMapper {
-    fun toSubject(fullSubjectDTO: FullSubjectDTO) : Subject {
+    fun toSubject(fullSubjectDTO: SubjectDTO) : Subject {
         return Subject(
             id = fullSubjectDTO.id,
             name = fullSubjectDTO.name,
@@ -16,8 +16,8 @@ class SubjectMapper {
         )
     }
 
-    fun toFullSubjectDTO(subject: Subject) : FullSubjectDTO {
-        return FullSubjectDTO(
+    fun toFullSubjectDTO(subject: Subject) : SubjectDTO {
+        return SubjectDTO(
             id = subject.id,
             name = subject.name,
             credits = subject.credits,

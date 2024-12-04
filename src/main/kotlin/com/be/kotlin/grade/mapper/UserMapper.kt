@@ -1,7 +1,7 @@
 package com.be.kotlin.grade.mapper
 
 import com.be.kotlin.grade.User
-import com.be.kotlin.grade.dto.UserDTO
+import com.be.kotlin.grade.dto.userDTO.UserDTO
 import org.springframework.stereotype.Component
 
 @Component

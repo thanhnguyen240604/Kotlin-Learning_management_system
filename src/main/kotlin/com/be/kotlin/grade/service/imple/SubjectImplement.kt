@@ -1,8 +1,8 @@
 package com.be.kotlin.grade.service.imple
 
 import com.be.kotlin.grade.dto.Response
-import com.be.kotlin.grade.dto.subjectDTO.DeleteSubjectDTO
-import com.be.kotlin.grade.dto.subjectDTO.FullSubjectDTO
+import com.be.kotlin.grade.dto.subjectDTO.SubjectIdDTO
+import com.be.kotlin.grade.dto.subjectDTO.SubjectDTO
 import com.be.kotlin.grade.exception.AppException
 import com.be.kotlin.grade.exception.ErrorCode
 import com.be.kotlin.grade.mapper.SubjectMapper
@@ -16,7 +16,7 @@ class SubjectImplement(
     private val subjectRepository: SubjectRepository,
     private val subjectMapper: SubjectMapper,
 ): SubjectInterface {
-    override fun addSubject(subject: FullSubjectDTO): Response {
+    override fun addSubject(subject: SubjectDTO): Response {
         if (subjectRepository.findById(subject.id).isPresent) {
             throw AppException(ErrorCode.SUBJECT_EXISTED)
         }
@@ -30,7 +30,7 @@ class SubjectImplement(
             message = "Subject added successfully")
     }
 
-    override fun deleteSubject(@RequestBody subject: DeleteSubjectDTO): Response {
+    override fun deleteSubject(@RequestBody subject: SubjectIdDTO): Response {
         if (!subjectRepository.findById(subject.id).isPresent)
             throw AppException(ErrorCode.SUBJECT_NOT_FOUND)
 
@@ -44,7 +44,7 @@ class SubjectImplement(
         )
     }
 
-    override fun updateSubject(subject: FullSubjectDTO): Response {
+    override fun updateSubject(subject: SubjectDTO): Response {
         if (!subjectRepository.findById(subject.id).isPresent)
             throw AppException(ErrorCode.SUBJECT_NOT_FOUND)
 

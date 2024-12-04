@@ -1,4 +1,4 @@
-package com.be.kotlin.grade.dto
+package com.be.kotlin.grade.dto.studyDTO
 
 import jakarta.validation.constraints.NotNull
 
