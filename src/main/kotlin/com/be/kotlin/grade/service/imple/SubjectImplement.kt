@@ -25,7 +25,7 @@ class SubjectImplement(
         subjectRepository.save(newSubject)
 
         return Response(
-            fullSubjectDTO = subject,
+            subjectDTO = subject,
             statusCode = 200,
             message = "Subject added successfully")
     }
@@ -38,7 +38,7 @@ class SubjectImplement(
 
         subjectRepository.deleteById(subject.id)
         return Response(
-            fullSubjectDTO = subjectMapper.toFullSubjectDTO(deletedSubject),
+            subjectDTO = subjectMapper.toSubjectDTO(deletedSubject),
             statusCode = 200,
             message = "Subject deleted successfully"
         )
@@ -52,8 +52,21 @@ class SubjectImplement(
         subjectRepository.save(updatedSubject)
 
         return Response(
-            fullSubjectDTO = subject,
+            subjectDTO = subject,
             statusCode = 200,
             message = "Subject updated successfully")
+    }
+
+    override fun getSubjectById(subject: SubjectIdDTO): Response {
+        val subjectGot = subjectRepository.findById(subject.id)
+            .orElseThrow { AppException(ErrorCode.SUBJECT_NOT_FOUND) }
+
+        val subjectDTO = subjectMapper.toSubjectDTO(subjectGot);
+
+        return Response(
+            statusCode = 200,
+            message = "Subject found successfully",
+            subjectDTO = subjectDTO
+        )
     }
 }

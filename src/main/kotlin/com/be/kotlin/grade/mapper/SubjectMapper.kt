@@ -16,7 +16,7 @@ class SubjectMapper {
         )
     }
 
-    fun toFullSubjectDTO(subject: Subject) : SubjectDTO {
+    fun toSubjectDTO(subject: Subject) : SubjectDTO {
         return SubjectDTO(
             id = subject.id,
             name = subject.name,

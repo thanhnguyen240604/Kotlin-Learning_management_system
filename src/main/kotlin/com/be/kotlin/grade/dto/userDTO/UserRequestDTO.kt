@@ -2,7 +2,7 @@ package com.be.kotlin.grade.dto.userDTO
 
 import jakarta.validation.constraints.NotBlank
 
-data class UserDTO (
+data class UserRequestDTO (
     var id: Long? = null,
     @NotBlank(message = "Name is required")
     var name: String,

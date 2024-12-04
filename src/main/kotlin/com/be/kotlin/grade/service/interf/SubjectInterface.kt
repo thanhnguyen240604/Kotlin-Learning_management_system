@@ -9,5 +9,5 @@ interface SubjectInterface {
     fun addSubject(@RequestBody subject: SubjectDTO): Response
     fun updateSubject(@RequestBody subject: SubjectDTO): Response
     fun deleteSubject(@RequestBody subject: SubjectIdDTO): Response
-    fun getSubjectById(id: String): Response
+    fun getSubjectById(subject: SubjectIdDTO): Response
 }
