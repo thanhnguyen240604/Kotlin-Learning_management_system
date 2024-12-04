@@ -15,10 +15,10 @@ data class Subject (
     @Column(name = "subject_code", nullable = false)
     val code: String = "",
 
-    @Column(name = "class_credits", nullable = false)
+    @Column(name = "subject_credits", nullable = false)
     var credits: Int = 0,
 
-    @Column(name = "class_faculty", nullable = false)
+    @Column(name = "subject_faculty", nullable = false)
     var faculty: String = "",
 
     @Column(name = "class_grade", nullable = true)
