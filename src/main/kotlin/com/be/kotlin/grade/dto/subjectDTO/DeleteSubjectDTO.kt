@@ -1,8 +1,8 @@
-package com.be.kotlin.grade.dto.SubjectDTO
+package com.be.kotlin.grade.dto.subjectDTO
 
 import jakarta.validation.constraints.NotNull
 
 class DeleteSubjectDTO {
-    @NotNull(message = "Subject must have unique id")
+    @NotNull(message = "Id is required for deletion")
     var id: String = ""
 }

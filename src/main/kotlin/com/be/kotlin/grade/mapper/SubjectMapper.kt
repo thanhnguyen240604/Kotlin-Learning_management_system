@@ -1,7 +1,7 @@
 package com.be.kotlin.grade.mapper
 
-import com.be.kotlin.grade.Subject
-import com.be.kotlin.grade.dto.SubjectDTO.FullSubjectDTO
+import com.be.kotlin.grade.model.Subject
+import com.be.kotlin.grade.dto.subjectDTO.FullSubjectDTO
 import org.springframework.stereotype.Component
 
 @Component
@@ -13,7 +13,7 @@ class SubjectMapper {
             credits = fullSubjectDTO.credits,
             faculty = fullSubjectDTO.faculty,
             major = fullSubjectDTO.major
-        );
+        )
     }
 
     fun toFullSubjectDTO(subject: Subject) : FullSubjectDTO {

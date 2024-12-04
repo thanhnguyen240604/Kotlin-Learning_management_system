@@ -1,5 +1,6 @@
 package com.be.kotlin.grade
 
+import com.be.kotlin.grade.model.Subject
 import jakarta.persistence.*
 
 

@@ -1,8 +1,8 @@
 package com.be.kotlin.grade.controller
 
 import com.be.kotlin.grade.dto.Response
-import com.be.kotlin.grade.dto.SubjectDTO.DeleteSubjectDTO
-import com.be.kotlin.grade.dto.SubjectDTO.FullSubjectDTO
+import com.be.kotlin.grade.dto.subjectDTO.DeleteSubjectDTO
+import com.be.kotlin.grade.dto.subjectDTO.FullSubjectDTO
 import com.be.kotlin.grade.service.imple.SubjectImplement
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping

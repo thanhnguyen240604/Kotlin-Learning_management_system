@@ -1,8 +1,8 @@
 package com.be.kotlin.grade.service.imple
 
 import com.be.kotlin.grade.dto.Response
-import com.be.kotlin.grade.dto.SubjectDTO.DeleteSubjectDTO
-import com.be.kotlin.grade.dto.SubjectDTO.FullSubjectDTO
+import com.be.kotlin.grade.dto.subjectDTO.DeleteSubjectDTO
+import com.be.kotlin.grade.dto.subjectDTO.FullSubjectDTO
 import com.be.kotlin.grade.mapper.SubjectMapper
 import com.be.kotlin.grade.repository.SubjectRepository
 import com.be.kotlin.grade.service.interf.SubjectInterface

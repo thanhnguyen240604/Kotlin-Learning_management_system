@@ -1,6 +1,6 @@
 package com.be.kotlin.grade.dto
 
-import com.be.kotlin.grade.dto.SubjectDTO.FullSubjectDTO
+import com.be.kotlin.grade.dto.subjectDTO.FullSubjectDTO
 
 data class Response(
     var statusCode: Int,
