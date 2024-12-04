@@ -5,22 +5,22 @@ import jakarta.persistence.*
 
 @Entity
 @Table(name = "study")
-data class Study (
+data class Study(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,
 
     @OneToOne
     @JoinColumn(name = "student_id", referencedColumnName = "student_id", nullable = false)
-    val student: Student = Student(),
+    val student: Student? = Student(),
 
     @OneToOne
     @JoinColumn(name = "subject_id", referencedColumnName = "id", nullable = false)
-    val subject: Subject = Subject(),
+    val subject: Subject? = Subject(),
 
     @OneToOne
     @JoinColumn(name = "class_id", referencedColumnName = "id", nullable = false)
-    val studyClass: Class = Class(),
+    val studyClass: Class? = Class(),
 
     @Column(name = "semester", nullable = false)
     val semester: Int = 0,
