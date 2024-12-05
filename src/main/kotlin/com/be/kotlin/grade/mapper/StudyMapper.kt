@@ -1,7 +1,7 @@
 package com.be.kotlin.grade.mapper
 
 import com.be.kotlin.grade.Study
-import com.be.kotlin.grade.dto.StudyDTO
+import com.be.kotlin.grade.dto.studyDTO.StudyDTO
 import com.be.kotlin.grade.repository.ClassRepository
 import com.be.kotlin.grade.repository.StudentRepository
 import com.be.kotlin.grade.repository.SubjectRepository
