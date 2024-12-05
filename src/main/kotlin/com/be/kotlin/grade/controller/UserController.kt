@@ -3,6 +3,7 @@ package com.be.kotlin.grade.controller
 import com.be.kotlin.grade.dto.Response
 import com.be.kotlin.grade.dto.UserDto.UserUpdateInfoDto
 import com.be.kotlin.grade.service.imple.UserImplement
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -21,5 +22,9 @@ class UserController(private val userImplement: UserImplement) {
     @PatchMapping("")
     fun updateInfo(@RequestBody userUpdateInfoDto: UserUpdateInfoDto,principal: UserPrincipal):Response{
         return userImplement.updateInfo(userUpdateInfoDto,principal.name)
+    }
+    @DeleteMapping("delete/account")
+    fun delAccount(@RequestParam username: String):Response{
+        return userImplement.delUser(username)
     }
 }
