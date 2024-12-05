@@ -9,6 +9,10 @@ import com.be.kotlin.grade.mapper.SubjectMapper
 import com.be.kotlin.grade.repository.StudyRepository
 import com.be.kotlin.grade.service.interf.StudyInterface
 import org.springframework.stereotype.Service
+<<<<<<< HEAD
+import org.springframework.web.bind.annotation.RequestBody
+=======
+>>>>>>> main
 
 @Service
 class StudyImplement(
@@ -42,8 +46,49 @@ class StudyImplement(
             studyDTO = studyMapper.toStudyDTO(newStudy))
     }
 
+<<<<<<< HEAD
+
+    override fun deleteStudyStudent(@RequestBody study: Long): Response {
+        val studyId: Long = study.id ?: throw IllegalArgumentException("Study ID cannot be null")
+
+        if (!studyRepository.findById(studyId).isPresent)
+            return Response(
+                statusCode = 404,
+                message = "Study not found"
+            )
+
+        val deletedStudy = studyRepository.findById(studyId).get()
+
+        // Xóa Study
+        studyRepository.deleteById(studyId)
+        return Response(
+            studyDTO = studyMapper.toStudyDTO(deletedStudy),
+            statusCode = 200,
+            message = "Study deleted successfully"
+        )
+    }
+
+    override fun updateStudyStudent(study: StudyDTO): Response {
+        val studyId: Long = study.id ?: throw IllegalArgumentException("Study ID cannot be null")
+        if (!studyRepository.findById(studyId).isPresent)
+            return Response(
+                statusCode = 404,
+                message = "Study not found"
+            )
+
+        // Chuyển đổi từ DTO sang Entity và lưu vào cơ sở dữ liệu
+        val updatedStudy = studyMapper.toStudy(study)
+        studyRepository.save(updatedStudy)
+
+        return Response(
+            studyDTO = study,
+            statusCode = 200,
+            message = "Study updated successfully"
+        )
+=======
     override fun deleteStudyStudent(studyIdD: Long): Response {
         TODO("Not yet implemented")
+>>>>>>> main
     }
 
     override fun getStudyById(studyIdD: Long): Response {

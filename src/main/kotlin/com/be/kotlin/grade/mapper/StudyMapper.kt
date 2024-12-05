@@ -14,10 +14,24 @@ class StudyMapper (
     private val classRepository: ClassRepository
 ) {
     fun toStudy(studyDTO: StudyDTO): Study {
-        val student = studyDTO.studentId?.let { studentRepository.findById(it).get() }
-        val subject = studyDTO.subjectId?.let { subjectRepository.findById(it).get() }
-        val studyClass = studyDTO.classId?.let { classRepository.findById(it).get() }
-
+        val student = studyDTO.studentId?.let { 
+            studentRepository.findById(it).orElseThrow { 
+                IllegalArgumentException("Không tìm thấy sinh viên với ID ${studyDTO.studentId}") 
+            }
+        }
+        
+        val subject = studyDTO.subjectId?.let { 
+            subjectRepository.findById(it).orElseThrow { 
+                IllegalArgumentException("Không tìm thấy môn học với ID ${studyDTO.subjectId}") 
+            }
+        }
+        
+        val studyClass = studyDTO.classId?.let { 
+            classRepository.findById(it).orElseThrow { 
+                IllegalArgumentException("Không tìm thấy lớp học với ID ${studyDTO.classId}") 
+            }
+        }
+    
         return Study(
             id = studyDTO.id,
             student = student,
@@ -27,6 +41,7 @@ class StudyMapper (
             score = studyDTO.score
         )
     }
+    
 
     fun toStudyDTO(study: Study): StudyDTO {
         return StudyDTO(
