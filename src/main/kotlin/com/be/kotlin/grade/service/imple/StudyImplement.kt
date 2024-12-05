@@ -82,7 +82,6 @@ class StudyImplement(
             studyDTO = studyMapper.toStudyDTO(newStudy))
     }
 
-
     override fun deleteStudyStudent(studyIdD: Long): Response {
         if (!studyRepository.findById(studyIdD).isPresent)
             throw AppException(ErrorCode.STUDY_NOT_FOUND)

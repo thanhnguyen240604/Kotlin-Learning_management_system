@@ -42,6 +42,7 @@ class AuthenticateImplement(
 
         return Response(
             statusCode = 200,
+            message = "Login successfully",
             authenticated = authenticated,
             token = token,
         )
