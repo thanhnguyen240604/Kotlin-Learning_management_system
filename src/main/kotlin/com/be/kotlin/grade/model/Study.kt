@@ -10,15 +10,15 @@ data class Study(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,
 
-    @OneToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "student_id", referencedColumnName = "student_id", nullable = false)
     val student: Student? = Student(),
 
-    @OneToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "subject_id", referencedColumnName = "id", nullable = false)
     val subject: Subject? = Subject(),
 
-    @OneToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "class_id", referencedColumnName = "id", nullable = false)
     val studyClass: Class? = Class(),
 
@@ -28,6 +28,6 @@ data class Study(
     var score: Float? = null,
 
     @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
-    @JoinColumn(name = "study_id")  // Chỉ định cột khóa ngoại trong bảng Grade
+    @JoinColumn(name = "study_id")
     var gradesList: MutableList<Grade> = mutableListOf()
 )
