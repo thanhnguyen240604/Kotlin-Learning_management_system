@@ -6,17 +6,18 @@ import jakarta.persistence.*
 @Table(name = "subject")
 data class Subject (
     @Id
+    //Subject_code
     var id: String = "",
 
     @Column(name = "subject_name", nullable = false)
     var name: String = "",
 
-    @Column(name = "class_credits", nullable = false)
+    @Column(name = "subject_credits", nullable = false)
     var credits: Int = 0,
 
-    @Column(name = "class_faculty", nullable = false)
+    @Column(name = "subject_faculty", nullable = false)
     var faculty: String = "",
 
-    @Column(name = "class_grade", nullable = true)
+    @Column(name = "subject_major", nullable = true)
     var major: String? = ""
 )

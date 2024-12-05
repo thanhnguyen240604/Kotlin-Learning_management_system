@@ -10,18 +10,19 @@ import com.be.kotlin.grade.service.interf.ClassInterface
 
 class ClassImplement(private val studentMapper: StudentMapper,
     private val classRepository: ClassRepository,
-    private  val studyRepository: StudyRepository) :ClassInterface {
+    private  val studyRepository: StudyRepository
+) : ClassInterface {
     override fun getHighestGradeStudent(classId: Long): MutableList<StudentResponseDto> {
-        var myClass = classRepository.findById(classId).orElse(null)
-        var studyList = studyRepository.findByStudyClass(myClass)
+        val myClass = classRepository.findById(classId).orElse(null)
+        val studyList = studyRepository.findByStudyClass(myClass)
         var maxGrade : Float = 0F
-        var res : MutableList<StudentResponseDto> = mutableListOf()
+        val res : MutableList<StudentResponseDto> = mutableListOf()
         for(i in studyList){
             if(i.score>=maxGrade){ maxGrade=i.score}
         }
         for(i in studyList){
             if(i.score==maxGrade){
-                res.add(studentMapper.toStudentResponseDto(i.student,maxGrade))
+                i.student?.let { studentMapper.toStudentResponseDto(it,maxGrade) }?.let { res.add(it) }
             }
         }
         return res

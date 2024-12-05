@@ -2,13 +2,11 @@ package com.be.kotlin.grade.dto.UserDto
 
 import jakarta.validation.constraints.NotBlank
 
-data class UserDTO (
-    var id: Long? = null,
+class UserUpdateRequestDTO (
     @NotBlank(message = "Name is required")
     var name: String,
+    @NotBlank(message = "Faculty is required")
     var faculty: String? = null,
-    @NotBlank(message = "Role is required")
-    val role: String,
     @NotBlank(message = "Username is required")
     val username: String
 )

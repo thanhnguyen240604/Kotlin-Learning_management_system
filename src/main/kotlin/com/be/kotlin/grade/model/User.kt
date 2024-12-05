@@ -14,7 +14,7 @@ data class User (
     var faculty: String? = null,
 
     @Column(name = "role", nullable = false)
-    val role: String = "",
+    var role: String = "",
 
     @Column(name = "username", unique = true, nullable = false)
     val username: String = "",
