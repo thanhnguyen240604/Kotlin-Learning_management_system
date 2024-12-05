@@ -1,13 +1,12 @@
 package com.be.kotlin.grade.mapper
 
 import com.be.kotlin.grade.Grade
-import com.be.kotlin.grade.Study
-import com.be.kotlin.grade.dto.gradeDTO.Grade_DTO
+import com.be.kotlin.grade.dto.gradeDTO.GradeDTO
 import org.springframework.stereotype.Component
 
 @Component
 class GradeMapper {
-    fun toGrade(gradeDTO: Grade_DTO ): Grade {
+    fun toGrade(gradeDTO: GradeDTO ): Grade {
         return Grade(
             id = gradeDTO.id,
             score = gradeDTO.score,
@@ -15,8 +14,8 @@ class GradeMapper {
             studyId = gradeDTO.studyId
         )
     }
-    fun toGradeDTO(grade: Grade): Grade_DTO {
-        return Grade_DTO(
+    fun toGradeDTO(grade: Grade): GradeDTO {
+        return GradeDTO(
             id = grade.id,
             score = grade.score,
             weight = grade.weight,

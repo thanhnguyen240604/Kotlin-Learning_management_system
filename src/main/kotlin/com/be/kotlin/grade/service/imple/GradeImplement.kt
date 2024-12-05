@@ -1,17 +1,15 @@
 package com.be.kotlin.grade.service.imple
 
 import com.be.kotlin.grade.dto.Response
-import com.be.kotlin.grade.dto.gradeDTO.Grade_DTO
-import com.be.kotlin.grade.dto.gradeDTO.Grade_DTO_ID
+import com.be.kotlin.grade.dto.gradeDTO.GradeDTO
+import com.be.kotlin.grade.dto.gradeDTO.GradeIdDTO
 import com.be.kotlin.grade.exception.AppException
 import com.be.kotlin.grade.exception.ErrorCode
 import com.be.kotlin.grade.mapper.GradeMapper
 import com.be.kotlin.grade.repository.GradeRepository
 import com.be.kotlin.grade.repository.StudyRepository
 import com.be.kotlin.grade.service.interf.GradeInterface
-import org.springframework.boot.autoconfigure.integration.IntegrationProperties
 import org.springframework.stereotype.Service
-import org.springframework.web.bind.annotation.RequestBody
 
 @Service
 class GradeImplement(
@@ -37,7 +35,7 @@ class GradeImplement(
         return score in 0.0..10.0
     }
 
-    override fun addGrade(grade: Grade_DTO): Response {
+    override fun addGrade(grade: GradeDTO): Response {
         val gradeStudyId = grade.studyId
             ?: throw AppException(ErrorCode.STUDY_ID_INVALID)
 
@@ -66,7 +64,7 @@ class GradeImplement(
     }
 
 
-    override fun deleteGrade(grade: Grade_DTO_ID): Response {
+    override fun deleteGrade(grade: GradeIdDTO): Response {
         val gradeStudyId = grade.studyId
             ?: throw AppException(ErrorCode.STUDY_ID_INVALID)
 
@@ -97,7 +95,7 @@ class GradeImplement(
         )
     }
 
-    override fun updateGrade(grade: Grade_DTO_ID): Response {
+    override fun updateGrade(grade: GradeIdDTO): Response {
         val gradeId = grade.id
             ?: throw AppException(ErrorCode.GRADE_ID_INVALID)
 

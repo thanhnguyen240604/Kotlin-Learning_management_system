@@ -1,12 +1,10 @@
 package com.be.kotlin.grade.dto
 
-import com.be.kotlin.grade.dto.gradeDTO.Grade_DTO
-import com.be.kotlin.grade.dto.gradeDTO.Grade_DTO_ID
+import com.be.kotlin.grade.dto.gradeDTO.GradeDTO
 import com.be.kotlin.grade.dto.securityDTO.AuthenticateDTO
 import com.be.kotlin.grade.dto.securityDTO.IntrospectDTO
 import com.be.kotlin.grade.dto.studyDTO.StudyDTO
 import com.be.kotlin.grade.dto.subjectDTO.SubjectDTO
-import com.be.kotlin.grade.dto.userDTO.UserRequestDTO
 import com.be.kotlin.grade.dto.userDTO.UserResponseDTO
 
 data class Response(
@@ -22,7 +20,7 @@ data class Response(
     var userDTO: UserResponseDTO? = null,
     var subjectDTO: SubjectDTO? = null,
     var studyDTO: StudyDTO? = null,
-    var gradeDTO: Grade_DTO? = null,
+    var gradeDTO: GradeDTO? = null,
     // List DTO response
     var listUserDTO: List<UserResponseDTO>? = null,
 
