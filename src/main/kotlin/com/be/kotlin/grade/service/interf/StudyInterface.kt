@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestBody
 
 interface StudyInterface {
     fun addStudyStudent(@RequestBody studyDTO: StudyDTO): Response
-    fun deleteStudyStudent(@RequestBody studyStudentId: Long): Response
+    fun updateStudyStudent(@RequestBody study: StudyDTO): Response
+    fun deleteStudyStudent(@RequestBody study: StudyDTO): Response
 }
 
