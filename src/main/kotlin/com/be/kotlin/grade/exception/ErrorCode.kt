@@ -8,6 +8,7 @@ enum class ErrorCode(val code: Int, val message: String) {
     SCORE_INVALID(400, "Score must be between 0 and 10"),
     WEIGHT_LIMIT_INVALID(400, "Weight exceeds limit"),
     GRADE_NOT_MATCH_INVALID(400, "Grade does not belong to the specified study"),
+    CLASS_INVALID(400, "Class not belong to the specified lecturer"),
 
     //Unauthenticated
     UNAUTHENTICATED(401, "Unauthenticated"),
