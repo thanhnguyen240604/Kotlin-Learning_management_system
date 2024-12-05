@@ -17,6 +17,7 @@ enum class ErrorCode(val code: Int, val message: String) {
     SUBJECT_NOT_FOUND(404,"Subject not found"),
     STUDY_NOT_FOUND(404,"Study not found"),
     GRADE_NOT_FOUND(404,"Grade not found"),
+    CLASS_NOT_FOUND(404,"Class not found"),
 
     //Resource already existed
     USER_EXISTED(409, "User existed"),
