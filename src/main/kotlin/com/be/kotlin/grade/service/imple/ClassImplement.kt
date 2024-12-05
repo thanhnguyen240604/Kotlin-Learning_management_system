@@ -30,8 +30,12 @@ class ClassImplement(
         val context = SecurityContextHolder.getContext()
         val username = context.authentication.name
         val lecturer = userRepository.findLecturersByUsername(username)
-        newClass.lecturers.add(lecturer)
 
+        if (lecturer.id?.let { classRepository.existsByLecturerSubjectAndClassName(it, subject.id, newClass.name) } == true) {
+            throw AppException(ErrorCode.CLASS_EXISTED)
+        }
+
+        newClass.lecturers.add(lecturer)
         classRepository.save(newClass)
 
         return Response(

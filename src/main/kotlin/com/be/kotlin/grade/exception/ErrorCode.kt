@@ -24,4 +24,5 @@ enum class ErrorCode(val code: Int, val message: String) {
     USER_EXISTED(409, "User existed"),
     SUBJECT_EXISTED(409,"Subject already exists"),
     STUDY_EXISTED(409,"Study already exists"),
+    CLASS_EXISTED(409, "Class already exists"),
 }
