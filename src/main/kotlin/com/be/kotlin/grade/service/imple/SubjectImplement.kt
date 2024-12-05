@@ -30,7 +30,7 @@ class SubjectImplement(
             message = "Subject added successfully")
     }
 
-    override fun deleteSubject(@RequestBody subject: SubjectIdDTO): Response {
+    override fun deleteSubject(subject: SubjectIdDTO): Response {
         if (!subjectRepository.findById(subject.id).isPresent)
             throw AppException(ErrorCode.SUBJECT_NOT_FOUND)
 

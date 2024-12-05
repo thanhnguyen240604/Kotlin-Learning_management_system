@@ -3,10 +3,13 @@ package com.be.kotlin.grade.service.imple
 import com.be.kotlin.grade.dto.Response
 import com.be.kotlin.grade.dto.gradeDTO.Grade_DTO
 import com.be.kotlin.grade.dto.gradeDTO.Grade_DTO_ID
+import com.be.kotlin.grade.exception.AppException
+import com.be.kotlin.grade.exception.ErrorCode
 import com.be.kotlin.grade.mapper.GradeMapper
 import com.be.kotlin.grade.repository.GradeRepository
 import com.be.kotlin.grade.repository.StudyRepository
 import com.be.kotlin.grade.service.interf.GradeInterface
+import org.springframework.boot.autoconfigure.integration.IntegrationProperties
 import org.springframework.stereotype.Service
 import org.springframework.web.bind.annotation.RequestBody
 
@@ -29,31 +32,26 @@ class GradeImplement(
             Pair(false, "Total weight exceeds 100. Remaining weight: $remainingWeight")
         }
     }
+
     private fun isScoreValid(score: Float): Boolean {
         return score in 0.0..10.0
     }
 
-    override fun addGrade(@RequestBody grade: Grade_DTO): Response {
-        val gradeStudyId = grade.studyId?: return Response(
-            statusCode = 400,
-            message = "Study ID cannot be null"
-        )
+    override fun addGrade(grade: Grade_DTO): Response {
+        val gradeStudyId = grade.studyId
+            ?: throw AppException(ErrorCode.STUDY_ID_INVALID)
+
         val study = studyRepository.findById(gradeStudyId).orElse(null)
-            ?:return Response(
-                statusCode = 404,
-                message = "Study not found"
-            )
+            ?: throw AppException(ErrorCode.STUDY_NOT_FOUND)
 
         if (!isScoreValid(grade.score)) {
-            return Response(
-                statusCode = 400,
-                message = "Score must be between 0 and 10"
-            )
+            throw AppException(ErrorCode.SCORE_INVALID)
         }
-        //Kiểm tra weight
+
+        // Kiểm tra weight
         val weightValidationResult = isWeightValid(gradeStudyId, grade.weight)
         if (!weightValidationResult.first) {
-            return Response(400, weightValidationResult.second)
+            throw AppException(ErrorCode.WEIGHT_LIMIT_INVALID, weightValidationResult.second)
         }
 
         val newGrade = gradeMapper.toGrade(grade)
@@ -68,30 +66,23 @@ class GradeImplement(
     }
 
 
-    override fun deleteGrade(@RequestBody grade: Grade_DTO_ID): Response {
-        val gradeStudyId = grade.studyId ?: return Response(
-            statusCode = 400,
-            message = "Study ID cannot be null"
-        )
-        val gradeId = grade.id ?: return Response(
-            statusCode = 400,
-            message = "Grade ID cannot be null"
-        )
+    override fun deleteGrade(grade: Grade_DTO_ID): Response {
+        val gradeStudyId = grade.studyId
+            ?: throw AppException(ErrorCode.STUDY_ID_INVALID)
+
+        val gradeId = grade.id
+            ?: throw AppException(ErrorCode.GRADE_ID_INVALID)
+
         // Kiểm tra xem điểm có tồn tại không
         val optionalGrade = gradeRepository.findById(gradeId)
         if (!optionalGrade.isPresent) {
-            return Response(
-                statusCode = 404,
-                message = "Grade not found"
-            )
+            throw AppException(ErrorCode.GRADE_NOT_FOUND)
         }
+
         // Kiểm tra xem điểm có thuộc về studyId không
         val deletedGrade = optionalGrade.get()
         if (deletedGrade.studyId != gradeStudyId) {
-            return Response(
-                statusCode = 403,
-                message = "Grade does not belong to the specified study"
-            )
+            throw AppException(ErrorCode.GRADE_NOT_MATCH_INVALID)
         }
         // Xóa điểm
         gradeRepository.deleteById(gradeId)
@@ -106,42 +97,31 @@ class GradeImplement(
         )
     }
 
-    override fun updateGrade(@RequestBody grade: Grade_DTO_ID): Response {
-        val gradeId = grade.id ?: return Response(
-            statusCode = 400,
-            message = "Grade ID cannot be null"
-        )
-        val gradeStudyId = grade.studyId ?: return Response(
-            statusCode = 400,
-            message = "Study ID cannot be null"
-        )
+    override fun updateGrade(grade: Grade_DTO_ID): Response {
+        val gradeId = grade.id
+            ?: throw AppException(ErrorCode.GRADE_ID_INVALID)
+
+        val gradeStudyId = grade.studyId
+            ?: throw AppException(ErrorCode.STUDY_ID_INVALID)
+
         // Kiểm tra xem điểm có tồn tại không
         val optionalGrade = gradeRepository.findById(gradeId)
         if (!optionalGrade.isPresent) {
-            return Response(
-                statusCode = 404,
-                message = "Grade not found"
-            )
+            throw AppException(ErrorCode.GRADE_NOT_FOUND)
         }
         // Kiểm tra xem điểm có thuộc về studyId không
         val existingGrade = optionalGrade.get()
         if (existingGrade.studyId != gradeStudyId) {
-            return Response(
-                statusCode = 403,
-                message = "Grade does not belong to the specified study"
-            )
+            throw AppException(ErrorCode.GRADE_NOT_MATCH_INVALID)
         }
         //Kiểm tra Score
         if (!isScoreValid(grade.score)) {
-            return Response(
-                statusCode = 400,
-                message = "Score must be between 0 and 10"
-            )
+            throw AppException(ErrorCode.SCORE_INVALID)
         }
         //Kiểm tra Weight
         val weightValidationResult = isWeightValid(gradeStudyId, grade.weight, existingGrade.weight)
         if (!weightValidationResult.first) {
-            return Response(400, weightValidationResult.second)
+            throw AppException(ErrorCode.WEIGHT_LIMIT_INVALID, weightValidationResult.second)
         }
 
         // Cập nhật thông tin điểm
