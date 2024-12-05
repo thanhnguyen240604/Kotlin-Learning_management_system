@@ -1,6 +1,6 @@
 package com.be.kotlin.grade.service.imple
 
-import com.be.kotlin.grade.User
+import com.be.kotlin.grade.model.User
 import com.be.kotlin.grade.dto.securityDTO.AuthenticateDTO
 import com.be.kotlin.grade.dto.securityDTO.IntrospectDTO
 import com.be.kotlin.grade.dto.Response

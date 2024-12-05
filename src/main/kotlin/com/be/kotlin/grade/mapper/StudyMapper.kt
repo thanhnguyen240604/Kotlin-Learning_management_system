@@ -1,6 +1,6 @@
 package com.be.kotlin.grade.mapper
 
-import com.be.kotlin.grade.Study
+import com.be.kotlin.grade.model.Study
 import com.be.kotlin.grade.dto.studyDTO.StudyDTO
 import com.be.kotlin.grade.repository.ClassRepository
 import com.be.kotlin.grade.repository.StudentRepository
@@ -14,19 +14,19 @@ class StudyMapper (
     private val classRepository: ClassRepository
 ) {
     fun toStudy(studyDTO: StudyDTO): Study {
-        val student = studyDTO.studentId?.let { 
+        val student = studyDTO.studentId.let {
             studentRepository.findById(it).orElseThrow { 
                 IllegalArgumentException("Không tìm thấy sinh viên với ID ${studyDTO.studentId}") 
             }
         }
         
-        val subject = studyDTO.subjectId?.let { 
+        val subject = studyDTO.subjectId.let {
             subjectRepository.findById(it).orElseThrow { 
                 IllegalArgumentException("Không tìm thấy môn học với ID ${studyDTO.subjectId}") 
             }
         }
         
-        val studyClass = studyDTO.classId?.let { 
+        val studyClass = studyDTO.classId.let {
             classRepository.findById(it).orElseThrow { 
                 IllegalArgumentException("Không tìm thấy lớp học với ID ${studyDTO.classId}") 
             }
@@ -38,7 +38,8 @@ class StudyMapper (
             subject = subject,
             studyClass = studyClass,
             semester = studyDTO.semester ?: 0,
-            score = studyDTO.score
+            score = studyDTO.score,
+            gradesList = studyDTO.gradeList
         )
     }
     
@@ -46,11 +47,12 @@ class StudyMapper (
     fun toStudyDTO(study: Study): StudyDTO {
         return StudyDTO(
             id = study.id,
-            studentId = study.student?.studentId,
-            subjectId = study.subject?.id,
-            classId = study.studyClass?.id,
+            studentId = study.student.studentId,
+            subjectId = study.subject.id,
+            classId = study.studyClass.id,
             semester = study.semester,
-            score = study.score
+            score = study.score,
+            gradeList = study.gradesList
         )
     }
 }

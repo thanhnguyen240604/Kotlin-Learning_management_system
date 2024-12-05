@@ -1,6 +1,6 @@
 package com.be.kotlin.grade.mapper
 
-import com.be.kotlin.grade.User
+import com.be.kotlin.grade.model.User
 import com.be.kotlin.grade.dto.userDTO.UserRequestDTO
 import com.be.kotlin.grade.dto.userDTO.UserResponseDTO
 import org.springframework.stereotype.Component
