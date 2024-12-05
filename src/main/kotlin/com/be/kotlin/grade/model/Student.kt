@@ -17,8 +17,5 @@ class Student (
     var major: String = "",
 
     @Column(name = "enrolled_course", nullable = false)
-    var enrolledCourse: Int = 0,
-
-    @OneToMany(mappedBy = "student")
-    var studyList : List<Study> = listOf()
+    var enrolledCourse: Int = 0
 )

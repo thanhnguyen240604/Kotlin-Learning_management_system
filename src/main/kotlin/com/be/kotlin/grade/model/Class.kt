@@ -20,8 +20,5 @@ data class Class (
 
     @OneToOne
     @JoinColumn(name = "subject_id", referencedColumnName = "id", nullable = false)
-    val subject: Subject = Subject(),
-
-    @OneToMany(mappedBy = "studyClass")
-    var studyList : List<Study> = listOf()
+    val subject: Subject = Subject()
 )
