@@ -62,10 +62,7 @@ class StudyImplement(
     override fun updateStudyStudent(study: StudyDTO): Response {
         val studyId: Long = study.id ?: throw IllegalArgumentException("Study ID cannot be null")
         if (!studyRepository.findById(studyId).isPresent)
-            return Response(
-                statusCode = 404,
-                message = "Study not found"
-            )
+            throw AppException(ErrorCode.STUDY_NOT_FOUND)
 
         // Chuyển đổi từ DTO sang Entity và lưu vào cơ sở dữ liệu
         val updatedStudy = studyMapper.toStudy(study)
