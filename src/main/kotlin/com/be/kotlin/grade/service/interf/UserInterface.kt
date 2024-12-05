@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable
 
 
 interface UserInterface {
-    fun register(request: UserRequestDTO): Response
+    fun createLecturer(userRequestDTO: UserRequestDTO): Response
     fun findUserById(id: Long): Response
     fun findAllUser(pageable: Pageable): Response
 }

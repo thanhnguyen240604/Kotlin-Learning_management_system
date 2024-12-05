@@ -16,21 +16,21 @@ class UserImplement (
     private var userRepository: UserRepository,
     private val userMapper: UserMapper
 ): UserInterface {
-    override fun register(request: UserRequestDTO): Response {
-        if (userRepository.existsByUsername(request.username)) {
+    override fun createLecturer(userRequestDTO: UserRequestDTO): Response {
+        if (userRepository.existsByUsername(userRequestDTO.username)) {
             throw AppException(ErrorCode.USER_EXISTED)
         }
 
-        val user = userMapper.toUser(request)
-        user.role = "USER"
+        val user = userMapper.toUser(userRequestDTO)
+        user.role = "LECTURER"
         val passwordEncoder = BCryptPasswordEncoder(5)
         user.password = passwordEncoder.encode(user.password)
-
         userRepository.save(user)
 
-        return Response(
+        return Response (
             statusCode = 200,
-            message = "User registered",
+            message = "Lecturer created successfully",
+            userDTO = userMapper.toUserDTO(user)
         )
     }
 

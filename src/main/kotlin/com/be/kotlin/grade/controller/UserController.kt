@@ -14,16 +14,17 @@ import org.springframework.data.domain.Pageable
 class UserController(
     private val userService: UserInterface
 ) {
-    @PostMapping("/register")
-    fun register(@RequestBody user: UserRequestDTO): ResponseEntity<Response> {
-        val response = userService.register(user)
+    //    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/create-lecturers")
+    fun createLecturer(@RequestBody userRequestDTO: UserRequestDTO): ResponseEntity<Response> {
+        val response = userService.createLecturer(userRequestDTO)
         return ResponseEntity.status(response.statusCode).body(response)
     }
 
-//    @PreAuthorize("hasRole('ADMIN')")
+    //    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}")
-    fun getUserById(@PathVariable("id") userId: Long): ResponseEntity<Response> {
-        val response = userService.findUserById(userId)
+    fun getUserById(@PathVariable id: Long): ResponseEntity<Response> {
+        val response = userService.findUserById(id)
         return ResponseEntity.status(response.statusCode).body(response)
     }
 

@@ -7,6 +7,7 @@ import com.be.kotlin.grade.dto.studyDTO.StudyDTO
 import com.be.kotlin.grade.dto.subjectDTO.SubjectDTO
 import com.be.kotlin.grade.dto.userDTO.UserResponseDTO
 import com.be.kotlin.grade.dto.classDTO.ClassDTO
+import com.be.kotlin.grade.dto.studentDTO.StudentDTO
 
 data class Response(
     var statusCode: Int = 0,
@@ -23,7 +24,8 @@ data class Response(
     var studyDTO: StudyDTO? = null,
     var gradeDTO: GradeDTO? = null,
     var classDTO: ClassDTO? = null,
-  
+    var studentDTO: StudentDTO? = null,
+
     // List DTO response
     var listUserDTO: List<UserResponseDTO>? = null,
 
