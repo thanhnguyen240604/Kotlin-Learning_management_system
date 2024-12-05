@@ -10,22 +10,22 @@ data class Study (
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "student_id", referencedColumnName = "student_id", nullable = false)
     val student: Student = Student(),
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "subject_id", referencedColumnName = "id", nullable = false)
     val subject: Subject = Subject(),
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "class_id", referencedColumnName = "id", nullable = false)
     val studyClass: Class = Class(),
 
     @Column(name = "semester", nullable = false)
     val semester: Int = 0,
 
-    var score: Float? = null,
+    var score: Float = 13F,
 
     @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     @JoinColumn(name = "study_id")  // Chỉ định cột khóa ngoại trong bảng Grade

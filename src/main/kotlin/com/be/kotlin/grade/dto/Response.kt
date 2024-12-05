@@ -1,5 +1,6 @@
 package com.be.kotlin.grade.dto
 
+import com.be.kotlin.grade.dto.UserDto.UserDTO
 import com.be.kotlin.grade.dto.subjectDTO.FullSubjectDTO
 
 data class Response(
