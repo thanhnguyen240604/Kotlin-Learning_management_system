@@ -1,7 +1,7 @@
 package com.be.kotlin.grade.service.interf
 
 import com.be.kotlin.grade.dto.Response
-import com.be.kotlin.grade.dto.StudentDTO.StudentResponseDto
+import com.be.kotlin.grade.dto.studentDTO.StudentResponseDto
 import com.be.kotlin.grade.dto.classDTO.ClassDTO
 import org.springframework.web.bind.annotation.RequestParam
 
