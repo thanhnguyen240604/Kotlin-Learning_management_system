@@ -1,5 +1,6 @@
 package com.be.kotlin.grade.mapper
-
+import com.be.kotlin.grade.exception.AppException
+import com.be.kotlin.grade.exception.ErrorCode
 import com.be.kotlin.grade.model.Study
 import com.be.kotlin.grade.dto.studyDTO.StudyDTO
 import com.be.kotlin.grade.repository.ClassRepository
@@ -15,35 +16,32 @@ class StudyMapper (
 ) {
     fun toStudy(studyDTO: StudyDTO): Study? {
         val student = studyDTO.studentId.let {
-            studentRepository.findById(it).orElseThrow { 
-                IllegalArgumentException("Không tìm thấy sinh viên với ID ${studyDTO.studentId}") 
+            studentRepository.findById(it).orElseThrow {
+                AppException(ErrorCode.STUDENT_NOT_FOUND)
             }
         }
         
         val subject = studyDTO.subjectId.let {
-            subjectRepository.findById(it).orElseThrow { 
-                IllegalArgumentException("Không tìm thấy môn học với ID ${studyDTO.subjectId}") 
+            subjectRepository.findById(it).orElseThrow {
+                AppException(ErrorCode.SUBJECT_NOT_FOUND)
             }
         }
         
         val studyClass = studyDTO.classId.let {
             classRepository.findById(it!!).orElseThrow {
-                IllegalArgumentException("Không tìm thấy lớp học với ID ${studyDTO.classId}") 
+                AppException(ErrorCode.CLASS_NOT_FOUND)
             }
         }
-    
-        return studyDTO.score?.let {
-            Study(
-                id = studyDTO.id,
-                student = student,
-                subject = subject,
-                studyClass = studyClass,
-                semester = studyDTO.semester ?: 0,
-                score = it,
-                gradesList = studyDTO.gradeList
-            )
+
+        return Study(
+            id = studyDTO.id,
+            student = student,
+            subject = subject,
+            studyClass = studyClass,
+            semester = studyDTO.semester ?: 0, // Nếu semester là null, gán mặc định là 0
+        )
         }
-    }
+
     
 
     fun toStudyDTO(study: Study): StudyDTO {
