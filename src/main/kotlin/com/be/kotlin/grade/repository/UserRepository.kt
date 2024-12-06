@@ -12,6 +12,8 @@ import java.util.Optional
 
 @Repository
 interface UserRepository: JpaRepository<User, Long> {
+    fun findByUsername(username: String): Optional<User>
+    fun findLecturersByUsername(username: String): User
     fun existsByUsername(username: String): Boolean
     fun deleteByUsername(username:String)
     fun findByUsername(username: String): Optional<User>

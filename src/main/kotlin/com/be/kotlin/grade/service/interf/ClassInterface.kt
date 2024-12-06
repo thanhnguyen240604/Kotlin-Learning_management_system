@@ -1,9 +1,10 @@
 package com.be.kotlin.grade.service.interf
 
-import com.be.kotlin.grade.Student
-import com.be.kotlin.grade.dto.StudentDTO.StudentResponseDto
-import org.springframework.web.bind.annotation.RequestParam
+import com.be.kotlin.grade.dto.Response
+import com.be.kotlin.grade.dto.classDTO.ClassDTO
 
 interface ClassInterface {
-    fun getHighestGradeStudent(@RequestParam classId : Long) : MutableList<StudentResponseDto>
+    fun addClass(classDTO: ClassDTO): Response
+    fun updateClass(classDTO: ClassDTO): Response
+    fun deleteClass(id: Long): Response
 }

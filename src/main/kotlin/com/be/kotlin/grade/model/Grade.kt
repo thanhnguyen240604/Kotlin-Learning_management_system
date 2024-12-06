@@ -14,4 +14,7 @@ data class Grade (
 
     @Column(name = "weight", nullable = false)
     var weight: Float = 0f,
+
+    @Column(name = "study_id", nullable = false)
+    var studyId: Long? = null
 )

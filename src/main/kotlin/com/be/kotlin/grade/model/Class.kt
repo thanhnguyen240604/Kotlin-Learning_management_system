@@ -3,7 +3,6 @@ package com.be.kotlin.grade
 import com.be.kotlin.grade.model.Subject
 import jakarta.persistence.*
 
-
 @Entity
 @Table(name = "class")
 data class Class (
@@ -18,7 +17,7 @@ data class Class (
     @JoinColumn(name = "class_id")
     var lecturers: MutableList<User> = mutableListOf(),
 
-    @OneToOne
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "subject_id", referencedColumnName = "id", nullable = false)
-    val subject: Subject = Subject()
+    var subject: Subject = Subject()
 )
