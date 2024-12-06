@@ -31,7 +31,7 @@ class SecurityConfig (
     fun filterChain(httpSecurity: HttpSecurity): SecurityFilterChain {
         httpSecurity.authorizeHttpRequests { request ->
             request.requestMatchers("/auth/**", "students/register").permitAll()
-                .anyRequest().permitAll()
+                .anyRequest().authenticated()
         }
 
         httpSecurity.oauth2ResourceServer { oauth2 ->
