@@ -43,4 +43,16 @@ class StudentImplement(
             userDTO = userMapper.toUserDTO(user)
         )
     }
+
+    override fun getStudentById(userId: Long): Response {
+        val studentGot = studentRepository.findById(userId)
+            .orElseThrow { AppException(ErrorCode.STUDENT_NOT_FOUND) }
+
+        val studentDTO = studentMapper.toStudentDTO(studentGot)
+        return Response(
+            statusCode = 200,
+            message = "Student found successfully",
+            studentDTO = studentDTO
+        )
+    }
 }
