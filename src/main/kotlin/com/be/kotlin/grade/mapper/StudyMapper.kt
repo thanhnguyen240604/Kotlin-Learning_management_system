@@ -27,7 +27,7 @@ class StudyMapper (
         }
         
         val studyClass = studyDTO.classId.let {
-            classRepository.findById(it).orElseThrow { 
+            classRepository.findById(it!!).orElseThrow {
                 IllegalArgumentException("Không tìm thấy lớp học với ID ${studyDTO.classId}") 
             }
         }

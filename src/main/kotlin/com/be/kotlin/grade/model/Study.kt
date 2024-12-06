@@ -1,5 +1,6 @@
 package com.be.kotlin.grade.model
 
+import com.be.kotlin.grade.model.Grade
 import jakarta.persistence.*
 
 @Entity

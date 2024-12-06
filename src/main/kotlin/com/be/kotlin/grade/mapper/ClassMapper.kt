@@ -1,7 +1,7 @@
 package com.be.kotlin.grade.mapper
 
 import com.be.kotlin.grade.dto.classDTO.ClassDTO
-import com.be.kotlin.grade.Class
+import com.be.kotlin.grade.model.Class
 import com.be.kotlin.grade.model.Subject
 import org.springframework.stereotype.Component
 
