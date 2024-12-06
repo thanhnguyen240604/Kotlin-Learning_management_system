@@ -55,6 +55,7 @@ class ClassController(private val classService: ClassImplement) {
     ): ResponseEntity<Response> {
         val response = classService.getAllMyClasses(page, size, id)
         return ResponseEntity.status(response.statusCode).body(response)
+    }
 
     @GetMapping("/get/hallOfFame")
     fun getHallOfFame(@RequestParam id : Long):MutableList<StudentResponseDto>{
