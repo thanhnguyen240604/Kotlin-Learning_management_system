@@ -1,28 +1,32 @@
 package com.be.kotlin.grade.mapper
 
-import com.be.kotlin.grade.Student
-import com.be.kotlin.grade.User
 import com.be.kotlin.grade.dto.studentDTO.StudentDTO
-import com.be.kotlin.grade.dto.userDTO.UserResponseDTO
 import org.springframework.stereotype.Component
+import com.be.kotlin.grade.dto.StudentDTO.StudentResponseDto
+import com.be.kotlin.grade.model.Student
 
 @Component
 class StudentMapper {
-    fun toStudent (request: StudentDTO): Student {
-        return Student(
-            studentId = request.studentId,
-            enrolledCourse = request.enrolledCourse,
-            major = request.major
+    fun toStudentResponseDto(student: Student, score : Float) : StudentResponseDto{
+        return StudentResponseDto(
+            name = student.user.name,
+            score = score
         )
     }
 
     fun toStudentDTO(student: Student): StudentDTO? {
-        return student.studentId?.let {
-            StudentDTO(
-                studentId = it,
-                enrolledCourse = student.enrolledCourse,
-                major = student.major
-            )
-        }
+        return StudentDTO(
+            studentId = student.studentId,
+            enrolledCourse = student.enrolledCourse,
+            major = student.major
+        )
+    }
+
+    fun toStudent(studentDTO: StudentDTO) : Student {
+        return Student(
+            studentId = studentDTO.studentId,
+            enrolledCourse = studentDTO.enrolledCourse,
+            major = studentDTO.major
+        )
     }
 }

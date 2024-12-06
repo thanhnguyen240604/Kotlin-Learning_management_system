@@ -2,6 +2,7 @@ package com.be.kotlin.grade.service.imple
 
 import com.be.kotlin.grade.dto.Response
 import com.be.kotlin.grade.dto.userDTO.UserRequestDTO
+import com.be.kotlin.grade.dto.userDTO.UserUpdateRequestDTO
 import com.be.kotlin.grade.exception.AppException
 import com.be.kotlin.grade.exception.ErrorCode
 import com.be.kotlin.grade.mapper.UserMapper
@@ -56,6 +57,44 @@ class UserImplement (
             currentPage = userPage.number,
             totalElements = userPage.totalElements,
             totalPages = userPage.totalPages
+        )
+    }
+
+    override fun delUser(username : String):Response{
+        if(userRepository.findByUsername(username).orElse(null)==null){
+            return Response(
+                statusCode = 300,
+                message = "User doesn't exist"
+            )
+        }
+        userRepository.deleteByUsername(username);
+        return Response(
+            statusCode = 200,
+            message = "Subject added successfully"
+        )
+    }
+//    override fun updateRole(role: String, username: String): Response {
+//        if(userRepository.findByUsername(username).orElse(null)==null){
+//            return Response(
+//                statusCode = 300,
+//                message = "User doesn't exist"
+//            )
+//        }
+//        userRepository.updateUserRole(role,username)
+//        return Response(
+//            statusCode = 200,
+//            message = "Update role successfully"
+//        )
+//    }
+
+    override fun updateInfo(userDTO: UserUpdateRequestDTO): Response {
+        if (userRepository.existsByUsername(userDTO.username)) {
+            throw AppException(ErrorCode.USER_EXISTED)
+        }
+        userDTO.faculty?.let { userRepository.updateUserInfo(it, userDTO.username) }
+        return Response(
+            statusCode = 200,
+            message = "Update info successfully"
         )
     }
 }

@@ -7,6 +7,7 @@ import com.be.kotlin.grade.dto.studyDTO.StudyDTO
 import com.be.kotlin.grade.dto.subjectDTO.SubjectDTO
 import com.be.kotlin.grade.dto.userDTO.UserResponseDTO
 import com.be.kotlin.grade.dto.classDTO.ClassDTO
+import com.be.kotlin.grade.dto.studentDTO.StudentDTO
 import org.springframework.core.io.FileSystemResource
 import com.fasterxml.jackson.annotation.JsonIgnore
 
