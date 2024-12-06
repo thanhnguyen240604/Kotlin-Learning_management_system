@@ -1,6 +1,6 @@
-package com.be.kotlin.grade
+package com.be.kotlin.grade.model
 
-import com.be.kotlin.grade.model.Subject
+import com.be.kotlin.grade.model.Grade
 import jakarta.persistence.*
 
 @Entity
@@ -10,17 +10,17 @@ data class Study(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "student_id", referencedColumnName = "student_id", nullable = false)
-    val student: Student? = Student(),
+    val student: Student = Student(),
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "subject_id", referencedColumnName = "id", nullable = false)
-    val subject: Subject? = Subject(),
+    val subject: Subject = Subject(),
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "class_id", referencedColumnName = "id", nullable = false)
-    val studyClass: Class? = Class(),
+    val studyClass: Class = Class(),
 
     @Column(name = "semester", nullable = false)
     val semester: Int = 0,
@@ -28,6 +28,6 @@ data class Study(
     var score: Float = 13F,
 
     @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
-    @JoinColumn(name = "study_id")
+    @JoinColumn(name = "study_id")  // Chỉ định cột khóa ngoại trong bảng Grade
     var gradesList: MutableList<Grade> = mutableListOf()
 )

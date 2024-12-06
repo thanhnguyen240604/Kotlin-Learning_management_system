@@ -1,7 +1,7 @@
 package com.be.kotlin.grade.repository
 
-import com.be.kotlin.grade.User
 import jakarta.transaction.Transactional
+import com.be.kotlin.grade.model.User
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Modifying
 import org.springframework.data.jpa.repository.Query

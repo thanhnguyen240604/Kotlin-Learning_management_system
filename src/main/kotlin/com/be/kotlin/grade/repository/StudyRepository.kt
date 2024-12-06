@@ -1,7 +1,6 @@
 package com.be.kotlin.grade.repository
 
-import com.be.kotlin.grade.Class
-import com.be.kotlin.grade.Study
+import com.be.kotlin.grade.model.Study
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 
@@ -12,5 +11,6 @@ interface StudyRepository: JpaRepository<Study, Long> {
         subjectId: String,
         studyClassId: Long
     ): Study?
-    fun findByStudyClass(studyClass:Class):MutableList<Study>
+
+    fun findByStudentUserUsernameAndSemester(username: String, semester: Int): List<Study>
 }
