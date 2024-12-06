@@ -1,6 +1,5 @@
-package com.be.kotlin.grade
+package com.be.kotlin.grade.model
 
-import com.be.kotlin.grade.model.Subject
 import jakarta.persistence.*
 
 @Entity
@@ -8,7 +7,7 @@ import jakarta.persistence.*
 data class Class (
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long? = null,
+    var id: Long? = 0,
 
     @Column(name = "class_name", nullable = false)
     var name: String = "",

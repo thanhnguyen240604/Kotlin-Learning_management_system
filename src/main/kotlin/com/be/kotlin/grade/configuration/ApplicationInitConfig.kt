@@ -1,8 +1,7 @@
 package com.be.kotlin.grade.configuration
 
-import com.be.kotlin.grade.User
+import com.be.kotlin.grade.model.User
 import com.be.kotlin.grade.repository.UserRepository
-import org.hibernate.validator.internal.util.logging.LoggerFactory
 import org.springframework.boot.ApplicationRunner
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
