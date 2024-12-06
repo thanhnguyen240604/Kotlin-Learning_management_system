@@ -12,7 +12,7 @@ data class Class (
     @Column(name = "class_name", nullable = false)
     var name: String = "",
 
-    @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "class_id")
     var lecturers: MutableList<User> = mutableListOf(),
 
