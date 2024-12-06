@@ -7,7 +7,8 @@ import com.be.kotlin.grade.dto.studyDTO.StudyDTO
 import com.be.kotlin.grade.dto.subjectDTO.SubjectDTO
 import com.be.kotlin.grade.dto.userDTO.UserResponseDTO
 import com.be.kotlin.grade.dto.classDTO.ClassDTO
-import com.be.kotlin.grade.dto.studentDTO.StudentDTO
+import org.springframework.core.io.FileSystemResource
+import com.fasterxml.jackson.annotation.JsonIgnore
 
 data class Response(
     var statusCode: Int = 0,
@@ -28,9 +29,15 @@ data class Response(
 
     // List DTO response
     var listUserDTO: List<UserResponseDTO>? = null,
+    var listStudyDTO: List<StudyDTO>? = null,
 
     // Pagination
     var totalPages: Int? = null,
     var totalElements: Long? = null,
-    var currentPage: Int? = null
+    var currentPage: Int? = null,
+
+    // File attachment
+    @JsonIgnore
+    val file : FileSystemResource? = null
+
 )

@@ -9,5 +9,6 @@ interface StudyInterface {
     fun deleteStudyStudent(studyIdD: Long): Response
     fun getStudyById(studyIdD: Long): Response
     fun updateStudyStudent(study: StudyDTO): Response
+    fun getStudyByUsernameAndSemester(username: String, semester: Int): Response
 }
 

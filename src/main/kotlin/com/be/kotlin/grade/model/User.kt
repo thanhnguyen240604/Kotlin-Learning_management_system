@@ -1,4 +1,4 @@
-package com.be.kotlin.grade
+package com.be.kotlin.grade.model
 
 import jakarta.persistence.*
 
