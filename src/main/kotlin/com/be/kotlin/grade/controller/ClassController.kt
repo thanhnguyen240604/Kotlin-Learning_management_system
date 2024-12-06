@@ -1,6 +1,7 @@
 package com.be.kotlin.grade.controller
 
 import com.be.kotlin.grade.dto.Response
+import com.be.kotlin.grade.dto.StudentDTO.StudentResponseDto
 import com.be.kotlin.grade.dto.classDTO.ClassDTO
 import com.be.kotlin.grade.service.imple.ClassImplement
 import org.springframework.http.ResponseEntity
@@ -29,5 +30,9 @@ class ClassController(private val classService: ClassImplement) {
     fun deleteClass(@PathVariable id: Long): ResponseEntity<Response> {
         val response = classService.deleteClass(id)
         return ResponseEntity.status(response.statusCode).body(response)
+    }
+    @GetMapping("/get/hallOfFame")
+    fun getHallOfFame(@RequestParam id : Long):MutableList<StudentResponseDto>{
+        return classService.getHighestGradeStudent(id)
     }
 }

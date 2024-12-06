@@ -25,7 +25,7 @@ data class Study(
     @Column(name = "semester", nullable = false)
     val semester: Int = 0,
 
-    var score: Float? = null,
+    var score: Float = 13F,
 
     @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     @JoinColumn(name = "study_id")  // Chỉ định cột khóa ngoại trong bảng Grade
