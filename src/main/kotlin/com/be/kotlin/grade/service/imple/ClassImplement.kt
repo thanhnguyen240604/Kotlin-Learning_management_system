@@ -1,7 +1,7 @@
 package com.be.kotlin.grade.service.imple
 
 import com.be.kotlin.grade.dto.Response
-import com.be.kotlin.grade.dto.studentDTO.StudentResponseDto
+import com.be.kotlin.grade.dto.studentDTO.StudentResponseDTO
 import com.be.kotlin.grade.dto.classDTO.ClassDTO
 import com.be.kotlin.grade.exception.AppException
 import com.be.kotlin.grade.exception.ErrorCode
@@ -160,10 +160,10 @@ class ClassImplement(
         )
     }
 
-    override fun getHighestGradeStudent(classId: Long): MutableList<StudentResponseDto> {
+    override fun getHighestGradeStudent(classId: Long): Response {
         val myClass = classRepository.findById(classId).orElse(null)
         val studyList = studyRepository.findByStudyClass(myClass)
-        val res : MutableList<StudentResponseDto> = mutableListOf()
+        val res : MutableList<StudentResponseDTO> = mutableListOf()
         val n = studyList.size
         for( i in 0 until n){
             var swapped = false
@@ -177,9 +177,14 @@ class ClassImplement(
             }
             if (swapped==false) break
         }
-        for(i in 0 until 5){
-            studyList[i].student?.let { studentMapper.toStudentResponseDto(it,studyList[i].score) }?.let { res.add(it) }
+        for (i in 0 until minOf(5, studyList.size)) {
+            studyList[i].student?.let { studentMapper.toStudentResponseDto(it, studyList[i].score) }?.let { res.add(it) }
         }
-        return res
+
+        return Response (
+            statusCode = 200,
+            message = "Hall of fame fetch successfully",
+            listStudentDTO = res
+        )
     }
 }

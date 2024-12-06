@@ -2,13 +2,13 @@ package com.be.kotlin.grade.mapper
 
 import com.be.kotlin.grade.dto.studentDTO.StudentDTO
 import org.springframework.stereotype.Component
-import com.be.kotlin.grade.dto.studentDTO.StudentResponseDto
+import com.be.kotlin.grade.dto.studentDTO.StudentResponseDTO
 import com.be.kotlin.grade.model.Student
 
 @Component
 class StudentMapper {
-    fun toStudentResponseDto(student: Student, score : Float) : StudentResponseDto{
-        return StudentResponseDto(
+    fun toStudentResponseDto(student: Student, score : Float) : StudentResponseDTO{
+        return StudentResponseDTO(
             name = student.user.name,
             score = score
         )

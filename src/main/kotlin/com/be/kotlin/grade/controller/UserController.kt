@@ -23,21 +23,21 @@ import java.nio.file.attribute.UserPrincipal
 class UserController(
     private val userService: UserInterface
 ) {
-    //    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/create-lecturers")
     fun createLecturer(@RequestBody userRequestDTO: UserRequestDTO): ResponseEntity<Response> {
         val response = userService.createLecturer(userRequestDTO)
         return ResponseEntity.status(response.statusCode).body(response)
     }
 
-    //    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}")
     fun getUserById(@PathVariable id: Long): ResponseEntity<Response> {
         val response = userService.findUserById(id)
         return ResponseEntity.status(response.statusCode).body(response)
     }
 
-    //    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     fun getAllUsers(
         @RequestParam(defaultValue = "0") page: Int,
@@ -54,12 +54,14 @@ class UserController(
 //        return ResponseEntity.status(response.statusCode).body(response)
 //    }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping("")
     fun updateInfo(@RequestBody userDTO: UserUpdateRequestDTO): ResponseEntity<Response>{
         val response = userService.updateInfo(userDTO)
         return ResponseEntity.status(response.statusCode).body(response)
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/delete")
     fun delAccount(@RequestParam username: String): ResponseEntity<Response>{
         val response = userService.delUser(username)

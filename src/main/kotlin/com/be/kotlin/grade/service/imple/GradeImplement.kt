@@ -6,6 +6,7 @@ import com.be.kotlin.grade.dto.gradeDTO.GradeIdDTO
 import com.be.kotlin.grade.exception.AppException
 import com.be.kotlin.grade.exception.ErrorCode
 import com.be.kotlin.grade.mapper.GradeMapper
+import com.be.kotlin.grade.model.Grade
 import com.be.kotlin.grade.repository.GradeRepository
 import com.be.kotlin.grade.repository.StudyRepository
 import com.be.kotlin.grade.service.interf.GradeInterface
@@ -35,6 +36,14 @@ class GradeImplement(
         return score in 0.0..10.0
     }
 
+    private fun caculateAverageScore(gradesList: MutableList<Grade>): Float  {
+        var averageScore = 0F
+        for (grade in gradesList) {
+            averageScore += grade.score * grade.weight / 100
+        }
+        return averageScore
+    }
+
     override fun addGrade(grade: GradeDTO): Response {
         val gradeStudyId = grade.studyId
             ?: throw AppException(ErrorCode.STUDY_ID_INVALID)
@@ -54,8 +63,11 @@ class GradeImplement(
 
         val newGrade = gradeMapper.toGrade(grade)
         study.gradesList.add(newGrade)
+        study.score = caculateAverageScore(study.gradesList)
         studyRepository.save(study)
         val savedGradeDTO = gradeMapper.toGradeDTO(newGrade)
+
+
         return Response(
             gradeDTO = savedGradeDTO,
             statusCode = 200,
@@ -86,6 +98,7 @@ class GradeImplement(
         // Cập nhật danh sách điểm trong Study
         val study = studyRepository.findById(gradeStudyId).orElse(null)
         study?.gradesList?.remove(deletedGrade)
+        study.score = caculateAverageScore(study.gradesList)
         studyRepository.save(study)
         return Response(
             gradeDTO = gradeMapper.toGradeDTO(deletedGrade),
@@ -131,6 +144,7 @@ class GradeImplement(
         val study = studyRepository.findById(gradeStudyId).orElse(null)
         study?.gradesList?.remove(existingGrade) // Xóa điểm cũ
         study?.gradesList?.add(updatedGrade) // Thêm điểm đã cập nhật
+        study.score = caculateAverageScore(study.gradesList)
         studyRepository.save(study)
         return Response(
             gradeDTO = gradeMapper.toGradeDTO(updatedGrade),

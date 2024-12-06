@@ -38,7 +38,8 @@ class StudyMapper (
             student = student,
             subject = subject,
             studyClass = studyClass,
-            semester = studyDTO.semester ?: 0, // Nếu semester là null, gán mặc định là 0
+            semester = studyDTO.semester,
+            score = studyDTO.score ?: 0f,
         )
         }
 

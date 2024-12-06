@@ -8,6 +8,7 @@ import com.be.kotlin.grade.dto.subjectDTO.SubjectDTO
 import com.be.kotlin.grade.dto.userDTO.UserResponseDTO
 import com.be.kotlin.grade.dto.classDTO.ClassDTO
 import com.be.kotlin.grade.dto.studentDTO.StudentDTO
+import com.be.kotlin.grade.dto.studentDTO.StudentResponseDTO
 import org.springframework.core.io.FileSystemResource
 import com.fasterxml.jackson.annotation.JsonIgnore
 
@@ -33,6 +34,7 @@ data class Response(
     var listSubjectDTO: List<SubjectDTO>? = null,
     var listClassDTO: List<ClassDTO>? = null,
     var listStudyDTO: List<StudyDTO>? = null,
+    var listStudentDTO: MutableList<StudentResponseDTO>? = null,
 
     // Pagination
     var totalPages: Int? = null,
