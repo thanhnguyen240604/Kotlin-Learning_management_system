@@ -27,18 +27,14 @@ class StudyImplement(
     override fun addStudyStudent(studyDTO: StudyDTO): Response {
         val newStudy = studyMapper.toStudy(studyDTO)
 
-        val existingStudy = newStudy?.student?.studentId.let {
-            newStudy?.subject?.id.let { it1 ->
-                newStudy?.studyClass?.id.let { it2 ->
-                    if (it != null) {
-                        if (it1 != null) {
-                            studyRepository.findByStudentStudentIdAndSubjectIdAndStudyClassId(
-                                it,
-                                it1,
-                                it2!!
-                            )
-                        }
-                    }
+        val existingStudy = newStudy?.studyClass?.id?.let {
+            newStudy.student.studentId.let { it1 ->
+                newStudy.subject.id.let { it2 ->
+                    studyRepository.findByStudentStudentIdAndSubjectIdAndStudyClassId(
+                        it1,
+                        it2,
+                        it
+                    )
                 }
             }
         }
@@ -111,21 +107,6 @@ class StudyImplement(
             throw AppException(ErrorCode.STUDY_NOT_FOUND)
         }
 
-        val studentId = study.studentId ?: throw AppException(ErrorCode.STUDENT_ID_INVALID)
-
-        if (!studentRepository.findById(studentId).isPresent) {
-            throw AppException(ErrorCode.STUDENT_NOT_FOUND)
-        }
-
-        val subjectId = study.subjectId ?: throw AppException(ErrorCode.SUBJECT_ID_INVALID)
-        if (!subjectRepository.existsById(subjectId)) {
-            throw AppException(ErrorCode.SUBJECT_NOT_FOUND)
-        }
-
-        val classId = study.classId ?: throw AppException(ErrorCode.CLASS_ID_INVALID)
-        if (!classRepository.existsById(classId)) {
-            throw AppException(ErrorCode.CLASS_NOT_FOUND)
-        }
 
         // Chuyển đổi từ DTO sang Entity và lưu vào cơ sở dữ liệu
         val updatedStudy = studyMapper.toStudy(study)
