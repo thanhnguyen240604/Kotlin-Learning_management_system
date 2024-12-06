@@ -167,7 +167,7 @@ class StudyImplement(
         val header = listOf("STT", "MÃ MÔN HỌC", "TÊN MÔN HỌC", "SỐ TÍN CHỈ", "ĐIỂM THÀNH PHẦN", "ĐIỂM TRUNG BÌNH")
         val rows = studyList.mapIndexed { index, study ->
             val grades = study.gradeList.joinToString("\n") { grade ->
-                "Điểm ${grade.weight * 100}%: ${grade.score}"
+                "Điểm ${grade.weight}%: ${grade.score}"
             }
             listOf(
                 index + 1, // STT

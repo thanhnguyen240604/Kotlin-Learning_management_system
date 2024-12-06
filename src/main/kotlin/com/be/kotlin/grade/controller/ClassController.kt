@@ -1,7 +1,7 @@
 package com.be.kotlin.grade.controller
 
 import com.be.kotlin.grade.dto.Response
-import com.be.kotlin.grade.dto.studentDTO.StudentResponseDto
+import com.be.kotlin.grade.dto.studentDTO.StudentResponseDTO
 import com.be.kotlin.grade.dto.classDTO.ClassDTO
 import com.be.kotlin.grade.service.imple.ClassImplement
 import org.springframework.http.ResponseEntity
@@ -57,7 +57,8 @@ class ClassController(private val classService: ClassImplement) {
     }
 
     @GetMapping("/get/hallOfFame")
-    fun getHallOfFame(@RequestParam id : Long):MutableList<StudentResponseDto>{
-        return classService.getHighestGradeStudent(id)
+    fun getHallOfFame(@RequestParam id : Long): ResponseEntity<Response>{
+        val response = classService.getHighestGradeStudent(id)
+        return ResponseEntity.status(response.statusCode).body(response)
     }
 }
