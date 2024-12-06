@@ -6,6 +6,7 @@ import com.be.kotlin.grade.dto.studentDTO.StudentDTO
 import com.be.kotlin.grade.dto.userDTO.UserRequestDTO
 import com.be.kotlin.grade.service.interf.StudentInterface
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.*
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -22,5 +23,9 @@ class StudentController (
         return ResponseEntity.status(response.statusCode).body(response)
     }
 
-
+    @GetMapping("/{id}")
+    fun getStudyById(@PathVariable id: Long): ResponseEntity<Response> {
+        val response = studentService.getStudentById(id)
+        return ResponseEntity.status(response.statusCode).body(response)
+    }
 }

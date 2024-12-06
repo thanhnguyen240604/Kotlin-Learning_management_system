@@ -8,6 +8,7 @@ import com.be.kotlin.grade.exception.ErrorCode
 import com.be.kotlin.grade.mapper.SubjectMapper
 import com.be.kotlin.grade.repository.SubjectRepository
 import com.be.kotlin.grade.service.interf.SubjectInterface
+import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
 import org.springframework.web.bind.annotation.RequestBody
 
@@ -67,6 +68,27 @@ class SubjectImplement(
             statusCode = 200,
             message = "Subject found successfully",
             subjectDTO = subjectDTO
+        )
+    }
+
+    override fun getAllSubjects(page: Int, size: Int): Response {
+        // Tạo Pageable object
+        val pageable = PageRequest.of(page, size)
+
+        // Lấy danh sách subject từ repository
+        val subjectPage = subjectRepository.findAll(pageable)
+
+        // Chuyển đổi các entity sang DTO
+        val subjectDTOs = subjectPage.content.map { subject -> subjectMapper.toSubjectDTO(subject) }
+
+        // Trả về kết quả phân trang
+        return Response(
+            statusCode = 200,
+            message = "Subjects fetched successfully",
+            totalPages = subjectPage.totalPages,  // Lấy tổng số trang
+            totalElements = subjectPage.totalElements,  // Lấy tổng số phần tử
+            currentPage = page,
+            listSubjectDTO = subjectDTOs
         )
     }
 }

@@ -22,6 +22,7 @@ class StudentImplement(
     private val studentRepository: StudentRepository
 ) : StudentInterface {
     override fun register(userDTO: UserRequestDTO, studentDTO: StudentDTO): Response {
+
         if (userRepository.existsByUsername(userDTO.username) || studentRepository.existsByStudentId(studentDTO.studentId)) {
             throw AppException(ErrorCode.USER_EXISTED)
         }
@@ -41,6 +42,18 @@ class StudentImplement(
             message = "Student registered",
             studentDTO = studentDTO,
             userDTO = userMapper.toUserDTO(user)
+        )
+    }
+
+    override fun getStudentById(userId: Long): Response {
+        val studentGot = studentRepository.findById(userId)
+            .orElseThrow { AppException(ErrorCode.STUDENT_NOT_FOUND) }
+
+        val studentDTO = studentMapper.toStudentDTO(studentGot)
+        return Response(
+            statusCode = 200,
+            message = "Student found successfully",
+            studentDTO = studentDTO
         )
     }
 }

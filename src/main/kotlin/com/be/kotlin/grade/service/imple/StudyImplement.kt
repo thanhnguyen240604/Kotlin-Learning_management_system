@@ -223,7 +223,6 @@ class StudyImplement(
         return file
     }
 
-
     override fun getStudyByUsernameAndSemester(username: String, semester: Int): Response {
         if (studyRepository.findByStudentUserUsernameAndSemester(username, semester).isEmpty())
             return Response(

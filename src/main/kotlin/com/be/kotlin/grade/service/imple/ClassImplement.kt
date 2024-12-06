@@ -12,7 +12,9 @@ import com.be.kotlin.grade.repository.StudyRepository
 import com.be.kotlin.grade.repository.SubjectRepository
 import com.be.kotlin.grade.repository.UserRepository
 import com.be.kotlin.grade.service.interf.ClassInterface
-import com.nimbusds.jose.proc.SecurityContext
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
+import org.springframework.data.web.config.PageableHandlerMethodArgumentResolverCustomizer
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
 
@@ -91,6 +93,74 @@ class ClassImplement(
             message = "Class deleted successfully"
         )
     }
+
+    override fun getClassById(id: Long): Response {
+        val classGot = classRepository.findById(id)
+            .orElseThrow { AppException(ErrorCode.CLASS_NOT_FOUND) }
+
+        val classDTO = classMapper.toClassDTO(classGot)
+        return Response(
+            statusCode = 200,
+            message = "class found successfully",
+            classDTO = classDTO
+        )
+    }
+
+    override fun getAllClasses(page: Int, size: Int): Response {
+        // Tạo Pageable object
+        val pageable = PageRequest.of(page, size)
+
+        // Lấy danh sách subject từ repository
+        val classPage = classRepository.findAll(pageable)
+
+        // Chuyển đổi các entity sang DTO
+        val classDTOs = classPage.content.map { classEntity ->
+            classMapper.toClassDTO(classEntity)
+        }
+
+        // Trả về kết quả phân trang
+        return Response(
+            statusCode = 200,
+            message = "Classes fetched successfully",
+            totalPages = classPage.totalPages,  // Lấy tổng số trang
+            totalElements = classPage.totalElements,  // Lấy tổng số phần tử
+            currentPage = page,
+            listClassDTO = classDTOs
+        )
+    }
+
+    override fun getAllMyClasses(page: Int, size: Int, studentId: Long): Response {
+        val classIds = studyRepository.findClassIdsByStudentId(studentId)
+
+        if (classIds.isEmpty()) {
+            return Response(
+                statusCode = 404,
+                message = "No classes found for student ID: $studentId"
+            )
+        }
+
+        // Tạo Pageable object
+        val pageable: Pageable = PageRequest.of(page, size)
+
+        // Lấy danh sách class với phân trang từ repository
+        val classPage = classRepository.findClassesByIds(classIds, pageable)
+
+        // Chuyển đổi các entity sang DTO
+        val classDTOs = classPage.content.map { classEntity ->
+            classMapper.toClassDTO(classEntity)
+        }
+
+        // Trả về kết quả phân trang
+        return Response(
+            statusCode = 200,
+            message = "Classes fetched successfully",
+            totalPages = classPage.totalPages,  // Lấy tổng số trang
+            totalElements = classPage.totalElements,  // Lấy tổng số phần tử
+            currentPage = page,
+            listClassDTO = classDTOs
+        )
+    }
+
     override fun getHighestGradeStudent(classId: Long): MutableList<StudentResponseDto> {
         val myClass = classRepository.findById(classId).orElse(null)
         val studyList = studyRepository.findByStudyClass(myClass)

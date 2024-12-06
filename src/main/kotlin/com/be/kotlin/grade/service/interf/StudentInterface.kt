@@ -6,4 +6,5 @@ import com.be.kotlin.grade.dto.userDTO.UserRequestDTO
 
 interface StudentInterface {
     fun register(userDTO: UserRequestDTO, studentDTO: StudentDTO): Response
+    fun getStudentById(userId: Long): Response
 }

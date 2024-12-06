@@ -27,9 +27,11 @@ data class Response(
     var gradeDTO: GradeDTO? = null,
     var classDTO: ClassDTO? = null,
     var studentDTO: StudentDTO? = null,
-
+  
     // List DTO response
     var listUserDTO: List<UserResponseDTO>? = null,
+    var listSubjectDTO: List<SubjectDTO>? = null,
+    var listClassDTO: List<ClassDTO>? = null,
     var listStudyDTO: List<StudyDTO>? = null,
 
     // Pagination
@@ -40,5 +42,4 @@ data class Response(
     // File attachment
     @JsonIgnore
     val file : FileSystemResource? = null
-
 )
