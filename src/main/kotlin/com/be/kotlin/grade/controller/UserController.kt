@@ -47,11 +47,11 @@ class UserController(
         return ResponseEntity.status(response.statusCode).body(response)
     }
 
-    @PostMapping("/update/role")
-    fun updateRole(@RequestParam role : String,@RequestParam username : String): ResponseEntity<Response>{
-        val response = userService.updateRole(role,username)
-        return ResponseEntity.status(response.statusCode).body(response)
-    }
+//    @PostMapping("/update/role")
+//    fun updateRole(@RequestParam role : String,@RequestParam username : String): ResponseEntity<Response>{
+//        val response = userService.updateRole(role,username)
+//        return ResponseEntity.status(response.statusCode).body(response)
+//    }
 
     @PatchMapping("")
     fun updateInfo(@RequestBody userDTO: UserUpdateRequestDTO): ResponseEntity<Response>{

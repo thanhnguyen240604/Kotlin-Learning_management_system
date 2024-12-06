@@ -74,19 +74,19 @@ class UserImplement (
             message = "Subject added successfully"
         )
     }
-    override fun updateRole(role: String, username: String): Response {
-        if(userRepository.findByUsername(username).orElse(null)==null){
-            return Response(
-                statusCode = 300,
-                message = "User doesn't exist"
-            )
-        }
-        userRepository.updateUserRole(role,username)
-        return Response(
-            statusCode = 200,
-            message = "Update role successfully"
-        )
-    }
+//    override fun updateRole(role: String, username: String): Response {
+//        if(userRepository.findByUsername(username).orElse(null)==null){
+//            return Response(
+//                statusCode = 300,
+//                message = "User doesn't exist"
+//            )
+//        }
+//        userRepository.updateUserRole(role,username)
+//        return Response(
+//            statusCode = 200,
+//            message = "Update role successfully"
+//        )
+//    }
 
     override fun updateInfo(userDTO: UserUpdateRequestDTO): Response {
         if (userRepository.existsByUsername(userDTO.username)) {

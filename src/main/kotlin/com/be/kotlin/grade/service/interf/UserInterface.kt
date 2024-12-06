@@ -10,6 +10,6 @@ interface UserInterface {
     fun findUserById(id: Long): Response
     fun findAllUser(pageable: Pageable): Response
     fun delUser(username:String):Response;
-    fun updateRole(role: String,username: String): Response
+//    fun updateRole(role: String,username: String): Response
     fun updateInfo(userDTO: UserUpdateRequestDTO): Response
 }
