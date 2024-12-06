@@ -1,6 +1,6 @@
 package com.be.kotlin.grade.mapper
 
-import com.be.kotlin.grade.Grade
+import com.be.kotlin.grade.model.Grade
 import com.be.kotlin.grade.dto.gradeDTO.GradeDTO
 import org.springframework.stereotype.Component
 

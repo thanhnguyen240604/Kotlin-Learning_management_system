@@ -1,5 +1,6 @@
-package com.be.kotlin.grade
+package com.be.kotlin.grade.model
 
+import com.be.kotlin.grade.model.User
 import jakarta.persistence.*
 
 @Entity
@@ -7,7 +8,7 @@ import jakarta.persistence.*
 class Student (
     @Id
     @Column(name = "student_id", nullable = false)
-    val studentId: Long? = null,
+    val studentId: Long = 0,
 
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)

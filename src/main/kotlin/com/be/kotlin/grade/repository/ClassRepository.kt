@@ -1,14 +1,14 @@
 package com.be.kotlin.grade.repository
 
+import com.be.kotlin.grade.model.Class
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
-import  com.be.kotlin.grade.Class
 import org.springframework.data.domain.Page
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
 
-import org.springframework.data.domain.Pageable
 
+import org.springframework.data.domain.Pageable
 
 @Repository
 interface ClassRepository: JpaRepository<Class, Long> {
@@ -32,5 +32,4 @@ interface ClassRepository: JpaRepository<Class, Long> {
         @Param("classIds") classIds: List<Long>,
         pageable: Pageable
     ): Page<Class>
-
 }
