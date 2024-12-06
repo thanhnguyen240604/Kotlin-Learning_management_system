@@ -1,8 +1,8 @@
 package com.be.kotlin.grade.controller
 
 import com.be.kotlin.grade.dto.Response
-import com.be.kotlin.grade.dto.UserDto.UserUpdateRequestDTO
 import com.be.kotlin.grade.dto.userDTO.UserRequestDTO
+import com.be.kotlin.grade.dto.userDTO.UserUpdateRequestDTO
 import com.be.kotlin.grade.service.interf.UserInterface
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
@@ -23,16 +23,17 @@ import java.nio.file.attribute.UserPrincipal
 class UserController(
     private val userService: UserInterface
 ) {
-    @PostMapping("/register")
-    fun register(@RequestBody user: UserRequestDTO): ResponseEntity<Response> {
-        val response = userService.register(user)
+    //    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/create-lecturers")
+    fun createLecturer(@RequestBody userRequestDTO: UserRequestDTO): ResponseEntity<Response> {
+        val response = userService.createLecturer(userRequestDTO)
         return ResponseEntity.status(response.statusCode).body(response)
     }
 
-//    @PreAuthorize("hasRole('ADMIN')")
+    //    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}")
-    fun getUserById(@PathVariable("id") userId: Long): ResponseEntity<Response> {
-        val response = userService.findUserById(userId)
+    fun getUserById(@PathVariable id: Long): ResponseEntity<Response> {
+        val response = userService.findUserById(id)
         return ResponseEntity.status(response.statusCode).body(response)
     }
 

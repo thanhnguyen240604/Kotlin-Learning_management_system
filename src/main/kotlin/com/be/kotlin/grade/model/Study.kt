@@ -28,6 +28,6 @@ data class Study(
     var score: Float = 13F,
 
     @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
-    @JoinColumn(name = "study_id")  // Chỉ định cột khóa ngoại trong bảng Grade
+    @JoinColumn(name = "study_id")
     var gradesList: MutableList<Grade> = mutableListOf()
 )

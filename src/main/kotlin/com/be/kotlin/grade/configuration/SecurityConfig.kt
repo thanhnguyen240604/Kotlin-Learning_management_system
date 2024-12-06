@@ -30,7 +30,7 @@ class SecurityConfig (
     @Bean
     fun filterChain(httpSecurity: HttpSecurity): SecurityFilterChain {
         httpSecurity.authorizeHttpRequests { request ->
-            request.requestMatchers("/auth/**", "users/register").permitAll()
+            request.requestMatchers("/auth/**", "students/register").permitAll()
                 .anyRequest().permitAll()
         }
 

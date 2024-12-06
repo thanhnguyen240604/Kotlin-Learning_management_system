@@ -13,7 +13,7 @@ class StudyMapper (
     private val subjectRepository: SubjectRepository,
     private val classRepository: ClassRepository
 ) {
-    fun toStudy(studyDTO: StudyDTO): Study {
+    fun toStudy(studyDTO: StudyDTO): Study? {
         val student = studyDTO.studentId.let {
             studentRepository.findById(it).orElseThrow { 
                 IllegalArgumentException("Không tìm thấy sinh viên với ID ${studyDTO.studentId}") 
@@ -32,15 +32,17 @@ class StudyMapper (
             }
         }
     
-        return Study(
-            id = studyDTO.id,
-            student = student,
-            subject = subject,
-            studyClass = studyClass,
-            semester = studyDTO.semester ?: 0,
-            score = studyDTO.score,
-            gradesList = studyDTO.gradeList
-        )
+        return studyDTO.score?.let {
+            Study(
+                id = studyDTO.id,
+                student = student,
+                subject = subject,
+                studyClass = studyClass,
+                semester = studyDTO.semester ?: 0,
+                score = it,
+                gradesList = studyDTO.gradeList
+            )
+        }
     }
     
 

@@ -2,11 +2,11 @@ package com.be.kotlin.grade.service.interf
 
 import com.be.kotlin.grade.dto.Response
 import com.be.kotlin.grade.dto.userDTO.UserRequestDTO
+import com.be.kotlin.grade.dto.userDTO.UserUpdateRequestDTO
 import org.springframework.data.domain.Pageable
-import com.be.kotlin.grade.dto.UserDto.UserUpdateRequestDTO
 
 interface UserInterface {
-    fun register(request: UserRequestDTO): Response
+    fun createLecturer(userRequestDTO: UserRequestDTO): Response
     fun findUserById(id: Long): Response
     fun findAllUser(pageable: Pageable): Response
     fun delUser(username:String):Response;

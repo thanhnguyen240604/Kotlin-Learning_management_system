@@ -19,7 +19,6 @@ import kotlin.collections.HashMap
 class StudyImplement(
     private val studyRepository: StudyRepository,
     private val studyMapper: StudyMapper,
-    private val subjectMapper: SubjectMapper,
     private val studentRepository: StudentRepository,
     private val subjectRepository: SubjectRepository,
     private val classRepository: ClassRepository,
@@ -28,14 +27,18 @@ class StudyImplement(
     override fun addStudyStudent(studyDTO: StudyDTO): Response {
         val newStudy = studyMapper.toStudy(studyDTO)
 
-        val existingStudy = newStudy.student.studentId.let {
-            newStudy.subject.id.let { it1 ->
-                newStudy.studyClass.id.let { it2 ->
-                    studyRepository.findByStudentStudentIdAndSubjectIdAndStudyClassId(
-                        it,
-                        it1,
-                        it2!!
-                    )
+        val existingStudy = newStudy?.student?.studentId.let {
+            newStudy?.subject?.id.let { it1 ->
+                newStudy?.studyClass?.id.let { it2 ->
+                    if (it != null) {
+                        if (it1 != null) {
+                            studyRepository.findByStudentStudentIdAndSubjectIdAndStudyClassId(
+                                it,
+                                it1,
+                                it2!!
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -44,7 +47,7 @@ class StudyImplement(
             throw AppException(ErrorCode.STUDY_EXISTED)
         }
 
-        val studentId = newStudy.student.studentId ?: throw AppException(ErrorCode.STUDENT_ID_INVALID)
+        val studentId = newStudy?.student?.studentId ?: throw AppException(ErrorCode.STUDENT_ID_INVALID)
 
         if (!studentRepository.findById(studentId).isPresent) {
             throw AppException(ErrorCode.STUDENT_NOT_FOUND)
@@ -127,10 +130,10 @@ class StudyImplement(
         // Chuyển đổi từ DTO sang Entity và lưu vào cơ sở dữ liệu
         val updatedStudy = studyMapper.toStudy(study)
 
-        val userFaculty = updatedStudy.student.user.faculty
-        val subjectFaculty = updatedStudy.subject.faculty
-        val studentMajor = updatedStudy.student.major
-        val subjectMajor = updatedStudy.subject.major
+        val userFaculty = updatedStudy?.student?.user?.faculty
+        val subjectFaculty = updatedStudy?.subject?.faculty
+        val studentMajor = updatedStudy?.student?.major
+        val subjectMajor = updatedStudy?.subject?.major
 
         if (userFaculty != subjectFaculty && studentMajor != subjectMajor) {
             throw AppException(ErrorCode.FACULTY_MAJOR_MISMATCH)
@@ -143,7 +146,9 @@ class StudyImplement(
         if (studentMajor != subjectMajor) {
             throw AppException(ErrorCode.MAJOR_MISMATCH)
         }
-        studyRepository.save(updatedStudy)
+        if (updatedStudy != null) {
+            studyRepository.save(updatedStudy)
+        }
 
         return Response(
             studyDTO = study,

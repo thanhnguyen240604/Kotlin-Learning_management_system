@@ -1,4 +1,4 @@
-package com.be.kotlin.grade.dto.UserDto
+package com.be.kotlin.grade.dto.userDTO
 
 import jakarta.validation.constraints.NotBlank
 
