@@ -26,6 +26,7 @@ interface UserRepository: JpaRepository<User, Long> {
     @Transactional
     @Modifying
     @Query("update User a set a.name=:name, a.faculty=:faculty where a.username=:username")
-    fun updateUserInfo(@Param("faculty") faculty:String,
+    fun updateUserInfo(@Param("name") name:String,
+        @Param("faculty") faculty:String,
                        @Param("username") username: String)
 }

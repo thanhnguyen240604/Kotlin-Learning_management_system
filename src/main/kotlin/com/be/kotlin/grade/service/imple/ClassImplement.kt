@@ -1,7 +1,7 @@
 package com.be.kotlin.grade.service.imple
 
 import com.be.kotlin.grade.dto.Response
-import com.be.kotlin.grade.dto.StudentDTO.StudentResponseDto
+import com.be.kotlin.grade.dto.studentDTO.StudentResponseDto
 import com.be.kotlin.grade.dto.classDTO.ClassDTO
 import com.be.kotlin.grade.exception.AppException
 import com.be.kotlin.grade.exception.ErrorCode
@@ -14,7 +14,6 @@ import com.be.kotlin.grade.repository.UserRepository
 import com.be.kotlin.grade.service.interf.ClassInterface
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
-import org.springframework.data.web.config.PageableHandlerMethodArgumentResolverCustomizer
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
 
@@ -164,15 +163,22 @@ class ClassImplement(
     override fun getHighestGradeStudent(classId: Long): MutableList<StudentResponseDto> {
         val myClass = classRepository.findById(classId).orElse(null)
         val studyList = studyRepository.findByStudyClass(myClass)
-        var maxGrade : Float = 0F
         val res : MutableList<StudentResponseDto> = mutableListOf()
-        for(i in studyList){
-            if(i.score>=maxGrade){ maxGrade=i.score}
-        }
-        for(i in studyList){
-            if(i.score==maxGrade){
-                i.student?.let { studentMapper.toStudentResponseDto(it,maxGrade) }?.let { res.add(it) }
+        val n = studyList.size
+        for( i in 0 until n){
+            var swapped = false
+            for( j in 0 until n-i-1){
+                if(studyList[j].score<studyList[j+1].score){
+                    val s = studyList[j]
+                    studyList[j]=studyList[j+1]
+                    studyList[j+1]=s
+                    swapped=true
+                }
             }
+            if (swapped==false) break
+        }
+        for(i in 0 until 5){
+            studyList[i].student?.let { studentMapper.toStudentResponseDto(it,studyList[i].score) }?.let { res.add(it) }
         }
         return res
     }

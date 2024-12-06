@@ -91,7 +91,8 @@ class UserImplement (
         if (userRepository.existsByUsername(userDTO.username)) {
             throw AppException(ErrorCode.USER_EXISTED)
         }
-        userDTO.faculty?.let { userRepository.updateUserInfo(it, userDTO.username) }
+        //userDTO.faculty?.let { userRepository.updateUserInfo(it, userDTO.username) }
+        userDTO.faculty?.let { userRepository.updateUserInfo(userDTO.name,it,userDTO.username) }
         return Response(
             statusCode = 200,
             message = "Update info successfully"

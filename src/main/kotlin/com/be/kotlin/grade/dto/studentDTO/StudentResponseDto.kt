@@ -1,4 +1,4 @@
-package com.be.kotlin.grade.dto.StudentDTO
+package com.be.kotlin.grade.dto.studentDTO
 
 data class StudentResponseDto(
     val name : String,

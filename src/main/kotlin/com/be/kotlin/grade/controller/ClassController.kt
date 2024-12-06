@@ -1,11 +1,10 @@
 package com.be.kotlin.grade.controller
 
 import com.be.kotlin.grade.dto.Response
-import com.be.kotlin.grade.dto.StudentDTO.StudentResponseDto
+import com.be.kotlin.grade.dto.studentDTO.StudentResponseDto
 import com.be.kotlin.grade.dto.classDTO.ClassDTO
 import com.be.kotlin.grade.service.imple.ClassImplement
 import org.springframework.http.ResponseEntity
-import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 
 @RestController
