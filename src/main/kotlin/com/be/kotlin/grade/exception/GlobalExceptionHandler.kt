@@ -14,7 +14,7 @@ class GlobalExceptionHandler {
         val errorCode = e.errorCode
         val response = Response().apply {
             statusCode = errorCode.code
-            message = errorCode.message
+            message = e.message ?: errorCode.message
         }
 
         return ResponseEntity.badRequest().body(response)
