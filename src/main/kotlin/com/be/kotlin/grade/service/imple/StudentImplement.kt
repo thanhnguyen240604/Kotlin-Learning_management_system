@@ -22,7 +22,8 @@ class StudentImplement(
     private val studentRepository: StudentRepository
 ) : StudentInterface {
     override fun register(userDTO: UserRequestDTO, studentDTO: StudentDTO): Response {
-        if (userRepository.existsByUsername(userDTO.username)) {
+
+        if (userRepository.existsByUsername(userDTO.username) || studentRepository.existsByStudentId(studentDTO.studentId)) {
             throw AppException(ErrorCode.USER_EXISTED)
         }
 

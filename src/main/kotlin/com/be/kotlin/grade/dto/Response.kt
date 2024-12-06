@@ -1,5 +1,5 @@
 package com.be.kotlin.grade.dto
-import com.fasterxml.jackson.annotation.JsonIgnore
+
 import com.be.kotlin.grade.dto.gradeDTO.GradeDTO
 import com.be.kotlin.grade.dto.securityDTO.AuthenticateDTO
 import com.be.kotlin.grade.dto.securityDTO.IntrospectDTO
@@ -9,6 +9,7 @@ import com.be.kotlin.grade.dto.userDTO.UserResponseDTO
 import com.be.kotlin.grade.dto.classDTO.ClassDTO
 import com.be.kotlin.grade.dto.studentDTO.StudentDTO
 import org.springframework.core.io.FileSystemResource
+import com.fasterxml.jackson.annotation.JsonIgnore
 
 data class Response(
     var statusCode: Int = 0,
