@@ -39,4 +39,13 @@ class SubjectController(private val subjectService: SubjectImplement) {
         val response = subjectService.getSubjectById(subject)
         return ResponseEntity.status(response.statusCode).body(response)
     }
+
+    @GetMapping("/all")
+    fun getAllSubjects(
+        @RequestParam(defaultValue = "0") page: Int, // Giá trị mặc định là 0
+        @RequestParam(defaultValue = "3") size: Int // Giá trị mặc định là 10
+    ): ResponseEntity<Response> {
+        val response = subjectService.getAllSubjects(page, size)
+        return ResponseEntity.status(response.statusCode).body(response)
+    }
 }

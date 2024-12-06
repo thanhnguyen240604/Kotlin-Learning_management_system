@@ -33,4 +33,10 @@ class GradeController(private val gradeService: GradeImplement) {
         val response = gradeService.deleteGrade(grade)
         return ResponseEntity.status(response.statusCode).body(response)
     }
+
+    @GetMapping("/{id}")
+    fun getGradeById(@PathVariable id: Long): ResponseEntity<Response> {
+        val response = gradeService.getGradeById(id)
+        return ResponseEntity.status(response.statusCode).body(response)
+    }
 }

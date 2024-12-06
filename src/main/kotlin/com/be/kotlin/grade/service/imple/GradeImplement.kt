@@ -63,7 +63,6 @@ class GradeImplement(
         )
     }
 
-
     override fun deleteGrade(grade: GradeIdDTO): Response {
         val gradeStudyId = grade.studyId
             ?: throw AppException(ErrorCode.STUDY_ID_INVALID)
@@ -137,6 +136,18 @@ class GradeImplement(
             gradeDTO = gradeMapper.toGradeDTO(updatedGrade),
             statusCode = 200,
             message = "Grade updated successfully"
+        )
+    }
+
+    override fun getGradeById(id: Long): Response {
+        val gradeGot = gradeRepository.findById(id)
+            .orElseThrow { AppException(ErrorCode.GRADE_NOT_FOUND) }
+
+        val gradeDTO = gradeMapper.toGradeDTO(gradeGot)
+        return Response(
+            statusCode = 200,
+            message = "Grade found successfully",
+            gradeDTO = gradeDTO
         )
     }
 }

@@ -8,4 +8,5 @@ interface GradeInterface {
     fun addGrade(grade: GradeDTO): Response
     fun deleteGrade(grade: GradeIdDTO): Response
     fun updateGrade(grade: GradeIdDTO): Response
+    fun getGradeById(id: Long): Response
 }

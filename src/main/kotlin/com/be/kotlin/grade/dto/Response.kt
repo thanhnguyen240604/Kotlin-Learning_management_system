@@ -26,6 +26,8 @@ data class Response(
   
     // List DTO response
     var listUserDTO: List<UserResponseDTO>? = null,
+    var listSubjectDTO: List<SubjectDTO>? = null,
+    var listClassDTO: List<ClassDTO>? = null,
 
     // Pagination
     var totalPages: Int? = null,

@@ -3,8 +3,12 @@ package com.be.kotlin.grade.repository
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 import  com.be.kotlin.grade.Class
+import org.springframework.data.domain.Page
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
+
+import org.springframework.data.domain.Pageable
+
 
 @Repository
 interface ClassRepository: JpaRepository<Class, Long> {
@@ -22,4 +26,11 @@ interface ClassRepository: JpaRepository<Class, Long> {
         @Param("subjectId") subjectId: String,
         @Param("className") className: String
     ): Boolean
+
+    @Query("SELECT c FROM Class c WHERE c.id IN :classIds")
+    fun findClassesByIds(
+        @Param("classIds") classIds: List<Long>,
+        pageable: Pageable
+    ): Page<Class>
+
 }

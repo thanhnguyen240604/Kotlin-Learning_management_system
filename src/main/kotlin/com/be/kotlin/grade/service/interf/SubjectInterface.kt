@@ -10,4 +10,5 @@ interface SubjectInterface {
     fun updateSubject(subject: SubjectDTO): Response
     fun deleteSubject(subject: SubjectIdDTO): Response
     fun getSubjectById(subject: SubjectIdDTO): Response
+    fun getAllSubjects(page: Int, size: Int): Response
 }
