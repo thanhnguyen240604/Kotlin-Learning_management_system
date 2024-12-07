@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  app:
+    image: tannguyen1404/grade-portal-be-kotlin:1.0.0
+    build:
+      context: .              # Thư mục chứa Dockerfile
+      dockerfile: Dockerfile  # Sử dụng Dockerfile tại thư mục gốc
+    ports:
+      - "${SERVER_PORT}:${SERVER_PORT}" # Map cổng từ container ra máy chủ
+    env_file:
+      - .env                  # Sử dụng file .env chứa các biến môi trường
+    depends_on:
+      - db                    # Đảm bảo container database khởi động trước
+    networks:
+      - app-network
+
+  db:
+    image: mysql:8.0.39-debian          # Sử dụng MySQL phiên bản 8.0
+    container_name: app-db    # Tên container database
+    restart: always           # Tự động restart nếu container gặp lỗi
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    ports:
+      - "3306:3306"           # Map cổng MySQL
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
