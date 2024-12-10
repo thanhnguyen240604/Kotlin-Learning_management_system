@@ -39,8 +39,8 @@ class ClassController(private val classService: ClassImplement) {
         return ResponseEntity.status(response.statusCode).body(response)
     }
 
-    @PreAuthorize("hasRole('ROLE_LECTURER') or hasRole('ROLE_ADMIN')")
-    @GetMapping("/all")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/all-admin")
     fun getAllClasses(
         @RequestParam(defaultValue = "0") page: Int, // Giá trị mặc định là 0
         @RequestParam(defaultValue = "3") size: Int // Giá trị mặc định là 10
@@ -49,14 +49,13 @@ class ClassController(private val classService: ClassImplement) {
         return ResponseEntity.status(response.statusCode).body(response)
     }
 
-    @PreAuthorize("hasRole('ROLE_LECTURER')")
-    @GetMapping("/all/{id}")
-    fun getAllMyClasses(
+    @PreAuthorize("hasRole('ROLE_STUDENT')")
+    @GetMapping("/all-student")
+    fun getAllStudentClasses(
         @RequestParam(defaultValue = "0") page: Int, // Giá trị mặc định là 0
         @RequestParam(defaultValue = "3") size: Int, // Giá trị mặc định là 10
-        @PathVariable id: Long,
     ): ResponseEntity<Response> {
-        val response = classService.getAllMyClasses(page, size, id)
+        val response = classService.getAllStudentClasses(page, size)
         return ResponseEntity.status(response.statusCode).body(response)
     }
 

@@ -7,6 +7,7 @@ import com.be.kotlin.grade.exception.AppException
 import com.be.kotlin.grade.exception.ErrorCode
 import com.be.kotlin.grade.mapper.ClassMapper
 import com.be.kotlin.grade.mapper.StudentMapper
+import com.be.kotlin.grade.mapper.UserMapper
 import com.be.kotlin.grade.repository.ClassRepository
 import com.be.kotlin.grade.repository.StudyRepository
 import com.be.kotlin.grade.repository.SubjectRepository
@@ -24,7 +25,8 @@ class ClassImplement(
     private val userRepository: UserRepository,
     private val classMapper: ClassMapper,
     private val studyRepository: StudyRepository,
-    private val studentMapper: StudentMapper
+    private val studentMapper: StudentMapper,
+    private val userMapper: UserMapper
 ) : ClassInterface {
 
     override fun addClass(classDTO: ClassDTO): Response {
@@ -128,7 +130,27 @@ class ClassImplement(
         )
     }
 
-    override fun getAllMyClasses(page: Int, size: Int, studentId: Long): Response {
+    override fun getAllStudentClasses(page: Int, size: Int): Response {
+        val context = SecurityContextHolder.getContext()
+        val username = context.authentication?.name
+
+        val user = username?.let {
+            userRepository.findByUsername(it).orElseThrow {
+                AppException(ErrorCode.USER_NOT_FOUND)
+            }
+        } ?: throw RuntimeException("No username found in SecurityContext")
+
+        val student = userMapper.toUserDTO(user)
+
+        // Lấy Student từ studentRepository và trích xuất ID
+        val studentEntity = student.id?.let {
+            studyRepository.findById(it).orElseThrow {
+                AppException(ErrorCode.STUDENT_NOT_FOUND)
+            }
+        } ?: throw RuntimeException("Invalid student ID")
+
+        val studentId = studentEntity.student.studentId
+
         val classIds = studyRepository.findClassIdsByStudentId(studentId)
 
         if (classIds.isEmpty()) {
@@ -137,7 +159,6 @@ class ClassImplement(
                 message = "No classes found for student ID: $studentId"
             )
         }
-
         // Tạo Pageable object
         val pageable: Pageable = PageRequest.of(page, size)
 
