@@ -7,6 +7,8 @@ import com.be.kotlin.grade.dto.studyDTO.StudyDTO
 import com.be.kotlin.grade.dto.subjectDTO.SubjectDTO
 import com.be.kotlin.grade.dto.userDTO.UserResponseDTO
 import com.be.kotlin.grade.dto.classDTO.ClassDTO
+import com.be.kotlin.grade.dto.reportDTO.ReportOfSubjectRequestDTO
+import com.be.kotlin.grade.dto.reportDTO.ReportOfSubjectResponseDTO
 import com.be.kotlin.grade.dto.studentDTO.StudentDTO
 import com.be.kotlin.grade.dto.studentDTO.StudentResponseDTO
 import org.springframework.core.io.FileSystemResource
@@ -21,13 +23,14 @@ data class Response(
 
     // DTO response
     var authenticateDTO: AuthenticateDTO? = null,
-    var introspectDTO: IntrospectDTO? = null,
+    var introspectDTO: IntrospectDTO?= null,
     var userDTO: UserResponseDTO? = null,
     var subjectDTO: SubjectDTO? = null,
     var studyDTO: StudyDTO? = null,
     var gradeDTO: GradeDTO? = null,
     var classDTO: ClassDTO? = null,
     var studentDTO: StudentDTO? = null,
+    var reportSubjectResponseDTO: ReportOfSubjectResponseDTO? = null,
   
     // List DTO response
     var listUserDTO: List<UserResponseDTO>? = null,

@@ -9,10 +9,10 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface StudyRepository: JpaRepository<Study, Long> {
-    fun findByStudentStudentIdAndSubjectIdAndStudyClassId(
+    fun findByStudentStudentIdAndSubjectIdAndSemester(
         studentId: Long,
         subjectId: String,
-        studyClassId: Long
+        semester: Int
     ): Study?
 
     @Query("SELECT s.studyClass.id FROM Study s WHERE s.student.studentId = :studentId")
@@ -20,4 +20,38 @@ interface StudyRepository: JpaRepository<Study, Long> {
 
     fun findByStudentUserUsernameAndSemester(username: String, semester: Int): List<Study>
     fun findByStudyClass(studyClass : Class) : MutableList<Study>
+
+    @Query(
+        """
+    SELECT COUNT(s)
+    FROM Study s
+    WHERE s.subject.id = :subjectId
+      AND s.score >= :minScore
+      AND s.score < :maxScore
+      AND s.semester BETWEEN :startSemester AND :endSemester
+    """
+    )
+    fun countByScoreRangeAndSubjectIdAndSemester(
+        @Param("subjectId") subjectId: String,
+        @Param("minScore") minScore: Float,
+        @Param("maxScore") maxScore: Float,
+        @Param("startSemester") startSemester: Int,
+        @Param("endSemester") endSemester: Int
+    ): Long
+
+
+    @Query(
+        """
+        SELECT COUNT(s)
+        FROM Study s
+        WHERE s.subject.id = :subjectId
+          AND s.score >= :minScore
+          AND s.score < :maxScore
+        """
+    )
+    fun countByScoreRangeAndSubjectId(
+        @Param("subjectId") subjectId: String,
+        @Param("minScore") minScore: Float,
+        @Param("maxScore") maxScore: Float
+    ): Long
 }
