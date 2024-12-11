@@ -2,10 +2,7 @@ package com.be.kotlin.grade.controller
 
 import com.be.kotlin.grade.dto.RegisterDTO
 import com.be.kotlin.grade.dto.Response
-import com.be.kotlin.grade.dto.studentDTO.StudentDTO
 import com.be.kotlin.grade.dto.studentDTO.StudentUpdateDTO
-import com.be.kotlin.grade.dto.userDTO.UserRequestDTO
-import com.be.kotlin.grade.repository.UserRepository
 import com.be.kotlin.grade.service.interf.StudentInterface
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
@@ -37,7 +34,7 @@ class StudentController (
     @PreAuthorize("hasRole('ROLE_STUDENT')")
     @PutMapping("/update")
     fun updateStudent(@RequestBody studentUpdateDTO: StudentUpdateDTO): ResponseEntity<Response> {
-        val context = SecurityContextHolder.getContext();
+        val context = SecurityContextHolder.getContext()
         val username = context.authentication.name
 
         val response = studentService.updateStudent(studentUpdateDTO, username)

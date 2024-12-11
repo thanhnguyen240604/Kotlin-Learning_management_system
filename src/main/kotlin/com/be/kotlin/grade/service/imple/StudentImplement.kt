@@ -16,12 +16,10 @@ import org.springframework.stereotype.Service
 
 @Service
 class StudentImplement(
-    private val studentService: StudentRepository,
     private val studentMapper: StudentMapper,
     private val userRepository: UserRepository,
     private val userMapper: UserMapper,
     private val studentRepository: StudentRepository,
-    private val userImplement: UserImplement
 ) : StudentInterface {
     override fun register(userDTO: UserRequestDTO, studentDTO: StudentDTO): Response {
 

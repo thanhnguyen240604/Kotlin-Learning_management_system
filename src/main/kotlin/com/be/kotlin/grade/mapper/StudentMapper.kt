@@ -30,13 +30,4 @@ class StudentMapper {
             major = studentDTO.major
         )
     }
-
-    fun toStudent(studentDTO: StudentDTO, user: User) : Student {
-        return Student(
-            studentId = studentDTO.studentId,
-            enrolledCourse = studentDTO.enrolledCourse,
-            major = studentDTO.major,
-            user = user
-        )
-    }
 }
