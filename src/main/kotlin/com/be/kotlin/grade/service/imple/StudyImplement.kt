@@ -11,6 +11,7 @@ import com.be.kotlin.grade.model.Subject
 import com.be.kotlin.grade.repository.*
 import com.be.kotlin.grade.service.interf.StudyInterface
 import org.springframework.core.io.FileSystemResource
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import java.io.File
 import java.util.*
@@ -149,7 +150,7 @@ class StudyImplement(
     fun generateCSV(username: String, studyList: List<StudyDTO>): File {
         val subjectMap = HashMap<String, Optional<Subject>>()
         val studentName = userRepository.findByUsername(username).get().name
-        val studentId = studentRepository.findByUserUsername(username).studentId
+        val studentId = studentRepository.findByUserUsername(username).get().studentId
 
         for (study in studyList) {
             val subject = subjectRepository.findById(study.subjectId)
@@ -200,7 +201,28 @@ class StudyImplement(
         return file
     }
 
-    override fun getStudyByUsernameAndSemester(username: String, semester: Int): Response {
+    override fun getStudyByUsernameAndSemester(username: String, semester: Int, pageable: Pageable): Response {
+        if (studyRepository.findByStudentUserUsernameAndSemester(username, semester, pageable).isEmpty())
+            return Response(
+                statusCode = 404,
+                message = "Study not found"
+            )
+
+        val studyPage = studyRepository.findByStudentUserUsernameAndSemester(username, semester, pageable)
+        val studyDTOList = studyPage.content.map { studyMapper.toStudyDTO(it) }
+
+
+        return Response(
+            statusCode = 200,
+            message = "Study record for semester $semester found successfully",
+            listStudyDTO = studyDTOList,
+            totalPages = studyPage.totalPages,
+            currentPage = studyPage.number,
+            totalElements = studyPage.totalElements
+        )
+    }
+
+    override fun getStudyByUsernameAndSemesterCSV(username: String, semester: Int): Response {
         if (studyRepository.findByStudentUserUsernameAndSemester(username, semester).isEmpty())
             return Response(
                 statusCode = 404,
