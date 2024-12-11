@@ -18,6 +18,7 @@ data class Response(
     var role: String? = null,
     var token: String? = null,
     var authenticated: Boolean? = null,
+    val gpa : Float? = null,
 
     // DTO response
     var authenticateDTO: AuthenticateDTO? = null,
