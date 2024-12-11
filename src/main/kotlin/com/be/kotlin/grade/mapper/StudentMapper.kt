@@ -4,6 +4,7 @@ import com.be.kotlin.grade.dto.studentDTO.StudentDTO
 import org.springframework.stereotype.Component
 import com.be.kotlin.grade.dto.studentDTO.StudentResponseDTO
 import com.be.kotlin.grade.model.Student
+import com.be.kotlin.grade.model.User
 
 @Component
 class StudentMapper {
@@ -27,6 +28,15 @@ class StudentMapper {
             studentId = studentDTO.studentId,
             enrolledCourse = studentDTO.enrolledCourse,
             major = studentDTO.major
+        )
+    }
+
+    fun toStudent(studentDTO: StudentDTO, user: User) : Student {
+        return Student(
+            studentId = studentDTO.studentId,
+            enrolledCourse = studentDTO.enrolledCourse,
+            major = studentDTO.major,
+            user = user
         )
     }
 }

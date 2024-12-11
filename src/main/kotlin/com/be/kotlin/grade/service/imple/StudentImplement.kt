@@ -2,6 +2,7 @@ package com.be.kotlin.grade.service.imple
 
 import com.be.kotlin.grade.dto.Response
 import com.be.kotlin.grade.dto.studentDTO.StudentDTO
+import com.be.kotlin.grade.dto.studentDTO.StudentUpdateDTO
 import com.be.kotlin.grade.dto.userDTO.UserRequestDTO
 import com.be.kotlin.grade.exception.AppException
 import com.be.kotlin.grade.exception.ErrorCode
@@ -19,7 +20,8 @@ class StudentImplement(
     private val studentMapper: StudentMapper,
     private val userRepository: UserRepository,
     private val userMapper: UserMapper,
-    private val studentRepository: StudentRepository
+    private val studentRepository: StudentRepository,
+    private val userImplement: UserImplement
 ) : StudentInterface {
     override fun register(userDTO: UserRequestDTO, studentDTO: StudentDTO): Response {
 
@@ -54,6 +56,20 @@ class StudentImplement(
             statusCode = 200,
             message = "Student found successfully",
             studentDTO = studentDTO
+        )
+    }
+
+    override fun updateStudent(studentUpdateDTO: StudentUpdateDTO, username : String): Response {
+        var student = studentRepository.findByUserUsername(username).orElseThrow { AppException(ErrorCode.STUDENT_NOT_FOUND) }
+
+        student.user.name = studentUpdateDTO.studentName
+        student.user.faculty = studentUpdateDTO.faculty
+
+        studentRepository.save(student)
+
+        return Response(
+            statusCode = 200,
+            message = "Student updated successfully",
         )
     }
 }

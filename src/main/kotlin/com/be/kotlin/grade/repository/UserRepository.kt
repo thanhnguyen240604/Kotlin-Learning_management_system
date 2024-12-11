@@ -29,4 +29,5 @@ interface UserRepository: JpaRepository<User, Long> {
     fun updateUserInfo(@Param("name") name:String,
         @Param("faculty") faculty:String,
                        @Param("username") username: String)
+
 }
