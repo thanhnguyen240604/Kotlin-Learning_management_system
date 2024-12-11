@@ -9,4 +9,5 @@ interface GradeInterface {
     fun deleteGrade(grade: GradeIdDTO): Response
     fun updateGrade(grade: GradeIdDTO): Response
     fun getGradeById(id: Long): Response
+    fun getGradeBySubjectIdAndSemester(subjectId: String, semester: Int): Response
 }

@@ -18,6 +18,7 @@ data class Response(
     var role: String? = null,
     var token: String? = null,
     var authenticated: Boolean? = null,
+    val gpa : Float? = null,
 
     // DTO response
     var authenticateDTO: AuthenticateDTO? = null,
@@ -34,6 +35,7 @@ data class Response(
     var listSubjectDTO: List<SubjectDTO>? = null,
     var listClassDTO: List<ClassDTO>? = null,
     var listStudyDTO: List<StudyDTO>? = null,
+    var listGradeDTO: List<GradeDTO>? = null,
     var listStudentDTO: MutableList<StudentResponseDTO>? = null,
 
     // Pagination
