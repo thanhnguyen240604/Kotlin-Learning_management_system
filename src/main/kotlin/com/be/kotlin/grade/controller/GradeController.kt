@@ -41,4 +41,28 @@ class GradeController(private val gradeService: GradeImplement) {
         val response = gradeService.getGradeById(id)
         return ResponseEntity.status(response.statusCode).body(response)
     }
+
+    @GetMapping
+    fun getGradeBySubjectIdAndSemester(
+        @RequestParam subjectId: String?,
+        @RequestParam semester: Int?
+    ): ResponseEntity<Response> {
+        // Kiểm tra nếu thiếu giá trị
+        if (subjectId.isNullOrBlank() || semester == null) {
+            return ResponseEntity.status(400).body(
+                Response(
+                    statusCode = 400,
+                    message = "subjectId and semester are required fields."
+                )
+            )
+        }
+
+        // Lúc này subjectId chắc chắn không null
+        val subjectIdNonNull: String = subjectId
+        val semesterNonNull: Int = semester
+
+        // Gọi dịch vụ xử lý logic
+        val response = gradeService.getGradeBySubjectIdAndSemester(subjectIdNonNull, semesterNonNull)
+        return ResponseEntity.status(response.statusCode).body(response)
+    }
 }

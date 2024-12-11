@@ -34,6 +34,7 @@ data class Response(
     var listSubjectDTO: List<SubjectDTO>? = null,
     var listClassDTO: List<ClassDTO>? = null,
     var listStudyDTO: List<StudyDTO>? = null,
+    var listGradeDTO: List<GradeDTO>? = null,
     var listStudentDTO: MutableList<StudentResponseDTO>? = null,
 
     // Pagination
