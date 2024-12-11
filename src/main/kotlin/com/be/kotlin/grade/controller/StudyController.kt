@@ -4,6 +4,8 @@ import com.be.kotlin.grade.dto.Response
 import com.be.kotlin.grade.dto.studyDTO.StudyDTO
 import com.be.kotlin.grade.service.interf.StudyInterface
 import org.springframework.core.io.FileSystemResource
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -47,11 +49,15 @@ class StudyController (
 
     @PreAuthorize("hasRole('ROLE_STUDENT')")
     @GetMapping("/result/{semester}")
-    fun getStudiesByUsernameAndSemester(@PathVariable semester: Int) : ResponseEntity<Response> {
+    fun getStudiesByUsernameAndSemester
+                (@RequestParam(defaultValue = "0") page : Int,
+                 @RequestParam(defaultValue = "10") size : Int,
+                 @PathVariable semester: Int) : ResponseEntity<Response> {
         val context = SecurityContextHolder.getContext()
         val username: String = context.authentication.name
 
-        val response = studyService.getStudyByUsernameAndSemester(username, semester)
+        val pageable : Pageable = PageRequest.of(page, size)
+        val response = studyService.getStudyByUsernameAndSemester(username, semester, pageable)
 
         return ResponseEntity.status(response.statusCode).body(response)
     }
@@ -62,7 +68,7 @@ class StudyController (
         val context = SecurityContextHolder.getContext()
         val username: String = context.authentication.name
 
-        val response = studyService.getStudyByUsernameAndSemester(username, semester)
+        val response = studyService.getStudyByUsernameAndSemesterCSV(username, semester)
         val resource = response.file
 
         val headers = HttpHeaders()
