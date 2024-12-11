@@ -14,5 +14,6 @@ interface StudyInterface {
     fun generateSubjectReport(report: ReportOfSubjectRequestDTO): Response
     fun getStudyByUsernameAndSemester(username: String, semester: Int, pageable: Pageable): Response
     fun getStudyByUsernameAndSemesterCSV(username: String, semester: Int): Response
+    fun getGradeBySubjectIdAndSemester(subjectId: String, semester: Int): Response
 }
 

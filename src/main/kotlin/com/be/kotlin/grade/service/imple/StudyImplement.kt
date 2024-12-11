@@ -6,12 +6,15 @@ import com.be.kotlin.grade.dto.reportDTO.ReportOfSubjectResponseDTO
 import com.be.kotlin.grade.dto.studyDTO.StudyDTO
 import com.be.kotlin.grade.exception.AppException
 import com.be.kotlin.grade.exception.ErrorCode
+import com.be.kotlin.grade.mapper.GradeMapper
 import com.be.kotlin.grade.mapper.StudyMapper
 import com.be.kotlin.grade.model.Subject
 import com.be.kotlin.grade.repository.*
 import com.be.kotlin.grade.service.interf.StudyInterface
 import org.springframework.core.io.FileSystemResource
 import org.springframework.data.domain.Pageable
+import org.springframework.security.core.context.SecurityContextHolder
+
 import org.springframework.stereotype.Service
 import java.io.File
 import java.util.*
@@ -24,7 +27,9 @@ class StudyImplement(
     private val studentRepository: StudentRepository,
     private val subjectRepository: SubjectRepository,
     private val classRepository: ClassRepository,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val gradeRepository: GradeRepository,
+    private val gradeMapper: GradeMapper
 ) : StudyInterface {
     override fun addStudyStudent(studyDTO: StudyDTO): Response {
         val newStudy = studyMapper.toStudy(studyDTO)
@@ -306,6 +311,56 @@ class StudyImplement(
             statusCode = 200,
             message = "Report for this subject has been generated successfully",
             reportSubjectResponseDTO = reportResponseDTO
+        )
+    }
+
+    override fun getGradeBySubjectIdAndSemester(subjectId: String, semester: Int): Response {
+        // Find all study in semester
+        val context = SecurityContextHolder.getContext()
+        val username = context.authentication?.name
+
+        val studyList = username?.let {
+            val studies = studyRepository.findByStudentUserUsernameAndSemester(it, semester)
+            if (studies.isEmpty()) {
+                throw AppException(ErrorCode.STUDY_NOT_FOUND)
+            }
+            studies
+        } ?: throw RuntimeException("No username found in SecurityContext")
+
+        if (studyList.isEmpty())
+            return Response(
+                statusCode = 404,
+                message = "Study not found"
+            )
+
+        val studyDTOList = studyList.map { studyMapper.toStudyDTO(it) }
+
+        // Find study that have same subjectId
+        val matchingStudies = studyDTOList.filter { it.subjectId == subjectId }
+
+        if (matchingStudies.isEmpty()) {
+            return Response(
+                statusCode = 404,
+                message = "Subject not found in studies"
+            )
+        }
+
+        // Lấy studyId từ các study khớp
+        val studyIds = matchingStudies.mapNotNull { it.id }
+
+        val gradeList = gradeRepository.findGradeByStudyID(studyIds)
+
+        // Chuyển đổi các entity sang DTO
+        val gradeDTOs = gradeList.map { gradeEntity ->
+            gradeMapper.toGradeDTO(gradeEntity)
+        }
+
+        // Trả về thông tin
+        return Response(
+            statusCode = 200,
+            message = "Success",
+            listStudyDTO = studyDTOList,
+            listGradeDTO = gradeDTOs
         )
     }
 }

@@ -2,6 +2,7 @@ package com.be.kotlin.grade.controller
 
 import com.be.kotlin.grade.dto.reportDTO.ReportOfSubjectRequestDTO
 import com.be.kotlin.grade.dto.Response
+import com.be.kotlin.grade.dto.studyDTO.GetGradeDTO
 import com.be.kotlin.grade.dto.studyDTO.StudyDTO
 import com.be.kotlin.grade.service.interf.StudyInterface
 import org.springframework.core.io.FileSystemResource
@@ -86,6 +87,13 @@ class StudyController (
     @PostMapping("/generate-report")
     fun generateSubjectReport(@RequestBody report: ReportOfSubjectRequestDTO): ResponseEntity<Response> {
         val response = studyService.generateSubjectReport(report)
+        return ResponseEntity.status(response.statusCode).body(response)
+    }
+
+    @PostMapping
+    fun getGradeBySubjectIdAndSemester(@RequestBody getGrade: GetGradeDTO): ResponseEntity<Response> {
+        // Gọi dịch vụ xử lý logic
+        val response = studyService.getGradeBySubjectIdAndSemester(getGrade.subjectId, getGrade.semester)
         return ResponseEntity.status(response.statusCode).body(response)
     }
 }
