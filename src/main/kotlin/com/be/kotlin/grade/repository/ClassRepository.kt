@@ -32,4 +32,15 @@ interface ClassRepository: JpaRepository<Class, Long> {
         @Param("classIds") classIds: List<Long>,
         pageable: Pageable
     ): Page<Class>
+
+    @Query("""
+        SELECT DISTINCT c 
+        FROM Class c 
+        JOIN c.lecturers l 
+        WHERE l.id = :lecturerId
+    """)
+    fun findClassByLecturersId(
+        @Param("lecturerId") lecturerId: Long,
+        pageable: Pageable
+    ): Page<Class>
 }

@@ -181,6 +181,33 @@ class ClassImplement(
         )
     }
 
+    override fun getAllLecturerClasses(pageable: Pageable): Response {
+        val context = SecurityContextHolder.getContext()
+        val username = context.authentication?.name
+
+        val user = username?.let {
+            userRepository.findByUsername(it).orElseThrow {
+                AppException(ErrorCode.USER_NOT_FOUND)
+            }
+        }
+
+        val classPage = user?.id?.let { classRepository.findClassByLecturersId(it, pageable) }
+
+        if (classPage == null) { throw AppException(ErrorCode.CLASS_NOT_FOUND)}
+        val listClassDTO = classPage.content.map { classEntity ->
+            classMapper.toClassDTO(classEntity)
+        }
+
+        return Response(
+            statusCode = 200,
+            message = "Classes fetched successfully",
+            totalPages = classPage.totalPages,
+            totalElements = classPage.totalElements,
+            currentPage = classPage.number,
+            listClassDTO = listClassDTO
+        )
+    }
+
     override fun getHighestGradeStudent(classId: Long): Response {
         val myClass = classRepository.findById(classId).orElse(null)
         val studyList = studyRepository.findByStudyClass(myClass)
