@@ -77,20 +77,14 @@ class StudentImplement(
     override fun calculateGPA(semester: Int): Response {
         val username = SecurityContextHolder.getContext().authentication.name
 
-        val user = userRepository.findByUsername(username)
-            .orElseThrow { AppException(ErrorCode.USER_NOT_FOUND) }
-        val student = studentRepository.findByUser (user)
+        val student = studentRepository.findByUserUsername(username).orElse(null)
             ?: throw AppException(ErrorCode.STUDENT_NOT_FOUND)
 
         // Lấy danh sách các môn học cho sinh viên trong học kỳ
         val studies = studyRepository.findByStudentUserUsernameAndSemester(username, semester)
 
         if (studies.isEmpty()) {
-            return Response(
-                statusCode = 400,
-                message = "No studies found for the given semester",
-                gpa = 0f
-            )
+            throw AppException(ErrorCode.STUDY_NOT_FOUND)
         }
         var totalWeight = 0f
         var totalPoints = 0f

@@ -1,5 +1,6 @@
 package com.be.kotlin.grade.controller
 
+import com.be.kotlin.grade.dto.reportDTO.ReportOfSubjectRequestDTO
 import com.be.kotlin.grade.dto.Response
 import com.be.kotlin.grade.dto.studyDTO.StudyDTO
 import com.be.kotlin.grade.service.interf.StudyInterface
@@ -47,6 +48,7 @@ class StudyController (
         return ResponseEntity.status(response.statusCode).body(response)
     }
 
+    //Get all study of a semester
     @PreAuthorize("hasRole('ROLE_STUDENT')")
     @GetMapping("/result/{semester}")
     fun getStudiesByUsernameAndSemester
@@ -62,6 +64,7 @@ class StudyController (
         return ResponseEntity.status(response.statusCode).body(response)
     }
 
+    //Get all study of a semester by csv
     @PreAuthorize("hasRole('ROLE_STUDENT')")
     @GetMapping("/result/get-csv/{semester}")
     fun getSemesterCSV(@PathVariable semester: Int) : ResponseEntity<FileSystemResource> {
@@ -76,6 +79,14 @@ class StudyController (
         headers.contentType = MediaType.APPLICATION_OCTET_STREAM
 
         return ResponseEntity.status(HttpStatus.OK).headers(headers).body(resource)
+    }
+
+    //Generate report of a subject in a semester
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PostMapping("/generate-report")
+    fun generateSubjectReport(@RequestBody report: ReportOfSubjectRequestDTO): ResponseEntity<Response> {
+        val response = studyService.generateSubjectReport(report)
+        return ResponseEntity.status(response.statusCode).body(response)
     }
 }
 
