@@ -65,7 +65,7 @@ class AuthenticateImplement(
     }
 
     private fun generateToken(user: User): String {
-        val jwsHeader = JWSHeader(JWSAlgorithm.HS512)
+        val jwsHeader = JWSHeader(JWSAlgorithm.HS256)
 
         val jwtClaimsSet = JWTClaimsSet.Builder()
             .subject(user.username)

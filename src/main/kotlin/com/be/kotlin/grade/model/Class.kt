@@ -12,8 +12,12 @@ data class Class (
     @Column(name = "class_name", nullable = false)
     var name: String = "",
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "class_id")
+    @ManyToMany(fetch = FetchType.LAZY, cascade = [CascadeType.PERSIST, CascadeType.MERGE])
+    @JoinTable(
+        name = "class_lecturers",
+        joinColumns = [JoinColumn(name = "class_id")],
+        inverseJoinColumns = [JoinColumn(name = "lecturer_id")]
+    )
     var lecturers: MutableList<User> = mutableListOf(),
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
