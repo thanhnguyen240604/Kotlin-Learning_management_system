@@ -2,6 +2,7 @@ package com.be.kotlin.grade.service.imple
 
 import com.be.kotlin.grade.dto.Response
 import com.be.kotlin.grade.dto.studentDTO.StudentDTO
+import com.be.kotlin.grade.dto.studentDTO.StudentUpdateDTO
 import com.be.kotlin.grade.dto.userDTO.UserRequestDTO
 import com.be.kotlin.grade.exception.AppException
 import com.be.kotlin.grade.exception.ErrorCode
@@ -17,7 +18,6 @@ import org.springframework.stereotype.Service
 
 @Service
 class StudentImplement(
-    private val studentService: StudentRepository,
     private val studentMapper: StudentMapper,
     private val userRepository: UserRepository,
     private val userMapper: UserMapper,
@@ -59,6 +59,21 @@ class StudentImplement(
             studentDTO = studentDTO
         )
     }
+
+    override fun updateStudent(studentUpdateDTO: StudentUpdateDTO, username : String): Response {
+        var student = studentRepository.findByUserUsername(username).orElseThrow { AppException(ErrorCode.STUDENT_NOT_FOUND) }
+
+        student.user.name = studentUpdateDTO.studentName
+        student.user.faculty = studentUpdateDTO.faculty
+
+        studentRepository.save(student)
+
+        return Response(
+            statusCode = 200,
+            message = "Student updated successfully",
+          )
+    }
+
     override fun calculateGPA(semester: Int): Response {
         val username = SecurityContextHolder.getContext().authentication.name
 
@@ -100,6 +115,6 @@ class StudentImplement(
             statusCode = 200,
             message = "GPA calculated successfully",
             gpa = gpa
-        )
+          )
     }
 }
