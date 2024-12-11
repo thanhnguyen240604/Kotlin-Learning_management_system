@@ -30,4 +30,10 @@ class StudentController (
         val response = studentService.getStudentById(id)
         return ResponseEntity.status(response.statusCode).body(response)
     }
+    @PreAuthorize("hasRole('ROLE_STUDENT')")
+    @GetMapping("/gpa/{semester}")
+    fun calculateGPA(@PathVariable semester: Int): ResponseEntity<Response> {
+        val response = studentService.calculateGPA(semester)
+        return ResponseEntity.status(response.statusCode).body(response)
+    }
 }
