@@ -1,6 +1,8 @@
 package com.be.kotlin.grade.service.imple
 
+import com.be.kotlin.grade.dto.reportDTO.ReportOfSubjectRequestDTO
 import com.be.kotlin.grade.dto.Response
+import com.be.kotlin.grade.dto.reportDTO.ReportOfSubjectResponseDTO
 import com.be.kotlin.grade.dto.studyDTO.StudyDTO
 import com.be.kotlin.grade.exception.AppException
 import com.be.kotlin.grade.exception.ErrorCode
@@ -10,6 +12,7 @@ import com.be.kotlin.grade.model.Subject
 import com.be.kotlin.grade.repository.*
 import com.be.kotlin.grade.service.interf.StudyInterface
 import org.springframework.core.io.FileSystemResource
+import org.springframework.data.domain.Pageable
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
 import java.io.File
@@ -30,16 +33,11 @@ class StudyImplement(
     override fun addStudyStudent(studyDTO: StudyDTO): Response {
         val newStudy = studyMapper.toStudy(studyDTO)
 
-        val existingStudy = newStudy?.studyClass?.id?.let {
-            newStudy.student.studentId.let { it1 ->
-                newStudy.subject.id.let { it2 ->
-                    studyRepository.findByStudentStudentIdAndSubjectIdAndStudyClassId(
-                        it1,
-                        it2,
-                        it
-                    )
-                }
-            }
+        val existingStudy = newStudy?.student?.let {
+            studyRepository.findByStudentStudentIdAndSubjectIdAndSemester(
+                it.studentId,
+                newStudy.subject.id,
+                newStudy.semester)
         }
 
         if (existingStudy != null) {
@@ -53,7 +51,6 @@ class StudyImplement(
         }
 
         val subjectId = newStudy.subject.id ?: throw AppException(ErrorCode.SUBJECT_ID_INVALID)
-
         if (!subjectRepository.existsById(subjectId)) {
             throw AppException(ErrorCode.SUBJECT_NOT_FOUND)
         }
@@ -157,7 +154,7 @@ class StudyImplement(
     fun generateCSV(username: String, studyList: List<StudyDTO>): File {
         val subjectMap = HashMap<String, Optional<Subject>>()
         val studentName = userRepository.findByUsername(username).get().name
-        val studentId = studentRepository.findByUserUsername(username).studentId
+        val studentId = studentRepository.findByUserUsername(username).get().studentId
 
         for (study in studyList) {
             val subject = subjectRepository.findById(study.subjectId)
@@ -208,7 +205,28 @@ class StudyImplement(
         return file
     }
 
-    override fun getStudyByUsernameAndSemester(username: String, semester: Int): Response {
+    override fun getStudyByUsernameAndSemester(username: String, semester: Int, pageable: Pageable): Response {
+        if (studyRepository.findByStudentUserUsernameAndSemester(username, semester, pageable).isEmpty())
+            return Response(
+                statusCode = 404,
+                message = "Study not found"
+            )
+
+        val studyPage = studyRepository.findByStudentUserUsernameAndSemester(username, semester, pageable)
+        val studyDTOList = studyPage.content.map { studyMapper.toStudyDTO(it) }
+
+
+        return Response(
+            statusCode = 200,
+            message = "Study record for semester $semester found successfully",
+            listStudyDTO = studyDTOList,
+            totalPages = studyPage.totalPages,
+            currentPage = studyPage.number,
+            totalElements = studyPage.totalElements
+        )
+    }
+
+    override fun getStudyByUsernameAndSemesterCSV(username: String, semester: Int): Response {
         if (studyRepository.findByStudentUserUsernameAndSemester(username, semester).isEmpty())
             return Response(
                 statusCode = 404,
@@ -225,6 +243,73 @@ class StudyImplement(
             message = "Study record for semester $semester found successfully",
             listStudyDTO = studyDTOList,
             file = resource
+        )
+    }
+
+    override fun generateSubjectReport(report: ReportOfSubjectRequestDTO): Response{
+        val subjectId = report.subjectId
+        val semester = report.semester
+        val year = report.year
+        var reportResponseDTO: ReportOfSubjectResponseDTO
+        val scoreRanges = listOf(
+            "A+" to 9.5F..10.1F,
+            "A" to 8.5F..9.5F,
+            "B+" to 8.0F..8.5F,
+            "B" to 7.0F..8.0F,
+            "C+" to 6.5F..7.0F,
+            "C" to 5.5F..6.5F,
+            "D+" to 5.0F..5.5F,
+            "D" to 4.0F..5.0F,
+            "F" to 0F..4.0F
+        )
+        if (semester != null) {
+            //SEMESTER
+            val reportData = scoreRanges.associate { (grade, range) ->
+                grade to studyRepository.countByScoreRangeAndSubjectIdAndSemester(
+                    subjectId,
+                    range.start,
+                    range.endInclusive,
+                    semester,
+                    semester)
+            }
+            reportResponseDTO = ReportOfSubjectResponseDTO(
+                subjectId = subjectId,
+                semester = semester,
+                totalStudies = reportData.values.sum(),
+                data = reportData
+            )
+        } else if (year != null) {
+            //YEAR
+            val reportData = scoreRanges.associate { (grade, range) ->
+                grade to studyRepository.countByScoreRangeAndSubjectIdAndSemester(
+                    subjectId,
+                    range.start,
+                    range.endInclusive,
+                    (year % 100) * 10 + 1,
+                    (year % 100) * 10 + 3)
+            }
+            reportResponseDTO = ReportOfSubjectResponseDTO(
+                subjectId = subjectId,
+                year = year,
+                totalStudies = reportData.values.sum(),
+                data = reportData
+            )
+        } else{
+            //ALL
+            val reportData = scoreRanges.associate { (grade, range) ->
+                grade to studyRepository.countByScoreRangeAndSubjectId(subjectId, range.start, range.endInclusive)
+            }
+            reportResponseDTO = ReportOfSubjectResponseDTO(
+                subjectId = subjectId,
+                totalStudies = reportData.values.sum(),
+                data = reportData
+            )
+        }
+
+        return Response(
+            statusCode = 200,
+            message = "Report for this subject has been generated successfully",
+            reportSubjectResponseDTO = reportResponseDTO
         )
     }
 

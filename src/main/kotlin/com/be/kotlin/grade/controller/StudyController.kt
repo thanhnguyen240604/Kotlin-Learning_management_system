@@ -1,10 +1,13 @@
 package com.be.kotlin.grade.controller
 
+import com.be.kotlin.grade.dto.reportDTO.ReportOfSubjectRequestDTO
 import com.be.kotlin.grade.dto.Response
 import com.be.kotlin.grade.dto.studyDTO.GetGradeDTO
 import com.be.kotlin.grade.dto.studyDTO.StudyDTO
 import com.be.kotlin.grade.service.interf.StudyInterface
 import org.springframework.core.io.FileSystemResource
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -46,24 +49,30 @@ class StudyController (
         return ResponseEntity.status(response.statusCode).body(response)
     }
 
+    //Get all study of a semester
     @PreAuthorize("hasRole('ROLE_STUDENT')")
     @GetMapping("/result/{semester}")
-    fun getStudiesByUsernameAndSemester(@PathVariable semester: Int) : ResponseEntity<Response> {
+    fun getStudiesByUsernameAndSemester
+                (@RequestParam(defaultValue = "0") page : Int,
+                 @RequestParam(defaultValue = "10") size : Int,
+                 @PathVariable semester: Int) : ResponseEntity<Response> {
         val context = SecurityContextHolder.getContext()
         val username: String = context.authentication.name
 
-        val response = studyService.getStudyByUsernameAndSemester(username, semester)
+        val pageable : Pageable = PageRequest.of(page, size)
+        val response = studyService.getStudyByUsernameAndSemester(username, semester, pageable)
 
         return ResponseEntity.status(response.statusCode).body(response)
     }
 
+    //Get all study of a semester by csv
     @PreAuthorize("hasRole('ROLE_STUDENT')")
     @GetMapping("/result/get-csv/{semester}")
     fun getSemesterCSV(@PathVariable semester: Int) : ResponseEntity<FileSystemResource> {
         val context = SecurityContextHolder.getContext()
         val username: String = context.authentication.name
 
-        val response = studyService.getStudyByUsernameAndSemester(username, semester)
+        val response = studyService.getStudyByUsernameAndSemesterCSV(username, semester)
         val resource = response.file
 
         val headers = HttpHeaders()
@@ -71,6 +80,14 @@ class StudyController (
         headers.contentType = MediaType.APPLICATION_OCTET_STREAM
 
         return ResponseEntity.status(HttpStatus.OK).headers(headers).body(resource)
+    }
+
+    //Generate report of a subject in a semester
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PostMapping("/generate-report")
+    fun generateSubjectReport(@RequestBody report: ReportOfSubjectRequestDTO): ResponseEntity<Response> {
+        val response = studyService.generateSubjectReport(report)
+        return ResponseEntity.status(response.statusCode).body(response)
     }
 
     @PostMapping
