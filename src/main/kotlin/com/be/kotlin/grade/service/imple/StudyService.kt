@@ -310,7 +310,7 @@ class StudyService(
         return Response(
             statusCode = 200,
             message = "Report for this subject has been generated successfully",
-            reportSubjectResponseDTO = reportResponseDTO
+            reportSubjectDTO = reportResponseDTO
         )
     }
 

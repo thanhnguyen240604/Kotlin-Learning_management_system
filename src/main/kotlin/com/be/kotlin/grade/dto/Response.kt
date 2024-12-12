@@ -7,6 +7,7 @@ import com.be.kotlin.grade.dto.studyDTO.StudyDTO
 import com.be.kotlin.grade.dto.subjectDTO.SubjectDTO
 import com.be.kotlin.grade.dto.userDTO.UserResponseDTO
 import com.be.kotlin.grade.dto.classDTO.ClassDTO
+import com.be.kotlin.grade.dto.loginDTO.ForgotPasswordRequest
 import com.be.kotlin.grade.dto.reportDTO.ReportOfSubjectRequestDTO
 import com.be.kotlin.grade.dto.reportDTO.ReportOfSubjectResponseDTO
 import com.be.kotlin.grade.dto.studentDTO.StudentDTO
@@ -31,7 +32,8 @@ data class Response(
     var gradeDTO: GradeDTO? = null,
     var classDTO: ClassDTO? = null,
     var studentDTO: StudentDTO? = null,
-    var reportSubjectResponseDTO: ReportOfSubjectResponseDTO? = null,
+    var reportSubjectDTO: ReportOfSubjectResponseDTO? = null,
+    var forgotPasswordDTO: ForgotPasswordRequest? = null,
   
     // List DTO response
     var listUserDTO: List<UserResponseDTO>? = null,

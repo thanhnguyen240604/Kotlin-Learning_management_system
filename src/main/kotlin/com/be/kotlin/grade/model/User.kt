@@ -24,8 +24,8 @@ data class User (
     var password: String = "",
 
     @Column
-    val otp: String,
+    var otp: String? = "",
 
     @Column
-    var otpExpiry: LocalDateTime = LocalDateTime.now()
+    var otpExpiry: LocalDateTime? = null
 )

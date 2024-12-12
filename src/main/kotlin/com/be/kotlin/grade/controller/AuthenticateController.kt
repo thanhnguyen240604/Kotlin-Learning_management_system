@@ -3,6 +3,9 @@ package com.be.kotlin.grade.controller
 import com.be.kotlin.grade.dto.securityDTO.AuthenticateDTO
 import com.be.kotlin.grade.dto.securityDTO.IntrospectDTO
 import com.be.kotlin.grade.dto.Response
+import com.be.kotlin.grade.dto.loginDTO.ForgotPasswordRequest
+import com.be.kotlin.grade.dto.loginDTO.OtpVerificationRequest
+import com.be.kotlin.grade.dto.loginDTO.ResetPasswordRequest
 import com.be.kotlin.grade.service.interf.IAuthenticate
 import com.fasterxml.jackson.core.io.JsonEOFException
 import java.text.ParseException
@@ -28,6 +31,24 @@ class AuthenticateController(
     @Throws(ParseException::class, JsonEOFException::class)
     fun introspect(@RequestBody request: IntrospectDTO): ResponseEntity<Response> {
         val response = authenticateService.introspect(request)
+        return ResponseEntity.status(response.statusCode).body(response)
+    }
+
+    @PostMapping("/forgot-password")
+    fun forgotPassword(@RequestBody request: ForgotPasswordRequest): ResponseEntity<Response> {
+        val response = authenticateService.sendForgotPasswordEmail(request)
+        return ResponseEntity.status(response.statusCode).body(response)
+    }
+
+    @PostMapping("/verify-otp")
+    fun verifyOTP(@RequestBody request: OtpVerificationRequest): ResponseEntity<Response> {
+        val response = authenticateService.verifyOTP(request)
+        return ResponseEntity.status(response.statusCode).body(response)
+    }
+
+    @PostMapping("/reset-password")
+    fun resetPassword(@RequestBody request: ResetPasswordRequest): ResponseEntity<Response> {
+        val response = authenticateService.resetPassword(request)
         return ResponseEntity.status(response.statusCode).body(response)
     }
 }
