@@ -5,7 +5,7 @@ import com.be.kotlin.grade.dto.studentDTO.StudentDTO
 import com.be.kotlin.grade.dto.studentDTO.StudentUpdateDTO
 import com.be.kotlin.grade.dto.userDTO.UserRequestDTO
 
-interface StudentInterface {
+interface IStudent {
     fun register(userDTO: UserRequestDTO, studentDTO: StudentDTO): Response
     fun getStudentById(userId: Long): Response
     fun updateStudent(studentUpdateDTO: StudentUpdateDTO, username : String): Response

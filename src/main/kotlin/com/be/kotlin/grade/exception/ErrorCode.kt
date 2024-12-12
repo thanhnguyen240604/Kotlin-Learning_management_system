@@ -12,6 +12,7 @@ enum class ErrorCode(val code: Int, val message: String) {
     WEIGHT_LIMIT_INVALID(400, "Weight exceeds limit"),
     GRADE_NOT_MATCH_INVALID(400, "Grade does not belong to the specified study"),
     CLASS_INVALID(400, "Class not belong to the specified lecturer"),
+    OTP_EXPIRED(400, "OTP has expired"),
 
     //Unauthenticated
     UNAUTHENTICATED(401, "Unauthenticated"),

@@ -1,4 +1,4 @@
-package com.be.kotlin.grade.dto
+package com.be.kotlin.grade.dto.loginDTO
 
 import com.be.kotlin.grade.dto.studentDTO.StudentDTO
 import com.be.kotlin.grade.dto.userDTO.UserRequestDTO

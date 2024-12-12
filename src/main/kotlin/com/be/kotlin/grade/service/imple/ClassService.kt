@@ -12,14 +12,14 @@ import com.be.kotlin.grade.repository.ClassRepository
 import com.be.kotlin.grade.repository.StudyRepository
 import com.be.kotlin.grade.repository.SubjectRepository
 import com.be.kotlin.grade.repository.UserRepository
-import com.be.kotlin.grade.service.interf.ClassInterface
+import com.be.kotlin.grade.service.interf.IClass
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
 
 @Service
-class ClassImplement(
+class ClassService(
     private val classRepository: ClassRepository,
     private val subjectRepository: SubjectRepository,
     private val userRepository: UserRepository,
@@ -27,7 +27,7 @@ class ClassImplement(
     private val studyRepository: StudyRepository,
     private val studentMapper: StudentMapper,
     private val userMapper: UserMapper
-) : ClassInterface {
+) : IClass {
 
     override fun addClass(classDTO: ClassDTO): Response {
         val subject = subjectRepository.findById(classDTO.subjectId)

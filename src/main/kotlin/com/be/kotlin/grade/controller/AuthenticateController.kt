@@ -3,7 +3,7 @@ package com.be.kotlin.grade.controller
 import com.be.kotlin.grade.dto.securityDTO.AuthenticateDTO
 import com.be.kotlin.grade.dto.securityDTO.IntrospectDTO
 import com.be.kotlin.grade.dto.Response
-import com.be.kotlin.grade.service.interf.AuthenticateInterface
+import com.be.kotlin.grade.service.interf.IAuthenticate
 import com.fasterxml.jackson.core.io.JsonEOFException
 import java.text.ParseException
 import org.springframework.http.ResponseEntity
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/auth")
 class AuthenticateController(
-    private val authenticateService: AuthenticateInterface
+    private val authenticateService: IAuthenticate
 ) {
 
     @PostMapping("/login")

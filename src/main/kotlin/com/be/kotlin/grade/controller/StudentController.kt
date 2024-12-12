@@ -1,9 +1,9 @@
 package com.be.kotlin.grade.controller
 
-import com.be.kotlin.grade.dto.RegisterDTO
+import com.be.kotlin.grade.dto.loginDTO.RegisterDTO
 import com.be.kotlin.grade.dto.Response
 import com.be.kotlin.grade.dto.studentDTO.StudentUpdateDTO
-import com.be.kotlin.grade.service.interf.StudentInterface
+import com.be.kotlin.grade.service.interf.IStudent
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.context.SecurityContextHolder
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/students")
 class StudentController (
-    private val studentService: StudentInterface
+    private val studentService: IStudent
 ) {
     @PostMapping("/register")
     fun register(@RequestBody registerDTO: RegisterDTO): ResponseEntity<Response> {

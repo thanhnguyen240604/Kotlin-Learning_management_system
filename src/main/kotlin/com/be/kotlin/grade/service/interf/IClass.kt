@@ -1,12 +1,11 @@
 package com.be.kotlin.grade.service.interf
 
 import com.be.kotlin.grade.dto.Response
-import com.be.kotlin.grade.dto.studentDTO.StudentResponseDTO
 import com.be.kotlin.grade.dto.classDTO.ClassDTO
 import org.springframework.data.domain.Pageable
 import org.springframework.web.bind.annotation.RequestParam
 
-interface ClassInterface {
+interface IClass {
     fun addClass(classDTO: ClassDTO): Response
     fun updateClass(classDTO: ClassDTO): Response
     fun deleteClass(id: Long): Response

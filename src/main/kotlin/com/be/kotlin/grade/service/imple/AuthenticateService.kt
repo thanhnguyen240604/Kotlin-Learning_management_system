@@ -7,7 +7,7 @@ import com.be.kotlin.grade.dto.Response
 import com.be.kotlin.grade.exception.AppException
 import com.be.kotlin.grade.exception.ErrorCode
 import com.be.kotlin.grade.repository.UserRepository
-import com.be.kotlin.grade.service.interf.AuthenticateInterface
+import com.be.kotlin.grade.service.interf.IAuthenticate
 import com.nimbusds.jose.*
 import com.nimbusds.jose.crypto.MACSigner
 import com.nimbusds.jose.crypto.MACVerifier
@@ -22,10 +22,10 @@ import java.time.temporal.ChronoUnit
 import java.util.*
 
 @Service
-class AuthenticateImplement(
+class AuthenticateService(
     private val userRepository: UserRepository,
     @Value("\${jwt.signerKey}") private val signerKey: String
-) : AuthenticateInterface {
+) : IAuthenticate {
 
     override fun authenticate(request: AuthenticateDTO): Response {
         val user = userRepository.findByUsername(request.username)

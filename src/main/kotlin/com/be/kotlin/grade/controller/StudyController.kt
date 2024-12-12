@@ -4,7 +4,7 @@ import com.be.kotlin.grade.dto.reportDTO.ReportOfSubjectRequestDTO
 import com.be.kotlin.grade.dto.Response
 import com.be.kotlin.grade.dto.studyDTO.GetGradeDTO
 import com.be.kotlin.grade.dto.studyDTO.StudyDTO
-import com.be.kotlin.grade.service.interf.StudyInterface
+import com.be.kotlin.grade.service.interf.IStudy
 import org.springframework.core.io.FileSystemResource
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/study")
 class StudyController (
-    private val studyService: StudyInterface
+    private val studyService: IStudy
 ){
     @PreAuthorize("hasRole('ROLE_LECTURER')")
     @PostMapping("/add")
