@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   app:
     image: tannguyen1404/grade-portal-be-kotlin:1.0.0

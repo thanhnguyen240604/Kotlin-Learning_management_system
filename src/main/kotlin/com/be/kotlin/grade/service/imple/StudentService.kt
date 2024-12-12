@@ -111,4 +111,20 @@ class StudentService(
             gpa = gpa
           )
     }
+
+    override fun getStudentList(classId: Long): Response {
+        val studentIdList = studyRepository.findStudentIdByClassId(classId)
+
+        val studentList = studentRepository.findStudentByStudentIdList(studentIdList)
+
+        val studentListDTO = studentList.mapNotNull { studentEntity ->
+            studentMapper.toStudentDTO(studentEntity)
+        }
+
+        return Response(
+            statusCode = 200,
+            message = "Get Student List successfully",
+            listStudent = studentListDTO
+        )
+    }
 }
