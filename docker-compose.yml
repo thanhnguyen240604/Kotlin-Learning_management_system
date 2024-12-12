@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   app:
-#    image: tannguyen1404/grade-portal-be-kotlin:1.0.0
+    image: tannguyen1404/grade-portal-be-kotlin:1.0.0
     build:
       context: .              # Thư mục chứa Dockerfile
       dockerfile: Dockerfile  # Sử dụng Dockerfile tại thư mục gốc
