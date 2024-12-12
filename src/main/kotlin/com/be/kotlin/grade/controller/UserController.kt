@@ -3,7 +3,7 @@ package com.be.kotlin.grade.controller
 import com.be.kotlin.grade.dto.Response
 import com.be.kotlin.grade.dto.userDTO.UserRequestDTO
 import com.be.kotlin.grade.dto.userDTO.UserUpdateRequestDTO
-import com.be.kotlin.grade.service.interf.UserInterface
+import com.be.kotlin.grade.service.interf.IUser
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
@@ -16,12 +16,11 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
-import java.nio.file.attribute.UserPrincipal
 
 @RestController
 @RequestMapping("/users")
 class UserController(
-    private val userService: UserInterface
+    private val userService: IUser
 ) {
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/create-lecturers")

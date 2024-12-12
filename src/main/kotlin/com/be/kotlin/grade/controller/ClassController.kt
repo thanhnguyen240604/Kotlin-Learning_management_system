@@ -2,7 +2,7 @@ package com.be.kotlin.grade.controller
 
 import com.be.kotlin.grade.dto.Response
 import com.be.kotlin.grade.dto.classDTO.ClassDTO
-import com.be.kotlin.grade.service.imple.ClassImplement
+import com.be.kotlin.grade.service.imple.ClassService
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/classes")
-class ClassController(private val classService: ClassImplement) {
+class ClassController(private val classService: ClassService) {
 
     @PreAuthorize("hasRole('ROLE_LECTURER')")
     @PostMapping("/add")

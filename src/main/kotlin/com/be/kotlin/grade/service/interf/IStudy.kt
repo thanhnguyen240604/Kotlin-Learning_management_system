@@ -6,7 +6,7 @@ import com.be.kotlin.grade.dto.reportDTO.ReportOfSubjectRequestDTO
 import org.springframework.data.domain.Pageable
 
 
-interface StudyInterface {
+interface IStudy {
     fun addStudyStudent(studyDTO: StudyDTO): Response
     fun deleteStudyStudent(studyIdD: Long): Response
     fun getStudyById(studyIdD: Long): Response

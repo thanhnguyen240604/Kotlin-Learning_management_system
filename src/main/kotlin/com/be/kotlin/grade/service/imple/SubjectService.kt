@@ -7,16 +7,15 @@ import com.be.kotlin.grade.exception.AppException
 import com.be.kotlin.grade.exception.ErrorCode
 import com.be.kotlin.grade.mapper.SubjectMapper
 import com.be.kotlin.grade.repository.SubjectRepository
-import com.be.kotlin.grade.service.interf.SubjectInterface
+import com.be.kotlin.grade.service.interf.ISubject
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
-import org.springframework.web.bind.annotation.RequestBody
 
 @Service
-class SubjectImplement(
+class SubjectService(
     private val subjectRepository: SubjectRepository,
     private val subjectMapper: SubjectMapper,
-): SubjectInterface {
+): ISubject {
     override fun addSubject(subject: SubjectDTO): Response {
         if (subjectRepository.findById(subject.id).isPresent) {
             throw AppException(ErrorCode.SUBJECT_EXISTED)

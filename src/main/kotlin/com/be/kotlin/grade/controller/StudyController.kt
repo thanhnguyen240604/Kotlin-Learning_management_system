@@ -4,7 +4,7 @@ import com.be.kotlin.grade.dto.reportDTO.ReportOfSubjectRequestDTO
 import com.be.kotlin.grade.dto.Response
 import com.be.kotlin.grade.dto.studyDTO.GetGradeDTO
 import com.be.kotlin.grade.dto.studyDTO.StudyDTO
-import com.be.kotlin.grade.service.interf.StudyInterface
+import com.be.kotlin.grade.service.interf.IStudy
 import org.springframework.core.io.FileSystemResource
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/study")
 class StudyController (
-    private val studyService: StudyInterface
+    private val studyService: IStudy
 ){
     @PreAuthorize("hasRole('ROLE_LECTURER')")
     @PostMapping("/add")
@@ -82,18 +82,20 @@ class StudyController (
         return ResponseEntity.status(HttpStatus.OK).headers(headers).body(resource)
     }
 
+
+    @PreAuthorize("hasRole('ROLE_STUDENT')")
+    @PostMapping("/result")
+    fun getStudyByUsernameAndSubjectIdAndSemester(@RequestBody getGrade: GetGradeDTO): ResponseEntity<Response> {
+        // Gọi dịch vụ xử lý logic
+        val response = studyService.getGradeBySubjectIdAndSemester(getGrade.subjectId, getGrade.semester)
+        return ResponseEntity.status(response.statusCode).body(response)
+    }
+
     //Generate report of a subject in a semester
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/generate-report")
     fun generateSubjectReport(@RequestBody report: ReportOfSubjectRequestDTO): ResponseEntity<Response> {
         val response = studyService.generateSubjectReport(report)
-        return ResponseEntity.status(response.statusCode).body(response)
-    }
-
-    @PostMapping
-    fun getGradeBySubjectIdAndSemester(@RequestBody getGrade: GetGradeDTO): ResponseEntity<Response> {
-        // Gọi dịch vụ xử lý logic
-        val response = studyService.getGradeBySubjectIdAndSemester(getGrade.subjectId, getGrade.semester)
         return ResponseEntity.status(response.statusCode).body(response)
     }
 }

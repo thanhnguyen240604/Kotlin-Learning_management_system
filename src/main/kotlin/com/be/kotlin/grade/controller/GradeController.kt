@@ -3,7 +3,7 @@ package com.be.kotlin.grade.controller
 import com.be.kotlin.grade.dto.gradeDTO.GradeDTO
 import com.be.kotlin.grade.dto.gradeDTO.GradeIdDTO
 import com.be.kotlin.grade.dto.Response
-import com.be.kotlin.grade.service.imple.GradeImplement
+import com.be.kotlin.grade.service.imple.GradeService
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.RequestBody
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/grades")
-class GradeController(private val gradeService: GradeImplement) {
+class GradeController(private val gradeService: GradeService) {
     @PreAuthorize("hasRole('ROLE_LECTURER')")
     @PostMapping("/add")
     fun addGrade(@RequestBody grade: GradeDTO): ResponseEntity<Response> {

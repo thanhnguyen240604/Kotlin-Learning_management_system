@@ -11,19 +11,19 @@ import com.be.kotlin.grade.mapper.UserMapper
 import com.be.kotlin.grade.repository.StudentRepository
 import com.be.kotlin.grade.repository.StudyRepository
 import com.be.kotlin.grade.repository.UserRepository
-import com.be.kotlin.grade.service.interf.StudentInterface
+import com.be.kotlin.grade.service.interf.IStudent
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 
 @Service
-class StudentImplement(
+class StudentService(
     private val studentMapper: StudentMapper,
     private val userRepository: UserRepository,
     private val userMapper: UserMapper,
     private val studentRepository: StudentRepository,
     private val studyRepository: StudyRepository
-) : StudentInterface {
+) : IStudent {
     override fun register(userDTO: UserRequestDTO, studentDTO: StudentDTO): Response {
 
         if (userRepository.existsByUsername(userDTO.username) || studentRepository.existsByStudentId(studentDTO.studentId)) {

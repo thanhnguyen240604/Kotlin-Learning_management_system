@@ -10,7 +10,7 @@ import com.be.kotlin.grade.mapper.GradeMapper
 import com.be.kotlin.grade.mapper.StudyMapper
 import com.be.kotlin.grade.model.Subject
 import com.be.kotlin.grade.repository.*
-import com.be.kotlin.grade.service.interf.StudyInterface
+import com.be.kotlin.grade.service.interf.IStudy
 import org.springframework.core.io.FileSystemResource
 import org.springframework.data.domain.Pageable
 import org.springframework.security.core.context.SecurityContextHolder
@@ -21,7 +21,7 @@ import java.util.*
 import kotlin.collections.HashMap
 
 @Service
-class StudyImplement(
+class StudyService(
     private val studyRepository: StudyRepository,
     private val studyMapper: StudyMapper,
     private val studentRepository: StudentRepository,
@@ -30,7 +30,7 @@ class StudyImplement(
     private val userRepository: UserRepository,
     private val gradeRepository: GradeRepository,
     private val gradeMapper: GradeMapper
-) : StudyInterface {
+) : IStudy {
     override fun addStudyStudent(studyDTO: StudyDTO): Response {
         val newStudy = studyMapper.toStudy(studyDTO)
 
@@ -310,7 +310,7 @@ class StudyImplement(
         return Response(
             statusCode = 200,
             message = "Report for this subject has been generated successfully",
-            reportSubjectResponseDTO = reportResponseDTO
+            reportSubjectDTO = reportResponseDTO
         )
     }
 

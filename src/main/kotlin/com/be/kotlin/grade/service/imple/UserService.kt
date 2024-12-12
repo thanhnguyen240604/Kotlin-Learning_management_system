@@ -7,16 +7,16 @@ import com.be.kotlin.grade.exception.AppException
 import com.be.kotlin.grade.exception.ErrorCode
 import com.be.kotlin.grade.mapper.UserMapper
 import com.be.kotlin.grade.repository.UserRepository
-import com.be.kotlin.grade.service.interf.UserInterface
+import com.be.kotlin.grade.service.interf.IUser
 import org.springframework.data.domain.Pageable
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 
 @Service
-class UserImplement (
+class UserService (
     private var userRepository: UserRepository,
     private val userMapper: UserMapper
-): UserInterface {
+): IUser {
     override fun createLecturer(userRequestDTO: UserRequestDTO): Response {
         if (userRepository.existsByUsername(userRequestDTO.username)) {
             throw AppException(ErrorCode.USER_EXISTED)

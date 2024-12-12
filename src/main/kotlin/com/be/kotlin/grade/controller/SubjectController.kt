@@ -3,7 +3,7 @@ package com.be.kotlin.grade.controller
 import com.be.kotlin.grade.dto.Response
 import com.be.kotlin.grade.dto.subjectDTO.SubjectIdDTO
 import com.be.kotlin.grade.dto.subjectDTO.SubjectDTO
-import com.be.kotlin.grade.service.imple.SubjectImplement
+import com.be.kotlin.grade.service.imple.SubjectService
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/subjects")
-class SubjectController(private val subjectService: SubjectImplement) {
+class SubjectController(private val subjectService: SubjectService) {
     @PreAuthorize("hasRole('ROLE_LECTURER')")
     @PostMapping("/add")
     fun addSubject(@RequestBody subject: SubjectDTO): ResponseEntity<Response> {

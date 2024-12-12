@@ -5,7 +5,7 @@ import com.be.kotlin.grade.dto.userDTO.UserRequestDTO
 import com.be.kotlin.grade.dto.userDTO.UserUpdateRequestDTO
 import org.springframework.data.domain.Pageable
 
-interface UserInterface {
+interface IUser {
     fun createLecturer(userRequestDTO: UserRequestDTO): Response
     fun findUserById(id: Long): Response
     fun findAllUser(pageable: Pageable): Response
