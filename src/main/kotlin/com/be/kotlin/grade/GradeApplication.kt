@@ -28,6 +28,13 @@ fun main(args: Array<String>) {
 		System.setProperty("SERVER_PORT", dotenv["SERVER_PORT"] ?: "")
 		System.setProperty("SERVER_CONTEXT_PATH", dotenv["SERVER_CONTEXT_PATH"] ?: "")
 		System.setProperty("JWT_SIGNER_KEY", dotenv["JWT_SIGNER_KEY"] ?: "")
+		System.setProperty("SPRING_MAIL_HOST", dotenv["SPRING_MAIL_HOST"] ?: "")
+		System.setProperty("SPRING_MAIL_PORT", dotenv["SPRING_MAIL_PORT"] ?: "")
+		System.setProperty("SPRING_MAIL_USERNAME", dotenv["SPRING_MAIL_USERNAME"] ?: "")
+		System.setProperty("SPRING_MAIL_PASSWORD", dotenv["SPRING_MAIL_PASSWORD"] ?: "")
+		System.setProperty("SPRING_MAIL_PROPERTIES_MAIL_SMTP_AUTH", dotenv["SPRING_MAIL_PROPERTIES_MAIL_SMTP_AUTH"] ?: "")
+		System.setProperty("SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE", dotenv["SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE"] ?: "")
+		System.setProperty("SPRING_MAIL_PROPERTIES_MAIL_DEBUG", dotenv["SPRING_MAIL_PROPERTIES_MAIL_DEBUG"] ?: "")
 	}
 
 	runApplication<GradeApplication>(*args)
