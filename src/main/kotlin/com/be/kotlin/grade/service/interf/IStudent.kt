@@ -10,4 +10,5 @@ interface IStudent {
     fun getStudentById(userId: Long): Response
     fun updateStudent(studentUpdateDTO: StudentUpdateDTO, username : String): Response
     fun calculateGPA(semester: Int): Response
+    fun getStudentList(classId: Long): Response
 }

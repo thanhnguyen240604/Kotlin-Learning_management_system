@@ -47,4 +47,10 @@ class StudentController (
         val response = studentService.calculateGPA(semester)
         return ResponseEntity.status(response.statusCode).body(response)
     }
+
+    @GetMapping
+    fun getStudentByClassId(@RequestParam classId: Long): ResponseEntity<Response> {
+        val response = studentService.getStudentList(classId)
+        return ResponseEntity.status(response.statusCode).body(response)
+    }
 }

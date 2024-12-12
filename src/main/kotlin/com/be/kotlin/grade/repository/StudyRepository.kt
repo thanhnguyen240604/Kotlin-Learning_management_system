@@ -57,4 +57,7 @@ interface StudyRepository: JpaRepository<Study, Long> {
         @Param("minScore") minScore: Float,
         @Param("maxScore") maxScore: Float
     ): Long
+
+    @Query("SELECT s.student.studentId FROM Study s WHERE s.studyClass.id = :classId")
+    fun findStudentIdByClassId(@Param("classId") classId: Long): List<Long>
 }
