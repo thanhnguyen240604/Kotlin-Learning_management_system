@@ -34,7 +34,7 @@ data class Response(
     var studentDTO: StudentDTO? = null,
     var reportSubjectDTO: ReportOfSubjectResponseDTO? = null,
     var forgotPasswordDTO: ForgotPasswordRequest? = null,
-  
+
     // List DTO response
     var listUserDTO: List<UserResponseDTO>? = null,
     var listSubjectDTO: List<SubjectDTO>? = null,
@@ -43,7 +43,7 @@ data class Response(
     var listGradeDTO: List<GradeDTO>? = null,
     var listStudent: List<StudentDTO>? = null,
     var listStudentDTO: MutableList<StudentResponseDTO>? = null,
-
+    val lecturers: List<UserResponseDTO>? = null,
     // Pagination
     var totalPages: Int? = null,
     var totalElements: Long? = null,

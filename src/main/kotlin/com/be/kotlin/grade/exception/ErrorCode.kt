@@ -14,6 +14,9 @@ enum class ErrorCode(val code: Int, val message: String) {
     CLASS_INVALID(400, "Class not belong to the specified lecturer"),
     OTP_INVALID(400, "OTP invalid"),
     OTP_EXPIRED(400, "OTP has expired"),
+    CLASS_ALREADY_HAS_LECTURERS(400, "Class already has enough lecturers"),
+    LECTURER_FACULTY_MISMATCH(400, "Class faculty must match"),
+    LECTURER_ALREADY_REGISTERED(400, "Class already has registered"),
 
     //Unauthenticated
     UNAUTHENTICATED(401, "Unauthenticated"),
