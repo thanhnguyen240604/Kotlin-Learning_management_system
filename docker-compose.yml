@@ -1,6 +1,6 @@
 services:
   app:
-#    image: tannguyen1404/grade-portal-be-kotlin:1.0.0
+    image: tannguyen1404/grade-portal-be-kotlin:latest
     build:
       context: .              # Thư mục chứa Dockerfile
       dockerfile: Dockerfile  # Sử dụng Dockerfile tại thư mục gốc
@@ -14,7 +14,7 @@ services:
       - app-network
 
   db:
-    image: mysql:8.0.39-debian          # Sử dụng MySQL phiên bản 8.0
+    image: mysql:8.0.40-debian          # Sử dụng MySQL phiên bản 8.0
     container_name: app-db    # Tên container database
     restart: always           # Tự động restart nếu container gặp lỗi
     environment:

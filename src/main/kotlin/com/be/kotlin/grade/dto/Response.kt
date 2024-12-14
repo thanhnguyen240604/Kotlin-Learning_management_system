@@ -44,6 +44,8 @@ data class Response(
     var listStudent: List<StudentDTO>? = null,
     var listStudentDTO: MutableList<StudentResponseDTO>? = null,
     val lecturers: List<UserResponseDTO>? = null,
+    var totalCredits : Int = 0,
+
     // Pagination
     var totalPages: Int? = null,
     var totalElements: Long? = null,
