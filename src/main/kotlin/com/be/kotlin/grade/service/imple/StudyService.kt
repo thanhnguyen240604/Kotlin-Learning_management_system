@@ -359,7 +359,7 @@ class StudyService(
         return Response(
             statusCode = 200,
             message = "Success",
-            listStudyDTO = studyDTOList,
+            listStudyDTO = matchingStudies,
             listGradeDTO = gradeDTOs
         )
     }
