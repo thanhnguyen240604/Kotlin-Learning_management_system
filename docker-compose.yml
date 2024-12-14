@@ -1,6 +1,6 @@
 services:
   app:
-    image: grade-portal-be-kotlin:latest
+    image: tannguyen1404/grade-portal-be-kotlin:latest
     build:
       context: .              # Thư mục chứa Dockerfile
       dockerfile: Dockerfile  # Sử dụng Dockerfile tại thư mục gốc
