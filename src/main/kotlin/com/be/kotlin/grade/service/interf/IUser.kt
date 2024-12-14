@@ -9,7 +9,6 @@ interface IUser {
     fun createLecturer(userRequestDTO: UserRequestDTO): Response
     fun findUserById(id: Long): Response
     fun findAllUser(pageable: Pageable): Response
-    fun delUser(username:String):Response;
-//    fun updateRole(role: String,username: String): Response
+    fun deleteUser(id: Long):Response;
     fun updateInfo(userDTO: UserUpdateRequestDTO): Response
 }

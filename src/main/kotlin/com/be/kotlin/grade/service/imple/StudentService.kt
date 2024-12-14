@@ -61,11 +61,13 @@ class StudentService(
     }
 
     override fun updateStudent(studentUpdateDTO: StudentUpdateDTO, username : String): Response {
-        var student = studentRepository.findByUserUsername(username).orElseThrow { AppException(ErrorCode.STUDENT_NOT_FOUND) }
-
+        val student = studentRepository.findByUserUsername(username).orElseThrow { AppException(ErrorCode.STUDENT_NOT_FOUND) }
+        if (studentRepository.existsByStudentId(studentUpdateDTO.studentId)) {
+            throw AppException(ErrorCode.STUDENT_ID_EXISTED)
+        }
         student.user.name = studentUpdateDTO.studentName
         student.user.faculty = studentUpdateDTO.faculty
-
+        student.studentId = studentUpdateDTO.studentId
         studentRepository.save(student)
 
         return Response(

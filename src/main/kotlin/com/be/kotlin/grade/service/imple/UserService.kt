@@ -60,14 +60,11 @@ class UserService (
         )
     }
 
-    override fun delUser(username : String):Response{
-        if(userRepository.findByUsername(username).orElse(null)==null){
-            return Response(
-                statusCode = 300,
-                message = "User doesn't exist"
-            )
+    override fun deleteUser(id: Long):Response{
+        if (!userRepository.existsById(id)){
+            throw AppException(ErrorCode.USER_NOT_FOUND)
         }
-        userRepository.deleteByUsername(username);
+        userRepository.deleteById(id);
         return Response(
             statusCode = 200,
             message = "Subject added successfully"
@@ -75,8 +72,8 @@ class UserService (
     }
 
     override fun updateInfo(userDTO: UserUpdateRequestDTO): Response {
-        if (userRepository.existsByUsername(userDTO.username)) {
-            throw AppException(ErrorCode.USER_EXISTED)
+        if (!userRepository.existsByUsername(userDTO.username)) {
+            throw AppException(ErrorCode.USER_NOT_FOUND)
         }
         //userDTO.faculty?.let { userRepository.updateUserInfo(it, userDTO.username) }
         userDTO.faculty?.let { userRepository.updateUserInfo(userDTO.name,it,userDTO.username) }

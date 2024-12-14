@@ -29,7 +29,7 @@ class StudyController (
     }
 
     @PreAuthorize("hasRole('ROLE_LECTURER')")
-    @PostMapping("/update")
+    @PutMapping("/update")
     fun updateStudyStudent(@RequestBody study: StudyDTO): ResponseEntity<Response> {
         val response = studyService.updateStudyStudent(study)
         return ResponseEntity.status(response.statusCode).body(response)

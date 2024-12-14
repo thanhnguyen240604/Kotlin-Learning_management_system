@@ -67,6 +67,7 @@ class ClassService(
             .orElseThrow { AppException(ErrorCode.SUBJECT_NOT_FOUND) }
 
         val updatedClass = classMapper.toClass(classDTO, subject)
+        updatedClass.lecturers.add(lecturer)
         classRepository.save(updatedClass)
 
         return Response(
