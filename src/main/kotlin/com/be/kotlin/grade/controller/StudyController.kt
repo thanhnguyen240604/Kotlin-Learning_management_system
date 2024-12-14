@@ -2,7 +2,7 @@ package com.be.kotlin.grade.controller
 
 import com.be.kotlin.grade.dto.reportDTO.ReportOfSubjectRequestDTO
 import com.be.kotlin.grade.dto.Response
-import com.be.kotlin.grade.dto.studyDTO.GetGradeDTO
+import com.be.kotlin.grade.dto.studyDTO.GetStudyDTO
 import com.be.kotlin.grade.dto.studyDTO.StudyDTO
 import com.be.kotlin.grade.service.interf.IStudy
 import org.springframework.core.io.FileSystemResource
@@ -85,7 +85,7 @@ class StudyController (
 
     @PreAuthorize("hasRole('ROLE_STUDENT')")
     @PostMapping("/result")
-    fun getStudyByUsernameAndSubjectIdAndSemester(@RequestBody getGrade: GetGradeDTO): ResponseEntity<Response> {
+    fun getStudyByUsernameAndSubjectIdAndSemester(@RequestBody getGrade: GetStudyDTO): ResponseEntity<Response> {
         // Gọi dịch vụ xử lý logic
         val response = studyService.getGradeBySubjectIdAndSemester(getGrade.subjectId, getGrade.semester)
         return ResponseEntity.status(response.statusCode).body(response)

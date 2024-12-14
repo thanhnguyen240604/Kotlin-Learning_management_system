@@ -47,23 +47,17 @@ class UserController(
         return ResponseEntity.status(response.statusCode).body(response)
     }
 
-//    @PostMapping("/update/role")
-//    fun updateRole(@RequestParam role : String,@RequestParam username : String): ResponseEntity<Response>{
-//        val response = userService.updateRole(role,username)
-//        return ResponseEntity.status(response.statusCode).body(response)
-//    }
-
     @PreAuthorize("hasRole('ADMIN')")
-    @PatchMapping("")
+    @PatchMapping("/update")
     fun updateInfo(@RequestBody userDTO: UserUpdateRequestDTO): ResponseEntity<Response>{
         val response = userService.updateInfo(userDTO)
         return ResponseEntity.status(response.statusCode).body(response)
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @DeleteMapping("/delete")
-    fun delAccount(@RequestParam username: String): ResponseEntity<Response>{
-        val response = userService.delUser(username)
+    @DeleteMapping("/delete/{id}")
+    fun delAccount(@PathVariable id: Long): ResponseEntity<Response>{
+        val response = userService.deleteUser(id)
         return ResponseEntity.status(response.statusCode).body(response)
     }
 }
