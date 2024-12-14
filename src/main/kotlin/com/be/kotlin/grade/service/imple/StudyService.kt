@@ -155,14 +155,17 @@ class StudyService(
         val subjectMap = HashMap<String, Optional<Subject>>()
         val studentName = userRepository.findByUsername(username).get().name
         val studentId = studentRepository.findByUserUsername(username).get().studentId
+        var totalCredits = 0
 
         for (study in studyList) {
             val subject = subjectRepository.findById(study.subjectId)
+            totalCredits += subject.get().credits
             subjectMap[study.subjectId] = subject
         }
 
         // Title row for the CSV
         val title = "BẢNG ĐIỂM CỦA SINH VIÊN ${studentName.uppercase()} - MSSV ${studentId} HỌC KỲ ${studyList[0].semester}"
+        val total = "TỔNG SỐ TÍN CHỈ ĐÃ HỌC: $totalCredits" ;
 
         // Content rows
         val header = listOf("STT", "MÃ MÔN HỌC", "TÊN MÔN HỌC", "SỐ TÍN CHỈ", "ĐIỂM THÀNH PHẦN", "ĐIỂM TRUNG BÌNH")
@@ -200,26 +203,35 @@ class StudyService(
                 })
                 writer.newLine()
             }
+            writer.newLine()
+            writer.write(total)
         }
 
         return file
     }
 
     override fun getStudyByUsernameAndSemester(username: String, semester: Int, pageable: Pageable): Response {
-        if (studyRepository.findByStudentUserUsernameAndSemester(username, semester, pageable).isEmpty())
+        if (studyRepository.findByStudentUserUsernameAndSemester(username, semester, pageable).isEmpty)
             return Response(
                 statusCode = 404,
                 message = "Study not found"
             )
 
+        val allStudies = studyRepository.findByStudentUserUsernameAndSemester(username, semester)
+        var totalCredits = 0
+
+        for (study in allStudies) {
+            totalCredits += study.subject.credits
+        }
+
         val studyPage = studyRepository.findByStudentUserUsernameAndSemester(username, semester, pageable)
         val studyDTOList = studyPage.content.map { studyMapper.toStudyDTO(it) }
-
 
         return Response(
             statusCode = 200,
             message = "Study record for semester $semester found successfully",
             listStudyDTO = studyDTOList,
+            totalCredits = totalCredits,
             totalPages = studyPage.totalPages,
             currentPage = studyPage.number,
             totalElements = studyPage.totalElements
