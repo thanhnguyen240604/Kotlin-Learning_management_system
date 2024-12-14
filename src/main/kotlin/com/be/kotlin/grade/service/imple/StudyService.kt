@@ -109,7 +109,6 @@ class StudyService(
             throw AppException(ErrorCode.STUDY_NOT_FOUND)
         }
 
-
         // Chuyển đổi từ DTO sang Entity và lưu vào cơ sở dữ liệu
         val updatedStudy = studyMapper.toStudy(study)
 

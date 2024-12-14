@@ -33,6 +33,7 @@ enum class ErrorCode(val code: Int, val message: String) {
     USER_EXISTED(409, "User existed"),
     SUBJECT_EXISTED(409,"Subject already exists"),
     STUDY_EXISTED(409,"Study already exists"),
+    STUDENT_ID_EXISTED(409,"Student ID already exists"),
 
     //MISMATCH
     FACULTY_MISMATCH(400, "User faculty does not match"),

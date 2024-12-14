@@ -2,7 +2,7 @@ package com.be.kotlin.grade.dto.studyDTO
 
 import jakarta.validation.constraints.NotNull
 
-data class GetGradeDTO(
+data class GetStudyDTO(
     @field:NotNull(message = "Subject ID is required.")
     val subjectId: String,
 

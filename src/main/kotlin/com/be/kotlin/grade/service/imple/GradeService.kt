@@ -18,8 +18,6 @@ class GradeService(
     private val gradeRepository: GradeRepository,
     private val gradeMapper: GradeMapper,
     private val studyRepository: StudyRepository,
-    private val studyMapper: StudyMapper,
-    mapper: StudyMapper
 ) : IGrade {
     private fun isWeightValid(studyId: Long, newWeight: Float, existingWeight: Float? = null): Pair<Boolean, String> {
         val study = studyRepository.findById(studyId).orElse(null) ?: return Pair(false, "Study not found")

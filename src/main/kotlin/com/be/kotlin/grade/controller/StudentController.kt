@@ -24,7 +24,7 @@ class StudentController (
         return ResponseEntity.status(response.statusCode).body(response)
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_LECTURER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/{id}")
     fun getStudentById(@PathVariable id: Long): ResponseEntity<Response> {
         val response = studentService.getStudentById(id)
