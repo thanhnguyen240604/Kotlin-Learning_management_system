@@ -235,4 +235,38 @@ class ClassService(
             listStudentDTO = res
         )
     }
+
+    override  fun registerLecturerToClass(classId: Long): Response {
+        val username = SecurityContextHolder.getContext().authentication?.name
+
+        val lecturer = username?.let {
+            userRepository.findLecturersByUsername(it)
+        } ?: throw AppException(ErrorCode.USER_NOT_FOUND)
+
+        val classLec = classRepository.findById(classId)
+            .orElseThrow { AppException(ErrorCode.CLASS_NOT_FOUND) }
+
+        if (classLec.lecturers.size >= 2) {
+            throw AppException(ErrorCode.CLASS_ALREADY_HAS_LECTURERS)
+        }
+
+        if (lecturer.faculty != classLec.subject.faculty) {
+            throw AppException(ErrorCode.LECTURER_FACULTY_MISMATCH)
+        }
+        if (classLec.lecturers.any { it.id == lecturer.id }) {
+            throw AppException(ErrorCode.LECTURER_ALREADY_REGISTERED)
+        }
+
+        classLec.lecturers.add(lecturer)
+        classRepository.save(classLec)
+
+        val classDTO = classMapper.toClassDTO(classLec)
+        val lecturersDTO = classLec.lecturers.map { userMapper.toUserDTO(it) }
+        return Response (
+            statusCode = 200,
+            message = "Lecturer registered successfully",
+            classDTO = classDTO,
+            lecturers = lecturersDTO
+        )
+    }
 }

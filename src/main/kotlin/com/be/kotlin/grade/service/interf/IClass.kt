@@ -14,4 +14,5 @@ interface IClass {
     fun getAllClasses(page: Int, size: Int): Response
     fun getAllStudentClasses(page: Int, size: Int): Response
     fun getAllLecturerClasses(pageable: Pageable): Response
+    fun registerLecturerToClass(classId: Long): Response
 }

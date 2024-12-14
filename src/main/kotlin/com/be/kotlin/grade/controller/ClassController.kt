@@ -78,4 +78,11 @@ class ClassController(private val classService: ClassService) {
         val response = classService.getHighestGradeStudent(id)
         return ResponseEntity.status(response.statusCode).body(response)
     }
+
+    @PreAuthorize("hasRole('ROLE_LECTURER')")
+    @PostMapping("/register/{classId}")
+    fun registerLecturerToClass(@PathVariable classId: Long): ResponseEntity<Response> {
+        val response = classService.registerLecturerToClass(classId)
+        return ResponseEntity.status(response.statusCode).body(response)
+    }
 }
