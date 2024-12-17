@@ -74,3 +74,6 @@ Xem: [tại đây](Docs/APIspec.md)
 |2213282 | Lê Trường Thịnh     | 🟢    |🟢      |🟢     |🟢      |🟢       |🟢     |🟢      |🟢     |
 |2210812 | Trần Huy Đức        | 🟢    |🟢      |🟢     |🟢      |🟢       |🟢     |🟢      |🟢     |
 |2213132 | Nguyễn Công Thành   | 🟢    |🟢      |🟢     |🟢      |🟢       |🟢     |🟢      |🟢     |
+
+### Biểu đồ phân công công việc
+Xem: [tại đây](https://docs.google.com/spreadsheets/d/1pD6RVQxxRtE9vIQEAWPl_vil5Zt4BcxCHJGWtrEU98g/edit?usp=sharing)
