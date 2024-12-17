@@ -56,7 +56,8 @@ Chung quy lại, nếu thành công, hệ thống này được dự báo sẽ t
 ### Yêu cầu chức năng, yêu cầu phi chức năng và các sơ đồ
 Xem trong báo cáo tổng hợp: [tại đây](Report/Report.pdf)
 
-### Về API
+### API spec
+Xem: [tại đây](Docs/APIspec.md)
 
 ## Báo cáo
 - Báo cáo tiến độ làm việc theo tuần: [tại đây](Weekly_report).
