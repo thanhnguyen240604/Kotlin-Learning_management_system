@@ -1,4 +1,31 @@
-# QUẢN LÝ VÀ TỔ CHỨC CODE
+# TỔ CHỨC VÀ QUẢN LÝ CODE
+## Tổ chức code
+
+### Tổng quan dự án
+- **Ngôn ngữ**: Kotlin  
+- **Framework**: Spring  
+- **Database**: MySQL  
+- **Kiến trúc**: 3 lớp  
+
+Mã nguồn của dự án được lưu trong thư mục `src` trong Repository của nhóm. Mã nguồn được chia ra làm các thư mục sau:
+
+- **repository**: Chứa các class đóng vai trò làm repository tương tác với cơ sở dữ liệu thông qua JPA.
+- **service**: Chứa các class đóng vai trò làm service xử lý logic các yêu cầu người dùng.
+- **controller**: Chứa các class đóng vai trò controller tiếp nhận và phản hồi các yêu cầu của người dùng.
+- **model**: Chứa các class thể hiện các thực thể trong cơ sở dữ liệu.
+- **dto**: Chứa các class quy định cấu trúc JSON cho các request của người dùng cũng như response cho hệ thống.
+- **mapper**: Chứa các class thực hiện chức năng ánh xạ các model sang DTO và ngược lại.
+- **configuration**: Chứa các class cấu hình cho ứng dụng bao gồm: cấu hình ứng dụng, cấu hình bảo mật và cấu hình email dùng cho xác thực OTP.
+- **exception**: Chứa các class quy định các loại exception chung cho toàn bộ ứng dụng.
+
+Ngoài ra, ứng dụng còn được cấu hình thông qua file `.yml` được lưu trong thư mục `resources`. Các key quan trọng được lưu trong tệp `.env` và được mã hóa để đảm bảo an toàn dữ liệu. Các dependency được cấu hình trong file `pom.xml`.
+
+### Docker
+Bao gồm `Dockerfile` và `docker-compose.yml` được lưu ở root trong thư mục dự án.  
+- `Dockerfile`: Được sử dụng để build ứng dụng thành docker image phục vụ cho mục đích deploy.  
+- `docker-compose.yml`: Được sử dụng để cấu hình khi chạy multiple containers đối với image của ứng dụng và image của MySQL.
+
+  ---
 
 ## Quản lý code
 
@@ -45,30 +72,4 @@ Quy trình diễn ra khi developer tạo pull request lên cho nhóm trưởng. 
 - Khi commit, các developer cần mô tả rõ những gì mình đã cập nhật trên các tệp tin được chọn.
 - Khi tạo pull request, các developer cần ghi vào phần mô tả những gì mình đã hiện thực trong nhánh đó. Nếu không ghi mô tả, cần báo cáo lại với nhóm trưởng khi tiến hành review mã nguồn.
 
----
 
-## Tổ chức code
-
-### Tổng quan dự án
-- **Ngôn ngữ**: Kotlin  
-- **Framework**: Spring  
-- **Database**: MySQL  
-- **Kiến trúc**: 3 lớp  
-
-Mã nguồn của dự án được lưu trong thư mục `src` trong Repository của nhóm. Mã nguồn được chia ra làm các thư mục sau:
-
-- **repository**: Chứa các class đóng vai trò làm repository tương tác với cơ sở dữ liệu thông qua JPA.
-- **service**: Chứa các class đóng vai trò làm service xử lý logic các yêu cầu người dùng.
-- **controller**: Chứa các class đóng vai trò controller tiếp nhận và phản hồi các yêu cầu của người dùng.
-- **model**: Chứa các class thể hiện các thực thể trong cơ sở dữ liệu.
-- **dto**: Chứa các class quy định cấu trúc JSON cho các request của người dùng cũng như response cho hệ thống.
-- **mapper**: Chứa các class thực hiện chức năng ánh xạ các model sang DTO và ngược lại.
-- **configuration**: Chứa các class cấu hình cho ứng dụng bao gồm: cấu hình ứng dụng, cấu hình bảo mật và cấu hình email dùng cho xác thực OTP.
-- **exception**: Chứa các class quy định các loại exception chung cho toàn bộ ứng dụng.
-
-Ngoài ra, ứng dụng còn được cấu hình thông qua file `.yml` được lưu trong thư mục `resources`. Các key quan trọng được lưu trong tệp `.env` và được mã hóa để đảm bảo an toàn dữ liệu. Các dependency được cấu hình trong file `pom.xml`.
-
-### Docker
-Bao gồm `Dockerfile` và `docker-compose.yml` được lưu ở root trong thư mục dự án.  
-- `Dockerfile`: Được sử dụng để build ứng dụng thành docker image phục vụ cho mục đích deploy.  
-- `docker-compose.yml`: Được sử dụng để cấu hình khi chạy multiple containers đối với image của ứng dụng và image của MySQL.
