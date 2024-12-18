@@ -77,3 +77,6 @@ Xem: [tại đây](Docs/APIspec.md)
 
 ### Biểu đồ phân công công việc
 Xem: [tại đây](https://docs.google.com/spreadsheets/d/1pD6RVQxxRtE9vIQEAWPl_vil5Zt4BcxCHJGWtrEU98g/edit?usp=sharing)
+
+### Tổ chức và quản lý code
+Xem: [tại đây](Docs/CodeOrgAndManagement.md)
