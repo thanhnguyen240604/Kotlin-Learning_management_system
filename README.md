@@ -80,3 +80,6 @@ Xem: [tại đây](https://docs.google.com/spreadsheets/d/1pD6RVQxxRtE9vIQEAWPl_
 
 ### Tổ chức và quản lý code
 Xem: [tại đây](Docs/CodeOrgAndManagement.md)
+
+### CODESTYLE
+Xem: [tại đây](Docs/CodeStyle.md)
