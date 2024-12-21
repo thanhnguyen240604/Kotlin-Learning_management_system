@@ -59,6 +59,12 @@ Xem trong báo cáo tổng hợp: [tại đây](Report/Report.pdf)
 ### API spec
 Xem: [tại đây](Docs/APIspec.md)
 
+### Tổ chức và quản lý code
+Xem: [tại đây](Docs/CodeOrgAndManagement.md)
+
+### CODESTYLE
+Xem: [tại đây](Docs/CodeStyle.md)
+
 ## Báo cáo
 - Báo cáo tiến độ làm việc theo tuần: [tại đây](Weekly_report).
 - Báo cáo tổng hợp: [tại đây](Report/Report.pdf).
@@ -77,9 +83,3 @@ Xem: [tại đây](Docs/APIspec.md)
 
 ### Biểu đồ phân công công việc
 Xem: [tại đây](https://docs.google.com/spreadsheets/d/1pD6RVQxxRtE9vIQEAWPl_vil5Zt4BcxCHJGWtrEU98g/edit?usp=sharing)
-
-### Tổ chức và quản lý code
-Xem: [tại đây](Docs/CodeOrgAndManagement.md)
-
-### CODESTYLE
-Xem: [tại đây](Docs/CodeStyle.md)
