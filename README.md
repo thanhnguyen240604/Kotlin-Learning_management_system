@@ -65,7 +65,7 @@ Xem: [tại đây](Docs/CodeOrgAndManagement.md)
 ### Code Style
 Xem: [tại đây](Docs/CodeStyle.md)
 
-## Cấu trúc thư mục  
+### Cấu trúc thư mục  
 ```plaintext
 .
 ├── /.mvn/wrapper
