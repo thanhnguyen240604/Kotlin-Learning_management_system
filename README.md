@@ -62,8 +62,28 @@ Xem: [tại đây](Docs/APIspec.md)
 ### Tổ chức và quản lý code
 Xem: [tại đây](Docs/CodeOrgAndManagement.md)
 
-### CODESTYLE
+### Code Style
 Xem: [tại đây](Docs/CodeStyle.md)
+
+## Cấu trúc thư mục  
+```plaintext
+.
+├── /.mvn/wrapper
+│   └── maven-wrapper.properties         
+├── /Docs        
+│   ├── APIspec.md   #Tài liệu API
+│   ├── CodeOrgAndManagement.md   #Tài liệu quản lí, tổ chức code
+│   └── CodeStyle.md   #Tài liệu code style       
+├── /reports     
+│   └── Report.pdf   #Báo cáo tổng hợp
+├── /Weekly_report   #Báo cáo hàng tuần
+│   ├── week1.md
+│   ├── ...
+│   └── week8.md
+├── /src   #Mã nguồn chính của dự án
+│   └── ...
+└── các file khác      
+```
 
 ## Báo cáo
 - Báo cáo tiến độ làm việc theo tuần: [tại đây](Weekly_report).
