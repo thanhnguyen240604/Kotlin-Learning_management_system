@@ -1,4 +1,5 @@
 ## Công việc tuần 1
+### Các thành viên tham gia: cả nhóm
 - Xác định PO trong nhóm: Nguyễn Hữu Khánh.
 - Phổ biến lại các công việc mà thầy giao.
 - Xác định functional và non-functional requirements.
