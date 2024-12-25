@@ -1,5 +1,6 @@
-## Công việc tuần 1
-### Các thành viên tham gia: cả nhóm
+## Họp công việc tuần 1
+### Các thành viên tham gia họp: cả nhóm
+### Công việc trong tuần
 - Xác định PO trong nhóm: Nguyễn Hữu Khánh.
 - Phổ biến lại các công việc mà thầy giao.
 - Xác định functional và non-functional requirements.
