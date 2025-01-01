@@ -4,10 +4,12 @@ import com.be.kotlin.grade.dto.studyDTO.StudyDTO
 import com.be.kotlin.grade.dto.Response
 import com.be.kotlin.grade.dto.reportDTO.ReportOfSubjectRequestDTO
 import org.springframework.data.domain.Pageable
+import org.springframework.web.multipart.MultipartFile
 
 
 interface IStudy {
     fun addStudyStudent(studyDTO: StudyDTO): Response
+    fun processExcel (file: MultipartFile): Response
     fun deleteStudyStudent(studyIdD: Long): Response
     fun getStudyById(studyIdD: Long): Response
     fun updateStudyStudent(study: StudyDTO): Response

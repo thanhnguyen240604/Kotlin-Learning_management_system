@@ -60,4 +60,12 @@ interface StudyRepository: JpaRepository<Study, Long> {
 
     @Query("SELECT s.student.studentId FROM Study s WHERE s.studyClass.id = :classId")
     fun findStudentIdByClassId(@Param("classId") classId: Long): List<Long>
+
+    @Query("SELECT s.id FROM Study s WHERE s.student.studentId = :studentId AND s.subject.id = :subjectId AND s.studyClass.id = :classId AND s.semester = :semester")
+    fun findStudyIdByClassIdAndSubjectIdAndStudentIdAndSemester(
+        @Param("classId") classId: Long,
+        @Param("subjectId") subjectId: String,
+        @Param("studentId") studentId: Long,
+        @Param("semester") semester: Int
+    ): Long?
 }
