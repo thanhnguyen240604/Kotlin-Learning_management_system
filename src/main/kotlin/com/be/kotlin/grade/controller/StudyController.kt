@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.multipart.MultipartFile
 
 @RestController
 @RequestMapping("/study")
@@ -27,7 +28,12 @@ class StudyController (
         val response = studyService.addStudyStudent(study)
         return ResponseEntity.status(response.statusCode).body(response)
     }
-
+    @PreAuthorize("hasRole('ROLE_LECTURER')")
+    @PostMapping("/addByExcel")
+    fun addStudyStudent(@RequestParam("file") file: MultipartFile): ResponseEntity<Response> {
+        val response = studyService.processExcel(file)
+        return ResponseEntity.status(response.statusCode).body(response)
+    }
     @PreAuthorize("hasRole('ROLE_LECTURER')")
     @PutMapping("/update")
     fun updateStudyStudent(@RequestBody study: StudyDTO): ResponseEntity<Response> {

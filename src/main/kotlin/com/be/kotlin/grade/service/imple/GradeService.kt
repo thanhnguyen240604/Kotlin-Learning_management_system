@@ -6,7 +6,7 @@ import com.be.kotlin.grade.dto.gradeDTO.GradeIdDTO
 import com.be.kotlin.grade.exception.AppException
 import com.be.kotlin.grade.exception.ErrorCode
 import com.be.kotlin.grade.mapper.GradeMapper
-import com.be.kotlin.grade.mapper.StudyMapper
+//import com.be.kotlin.grade.mapper.StudyMapper
 import com.be.kotlin.grade.model.Grade
 import com.be.kotlin.grade.repository.GradeRepository
 import com.be.kotlin.grade.repository.StudyRepository
@@ -45,6 +45,16 @@ class GradeService(
         return averageScore
     }
 
+    fun sanitizeColumnName(columnName: String): String {
+        return columnName.replace(Regex("[^A-Za-z0-9]"), "")
+    }
+
+    fun extractWeight(header: String): Float {
+        val regex = Regex("(\\d+\\.?\\d*)%")
+        val matchResult = regex.find(header)
+        return matchResult?.groups?.get(1)?.value?.toFloat() ?: 0f
+    }
+
     override fun addGrade(grade: GradeDTO): Response {
         val gradeStudyId = grade.studyId
             ?: throw AppException(ErrorCode.STUDY_ID_INVALID)
@@ -63,10 +73,12 @@ class GradeService(
         }
 
         val newGrade = gradeMapper.toGrade(grade)
-        study.gradesList.add(newGrade)
+        val savedGrade = gradeRepository.save(newGrade) // Lưu newGrade vào cơ sở dữ liệu
+        study.gradesList.add(savedGrade) // Thêm savedGrade vào danh sách
         study.score = caculateAverageScore(study.gradesList)
         studyRepository.save(study)
-        val savedGradeDTO = gradeMapper.toGradeDTO(newGrade)
+
+        val savedGradeDTO = gradeMapper.toGradeDTO(savedGrade)
 
 
         return Response(
