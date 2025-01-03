@@ -54,7 +54,7 @@ Chung quy lại, nếu thành công, hệ thống này được dự báo sẽ t
 - `Hall of Fame` : Hiển thị danh sách các sinh viên có điểm số cao nhất trong lớp.
 
 ### Yêu cầu chức năng, yêu cầu phi chức năng và các sơ đồ
-Xem trong báo cáo tổng hợp: [tại đây](Report/Report.pdf)
+Xem trong báo cáo tổng hợp: [tại đây](Report/DoAn_241_Report.pdf)
 
 ### API spec
 Xem: [tại đây](Docs/APIspec.md)
