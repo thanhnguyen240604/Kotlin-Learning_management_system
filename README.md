@@ -87,7 +87,7 @@ Xem: [tại đây](Docs/CodeStyle.md)
 
 ## Báo cáo
 - Báo cáo tiến độ làm việc theo tuần: [tại đây](Weekly_report).
-- Báo cáo tổng hợp: [tại đây](Report/Report.pdf).
+- Báo cáo tổng hợp: [tại đây](Report/DoAn_241_Report.pdf).
 
 ## Tự đánh giá tiến độ thành viên
 
