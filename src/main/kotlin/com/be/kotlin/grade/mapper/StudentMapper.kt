@@ -4,7 +4,7 @@ import com.be.kotlin.grade.dto.studentDTO.StudentDTO
 import org.springframework.stereotype.Component
 import com.be.kotlin.grade.dto.studentDTO.StudentResponseDTO
 import com.be.kotlin.grade.model.Student
-import com.be.kotlin.grade.model.User
+import java.util.*
 
 @Component
 class StudentMapper {

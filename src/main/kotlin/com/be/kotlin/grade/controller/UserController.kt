@@ -22,6 +22,12 @@ import org.springframework.web.bind.annotation.RestController
 class UserController(
     private val userService: IUser
 ) {
+    @GetMapping("my-info")
+    fun getMyInfo(): ResponseEntity<Response> {
+        val response = userService.getMyInfo()
+        return ResponseEntity.status(response.statusCode).body(response)
+    }
+
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/create-lecturers")
     fun createLecturer(@RequestBody userRequestDTO: UserRequestDTO): ResponseEntity<Response> {
