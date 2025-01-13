@@ -11,4 +11,5 @@ interface IUser {
     fun findAllUser(pageable: Pageable): Response
     fun deleteUser(id: Long):Response;
     fun updateInfo(userDTO: UserUpdateRequestDTO): Response
+    fun getMyInfo(): Response
 }

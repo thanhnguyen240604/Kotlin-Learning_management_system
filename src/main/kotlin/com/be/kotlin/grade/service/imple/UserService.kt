@@ -1,21 +1,27 @@
 package com.be.kotlin.grade.service.imple
 
+import com.be.kotlin.grade.controller.StudentController
 import com.be.kotlin.grade.dto.Response
 import com.be.kotlin.grade.dto.userDTO.UserRequestDTO
 import com.be.kotlin.grade.dto.userDTO.UserUpdateRequestDTO
 import com.be.kotlin.grade.exception.AppException
 import com.be.kotlin.grade.exception.ErrorCode
+import com.be.kotlin.grade.mapper.StudentMapper
 import com.be.kotlin.grade.mapper.UserMapper
+import com.be.kotlin.grade.repository.StudentRepository
 import com.be.kotlin.grade.repository.UserRepository
 import com.be.kotlin.grade.service.interf.IUser
 import org.springframework.data.domain.Pageable
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 
 @Service
-class UserService (
+class UserService(
     private var userRepository: UserRepository,
-    private val userMapper: UserMapper
+    private val userMapper: UserMapper,
+    private var studentRepository: StudentRepository,
+    private var studentMapper: StudentMapper
 ): IUser {
     override fun createLecturer(userRequestDTO: UserRequestDTO): Response {
         if (userRepository.existsByUsername(userRequestDTO.username)) {
@@ -80,6 +86,27 @@ class UserService (
         return Response(
             statusCode = 200,
             message = "Update info successfully"
+        )
+    }
+
+    override fun getMyInfo(): Response {
+        val context = SecurityContextHolder.getContext()
+        val username = context.authentication.name
+        val user = userRepository.findByUsername(username)
+        .orElseThrow { AppException(ErrorCode.USER_NOT_FOUND) }
+        if (user.role == "STUDENT"){
+            val student = studentRepository.findByUserUsername(username).orElseThrow{ AppException(ErrorCode.STUDENT_NOT_FOUND) }
+            return Response(
+                statusCode = 200,
+                message = "My info fetch successfully",
+                userDTO = userMapper.toUserDTO(user),
+                studentDTO = studentMapper.toStudentDTO(student)
+            )
+        }
+        return Response(
+            statusCode = 200,
+            message = "My info fetch successfully",
+            userDTO = userMapper.toUserDTO(user),
         )
     }
 }
