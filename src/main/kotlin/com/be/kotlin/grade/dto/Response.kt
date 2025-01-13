@@ -8,13 +8,14 @@ import com.be.kotlin.grade.dto.subjectDTO.SubjectDTO
 import com.be.kotlin.grade.dto.userDTO.UserResponseDTO
 import com.be.kotlin.grade.dto.classDTO.ClassDTO
 import com.be.kotlin.grade.dto.loginDTO.ForgotPasswordRequest
-import com.be.kotlin.grade.dto.reportDTO.ReportOfSubjectRequestDTO
 import com.be.kotlin.grade.dto.reportDTO.ReportOfSubjectResponseDTO
 import com.be.kotlin.grade.dto.studentDTO.StudentDTO
 import com.be.kotlin.grade.dto.studentDTO.StudentResponseDTO
 import org.springframework.core.io.FileSystemResource
 import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.annotation.JsonInclude
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 data class Response(
     var statusCode: Int = 0,
     var message: String = "",
@@ -44,7 +45,7 @@ data class Response(
     var listStudent: List<StudentDTO>? = null,
     var listStudentDTO: MutableList<StudentResponseDTO>? = null,
     val lecturers: List<UserResponseDTO>? = null,
-    var totalCredits : Int = 0,
+    var totalCredits : Int? = null,
 
     // Pagination
     var totalPages: Int? = null,
