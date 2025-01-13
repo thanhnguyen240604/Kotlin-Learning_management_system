@@ -36,6 +36,6 @@ fun main(args: Array<String>) {
 		System.setProperty("SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE", dotenv["SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE"] ?: "")
 		System.setProperty("SPRING_MAIL_PROPERTIES_MAIL_DEBUG", dotenv["SPRING_MAIL_PROPERTIES_MAIL_DEBUG"] ?: "")
 	}
-
+//test
 	runApplication<GradeApplication>(*args)
 }
