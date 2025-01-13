@@ -34,13 +34,13 @@ class AuthenticateService(
 
     override fun authenticate(request: AuthenticateDTO): Response {
         val user = userRepository.findByUsername(request.username)
-            .orElseThrow { AppException(ErrorCode.USER_NOT_FOUND) }
+            .orElseThrow { AppException(ErrorCode.UNAUTHENTICATED_USERNAME_PASSWORD) }
 
         val passwordEncoder = BCryptPasswordEncoder(5)
 
         val authenticated = passwordEncoder.matches(request.password, user.password)
         if (!authenticated) {
-            throw AppException(ErrorCode.UNAUTHENTICATED)
+            throw AppException(ErrorCode.UNAUTHENTICATED_USERNAME_PASSWORD)
         }
 
         val token = generateToken(user)
@@ -71,7 +71,7 @@ class AuthenticateService(
 
     override fun sendForgotPasswordEmail(request: ForgotPasswordRequest): Response {
         val user = userRepository.findByUsername(request.email)
-            .orElseThrow { AppException(ErrorCode.USER_NOT_FOUND) }
+            .orElseThrow { AppException(ErrorCode.UNAUTHENTICATED_USERNAME) }
         val otp = generateOTP()
         user.otp = otp
         user.otpExpiry = LocalDateTime.now().plusMinutes(3)
@@ -87,7 +87,7 @@ class AuthenticateService(
 
     override fun verifyOTP(request: OtpVerificationRequest): Response {
         val user = userRepository.findByUsername(request.email)
-            .orElseThrow { AppException(ErrorCode.USER_NOT_FOUND) }
+            .orElseThrow { AppException(ErrorCode.UNAUTHENTICATED_USERNAME) }
         if (user.otpExpiry!! < LocalDateTime.now()) {
             throw AppException(ErrorCode.OTP_EXPIRED)
         }
@@ -104,8 +104,17 @@ class AuthenticateService(
     override fun resetPassword(request: ResetPasswordRequest): Response {
         val user = userRepository.findByUsername(request.email)
             .orElseThrow { AppException(ErrorCode.USER_NOT_FOUND) }
+        if (request.confirmPassword != request.newPassword) {
+            throw AppException(ErrorCode.PASSWORD_NOT_MATCH)
+        }
+
         val passwordEncoder = BCryptPasswordEncoder(5)
-        user.password = passwordEncoder.encode(request.newPassword)
+        val encodedNewPassword = passwordEncoder.encode(request.newPassword)
+        if (user.password != encodedNewPassword) {
+            throw AppException(ErrorCode.PASSWORD_NOT_CHANGE)
+        } else {
+            user.password = encodedNewPassword
+        }
         userRepository.save(user)
         return Response(
             statusCode = 200,
