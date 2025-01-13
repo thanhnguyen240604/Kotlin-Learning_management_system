@@ -7,7 +7,7 @@ enum class ErrorCode(val code: Int, val message: String) {
     GRADE_ID_INVALID(400,"GradeId cannot be null"),
     STUDENT_ID_INVALID(400,"Student ID cannot be null"),
     SUBJECT_ID_INVALID(400,"Subject ID cannot be null"),
-    CLASS_ID_INVALID(400,"Class ID cannot be null"),
+    CLASS_ID_INVALID(400,"Class ID cannot be blank"),
     SCORE_INVALID(400, "Score must be between 0 and 10"),
     WEIGHT_LIMIT_INVALID(400, "Weight exceeds limit"),
     GRADE_NOT_MATCH_INVALID(400, "Grade does not belong to the specified study"),
@@ -17,9 +17,15 @@ enum class ErrorCode(val code: Int, val message: String) {
     CLASS_ALREADY_HAS_LECTURERS(400, "Class already has enough lecturers"),
     LECTURER_FACULTY_MISMATCH(400, "Class faculty must match"),
     LECTURER_ALREADY_REGISTERED(400, "Class already has registered"),
+    FACULTY_MISMATCH(400, "User faculty does not match"),
+    MAJOR_MISMATCH(400, "Student major does not match"),
+    FACULTY_MAJOR_MISMATCH (400, "Student major and faculty does not match"),
+    PASSWORD_NOT_MATCH(400, "Your confirm password does not match"),
+    PASSWORD_NOT_CHANGE(400, "Your new password cannot be the same as the old one"),
 
     //Unauthenticated
-    UNAUTHENTICATED(401, "Unauthenticated"),
+    UNAUTHENTICATED_USERNAME_PASSWORD(401, "Please check email or password again"),
+    UNAUTHENTICATED_USERNAME(401, "Please check email again"),
 
     //Resource not found
     USER_NOT_FOUND(404, "User not found"),
@@ -34,11 +40,5 @@ enum class ErrorCode(val code: Int, val message: String) {
     SUBJECT_EXISTED(409,"Subject already exists"),
     STUDY_EXISTED(409,"Study already exists"),
     STUDENT_ID_EXISTED(409,"Student ID already exists"),
-
-    //MISMATCH
-    FACULTY_MISMATCH(400, "User faculty does not match"),
-    MAJOR_MISMATCH(400, "Student major does not match"),
-    FACULTY_MAJOR_MISMATCH (400, "Student major and faculty does not match"),
-
     CLASS_EXISTED(409, "Class already exists"),
 }
