@@ -8,15 +8,15 @@ import jakarta.persistence.*
 data class Study(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long? = null,
+    val id: Long? = null,
 
     @ManyToOne
     @JoinColumn(name = "student_id", referencedColumnName = "student_id", nullable = false)
-    val student: Student = Student(),
+    var student: Student = Student(),
 
     @ManyToOne
     @JoinColumn(name = "subject_id", referencedColumnName = "id", nullable = false)
-    val subject: Subject = Subject(),
+    var subject: Subject = Subject(),
 
     @ManyToOne
     @JoinColumn(name = "class_id", referencedColumnName = "id", nullable = false)
@@ -24,6 +24,9 @@ data class Study(
 
     @Column(name = "semester", nullable = false)
     val semester: Int = 0,
+
+    @Column(name = "elective_study", nullable = false)
+    val isElective: Boolean = false,
 
     var score: Float = 13F,
 

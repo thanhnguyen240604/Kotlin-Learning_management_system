@@ -1,6 +1,7 @@
 package com.be.kotlin.grade.model
 
 import jakarta.persistence.*
+import java.time.LocalDateTime
 
 @Entity
 @Table(name = "class")
@@ -22,5 +23,11 @@ data class Class (
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "subject_id", referencedColumnName = "id", nullable = false)
-    var subject: Subject = Subject()
+    var subject: Subject = Subject(),
+
+    @Column(name = "start_time", nullable = false)
+    var startTime: LocalDateTime = LocalDateTime.now(),
+
+    @Column(name = "end_time", nullable = false)
+    var endTime: LocalDateTime = LocalDateTime.now(),
 )
