@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Positive
 
 data class StudyDTO(
-    var id: Long? = null,
+    val id: Long? = null,
 
     @NotNull(message = "Student is required")
     @Positive(message = "Student ID must be a positive number")

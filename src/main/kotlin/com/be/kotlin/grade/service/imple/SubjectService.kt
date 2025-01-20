@@ -3,18 +3,31 @@ package com.be.kotlin.grade.service.imple
 import com.be.kotlin.grade.dto.Response
 import com.be.kotlin.grade.dto.subjectDTO.SubjectIdDTO
 import com.be.kotlin.grade.dto.subjectDTO.SubjectDTO
+import com.be.kotlin.grade.dto.subjectDTO.SubjectRegisterDTO
 import com.be.kotlin.grade.exception.AppException
 import com.be.kotlin.grade.exception.ErrorCode
 import com.be.kotlin.grade.mapper.SubjectMapper
+import com.be.kotlin.grade.model.Class
+import com.be.kotlin.grade.model.Study
+import com.be.kotlin.grade.repository.ClassRepository
+import com.be.kotlin.grade.repository.StudentRepository
+import com.be.kotlin.grade.repository.StudyRepository
 import com.be.kotlin.grade.repository.SubjectRepository
 import com.be.kotlin.grade.service.interf.ISubject
 import org.springframework.data.domain.PageRequest
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.Month
 
 @Service
 class SubjectService(
     private val subjectRepository: SubjectRepository,
     private val subjectMapper: SubjectMapper,
+    private val classRepository: ClassRepository,
+    private val studentRepository: StudentRepository,
+    private val studyRepository: StudyRepository
 ): ISubject {
     override fun addSubject(subject: SubjectDTO): Response {
         if (subjectRepository.findById(subject.id).isPresent) {
@@ -88,6 +101,54 @@ class SubjectService(
             totalElements = subjectPage.totalElements,  // Lấy tổng số phần tử
             currentPage = page,
             listSubjectDTO = subjectDTOs
+        )
+    }
+
+    override fun getNextSemester(): Response {
+        val time = LocalDateTime.now()
+        val nextSemester: Int
+        nextSemester = when (time.month) {
+            in Month.JULY..Month.AUGUST -> time.year % 100 * 10 + 1 // Năm tiếp theo, kỳ 1
+            in Month.SEPTEMBER..Month.DECEMBER -> time.year % 100 * 10 + 2 // Kỳ 2 của năm hiện tại
+            in Month.JANUARY..Month.JUNE -> (time.year % 100 - 1) * 10 + 3 // Kỳ 3 của năm hiện tại
+            else -> throw IllegalStateException("Invalid month")
+        }
+        return Response(
+            statusCode = 200,
+            message = "This is the next semester",
+            nextSemester = nextSemester
+        )
+    }
+
+    override fun registerSubject(register: SubjectRegisterDTO): Response {
+        val existingSubject = subjectRepository.findById(register.subjectId).
+            orElseThrow { AppException(ErrorCode.SUBJECT_NOT_FOUND) }
+
+        var newClass = classRepository.findBySubjectAndNameAndSemester(register.subjectId, "L00", register.semester)
+        if (newClass == null) {
+            newClass = Class (
+                name = "L00",
+                subject = existingSubject,
+                semester = register.semester
+            )
+            classRepository.save(newClass)
+        }
+
+        val username = SecurityContextHolder.getContext().authentication.name
+        val student = studentRepository.findByUserUsername(username).orElse(null)
+            ?: throw AppException(ErrorCode.STUDENT_NOT_FOUND)
+
+        val newStudy = Study(
+            student = student,
+            studyClass = newClass,
+            subject = existingSubject,
+            score = 0F
+        )
+        studyRepository.save(newStudy)
+        return Response (
+            statusCode = 200,
+            message = "Subject registered successfully",
+            subjectRegisterDTO = register
         )
     }
 }

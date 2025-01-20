@@ -33,21 +33,16 @@ class ClassService(
         val subject = subjectRepository.findById(classDTO.subjectId)
             .orElseThrow { AppException(ErrorCode.SUBJECT_NOT_FOUND) }
 
-        val newClass = classMapper.toClass(classDTO, subject)
-
-        val context = SecurityContextHolder.getContext()
-        val username = context.authentication.name
-        val lecturer = userRepository.findLecturersByUsername(username)
-
-        if (lecturer.id?.let { classRepository.existsByLecturerSubjectAndClassName(it, subject.id, newClass.name) } == true) {
+        if (classRepository.findBySubjectAndNameAndSemester(classDTO.subjectId, classDTO.name, classDTO.semester) != null)
             throw AppException(ErrorCode.CLASS_EXISTED)
+
+        val newClass = classMapper.toClass(classDTO, subject)
+        if (newClass != null) {
+            classRepository.save(newClass)
         }
 
-        newClass.lecturers.add(lecturer)
-        classRepository.save(newClass)
-
         return Response(
-            classDTO = classMapper.toClassDTO(newClass),
+            classDTO = newClass?.let { classMapper.toClassDTO(it) },
             statusCode = 200,
             message = "Class added successfully"
         )
@@ -67,11 +62,12 @@ class ClassService(
             .orElseThrow { AppException(ErrorCode.SUBJECT_NOT_FOUND) }
 
         val updatedClass = classMapper.toClass(classDTO, subject)
-        updatedClass.lecturers.add(lecturer)
-        classRepository.save(updatedClass)
+        if (updatedClass != null) {
+            classRepository.save(updatedClass)
+        }
 
         return Response(
-            classDTO = classMapper.toClassDTO(updatedClass),
+            classDTO = updatedClass?.let { classMapper.toClassDTO(it) },
             statusCode = 200,
             message = "Class updated successfully"
         )
@@ -80,12 +76,6 @@ class ClassService(
     override fun deleteClass(id: Long): Response {
         val existingClass = classRepository.findById(id)
             .orElseThrow { AppException(ErrorCode.CLASS_NOT_FOUND) }
-
-        val context = SecurityContextHolder.getContext()
-        val username = context.authentication.name
-        val lecturer = userRepository.findLecturersByUsername(username)
-        if (!existingClass.lecturers.contains(lecturer))
-            throw AppException(ErrorCode.CLASS_INVALID)
 
         classRepository.deleteById(id)
 
