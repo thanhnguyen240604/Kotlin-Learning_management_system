@@ -9,7 +9,6 @@ import org.springframework.web.multipart.MultipartFile
 
 interface IStudy {
     fun addStudyStudent(studyDTO: StudyDTO): Response
-    fun processExcel (file: MultipartFile): Response
     fun deleteStudyStudent(studyIdD: Long): Response
     fun getStudyById(studyIdD: Long): Response
     fun updateStudyStudent(study: StudyDTO): Response

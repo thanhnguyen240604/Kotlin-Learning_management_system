@@ -36,6 +36,20 @@ class ClassService(
         if (classRepository.findBySubjectAndNameAndSemester(classDTO.subjectId, classDTO.name, classDTO.semester) != null)
             throw AppException(ErrorCode.CLASS_EXISTED)
 
+        val existingClasses = classRepository.findAllBySubjectAndSemester(classDTO.subjectId, classDTO.semester)
+
+        // Kiểm tra trùng giờ học
+        existingClasses.forEach { existingClass ->
+            classDTO.dayOfWeek.forEach { newDay ->
+                if (newDay in existingClass.daysOfWeek) {
+                    val isOverlapping = !(classDTO.endTime <= existingClass.startTime || classDTO.startTime >= existingClass.endTime)
+                    if (isOverlapping) {
+                        throw AppException(ErrorCode.CLASS_TIME_CONFLICT)
+                    }
+                }
+            }
+        }
+
         val newClass = classMapper.toClass(classDTO, subject)
         if (newClass != null) {
             classRepository.save(newClass)

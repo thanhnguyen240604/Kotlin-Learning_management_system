@@ -22,6 +22,7 @@ enum class ErrorCode(val code: Int, val message: String) {
     FACULTY_MAJOR_MISMATCH (400, "Student major and faculty does not match"),
     PASSWORD_NOT_MATCH(400, "Your confirm password does not match"),
     PASSWORD_NOT_CHANGE(400, "Your new password cannot be the same as the old one"),
+    CLASS_TIME_CONFLICT(400, "Class time conflict"),
 
     //Unauthenticated
     UNAUTHENTICATED_USERNAME_PASSWORD(401, "Please check email or password again"),

@@ -21,12 +21,6 @@ class StudyMapper (
             }
         }
         
-        val subject = studyDTO.subjectId.let {
-            subjectRepository.findById(it).orElseThrow {
-                AppException(ErrorCode.SUBJECT_NOT_FOUND)
-            }
-        }
-        
         val studyClass = studyDTO.classId.let {
             classRepository.findById(it!!).orElseThrow {
                 AppException(ErrorCode.CLASS_NOT_FOUND)
@@ -36,22 +30,20 @@ class StudyMapper (
         return Study(
             id = studyDTO.id,
             student = student,
-            subject = subject,
             studyClass = studyClass,
-            semester = studyDTO.semester,
             score = studyDTO.score ?: 0f,
         )
-        }
+    }
 
-    
+    fun toListStudy(studyList: List<StudyDTO>): List<Study> {
+        return studyList.mapNotNull { studyDTO -> toStudy(studyDTO) }
+    }
 
     fun toStudyDTO(study: Study): StudyDTO {
         return StudyDTO(
             id = study.id,
             studentId = study.student.studentId,
-            subjectId = study.subject.id,
             classId = study.studyClass.id,
-            semester = study.semester,
             score = study.score,
             gradeList = study.gradesList
         )

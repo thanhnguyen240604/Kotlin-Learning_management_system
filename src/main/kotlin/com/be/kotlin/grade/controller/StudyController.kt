@@ -28,12 +28,7 @@ class StudyController (
         val response = studyService.addStudyStudent(study)
         return ResponseEntity.status(response.statusCode).body(response)
     }
-    @PreAuthorize("hasRole('ROLE_LECTURER')")
-    @PostMapping("/addByExcel")
-    fun addStudyStudent(@RequestParam("file") file: MultipartFile): ResponseEntity<Response> {
-        val response = studyService.processExcel(file)
-        return ResponseEntity.status(response.statusCode).body(response)
-    }
+
     @PreAuthorize("hasRole('ROLE_LECTURER')")
     @PutMapping("/update")
     fun updateStudyStudent(@RequestBody study: StudyDTO): ResponseEntity<Response> {

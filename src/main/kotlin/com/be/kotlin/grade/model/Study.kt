@@ -13,17 +13,17 @@ data class Study(
     @ManyToOne
     @JoinColumn(name = "student_id", referencedColumnName = "student_id", nullable = false)
     var student: Student = Student(),
-
-    @ManyToOne
-    @JoinColumn(name = "subject_id", referencedColumnName = "id", nullable = false)
-    var subject: Subject = Subject(),
+//
+//    @ManyToOne
+//    @JoinColumn(name = "subject_id", referencedColumnName = "id", nullable = false)
+//    var subject: Subject = Subject(),
 
     @ManyToOne
     @JoinColumn(name = "class_id", referencedColumnName = "id", nullable = false)
     var studyClass: Class = Class(),
-
-    @Column(name = "semester", nullable = false)
-    var semester: Int = 0,
+//
+//    @Column(name = "semester", nullable = false)
+//    var semester: Int = 0,
 
     @Column(name = "elective_study")
     var isElective: Boolean = false,

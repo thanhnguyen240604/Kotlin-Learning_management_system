@@ -141,7 +141,6 @@ class SubjectService(
         val newStudy = Study(
             student = student,
             studyClass = newClass,
-            subject = existingSubject,
             score = 0F
         )
         studyRepository.save(newStudy)
