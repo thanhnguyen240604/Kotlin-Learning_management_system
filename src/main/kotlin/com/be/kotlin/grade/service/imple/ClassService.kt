@@ -66,12 +66,6 @@ class ClassService(
         val existingClass = classRepository.findById(classDTO.id!!)
             .orElseThrow { AppException(ErrorCode.CLASS_NOT_FOUND) }
 
-        val context = SecurityContextHolder.getContext()
-        val username = context.authentication.name
-        val lecturer = userRepository.findLecturersByUsername(username)
-        if (!existingClass.lecturers.contains(lecturer))
-            throw AppException(ErrorCode.CLASS_INVALID)
-
         val subject = subjectRepository.findById(classDTO.subjectId)
             .orElseThrow { AppException(ErrorCode.SUBJECT_NOT_FOUND) }
 

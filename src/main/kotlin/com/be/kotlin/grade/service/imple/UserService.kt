@@ -23,6 +23,45 @@ class UserService(
     private var studentRepository: StudentRepository,
     private var studentMapper: StudentMapper
 ): IUser {
+    override fun getMyInfo(): Response {
+        val context = SecurityContextHolder.getContext()
+        val username = context.authentication.name
+        val user = userRepository.findByUsername(username)
+            .orElseThrow { AppException(ErrorCode.USER_NOT_FOUND) }
+        if (user.role == "STUDENT"){
+            val student = studentRepository.findByUserUsername(username).orElseThrow{ AppException(ErrorCode.STUDENT_NOT_FOUND) }
+            return Response(
+                statusCode = 200,
+                message = "My info fetch successfully",
+                userDTO = userMapper.toUserDTO(user),
+                studentDTO = studentMapper.toStudentDTO(student)
+            )
+        }
+        return Response(
+            statusCode = 200,
+            message = "My info fetch successfully",
+            userDTO = userMapper.toUserDTO(user),
+        )
+    }
+
+    override fun createAdmin(userRequestDTO: UserRequestDTO): Response {
+        if (userRepository.existsByUsername(userRequestDTO.username)) {
+            throw AppException(ErrorCode.USER_EXISTED)
+        }
+
+        val user = userMapper.toUser(userRequestDTO)
+        user.role = "ADMIN"
+        val passwordEncoder = BCryptPasswordEncoder(5)
+        user.password = passwordEncoder.encode(user.password)
+        userRepository.save(user)
+
+        return Response (
+            statusCode = 200,
+            message = "Admin created successfully",
+            userDTO = userMapper.toUserDTO(user)
+        )
+    }
+
     override fun createLecturer(userRequestDTO: UserRequestDTO): Response {
         if (userRepository.existsByUsername(userRequestDTO.username)) {
             throw AppException(ErrorCode.USER_EXISTED)
@@ -86,27 +125,6 @@ class UserService(
         return Response(
             statusCode = 200,
             message = "Update info successfully"
-        )
-    }
-
-    override fun getMyInfo(): Response {
-        val context = SecurityContextHolder.getContext()
-        val username = context.authentication.name
-        val user = userRepository.findByUsername(username)
-        .orElseThrow { AppException(ErrorCode.USER_NOT_FOUND) }
-        if (user.role == "STUDENT"){
-            val student = studentRepository.findByUserUsername(username).orElseThrow{ AppException(ErrorCode.STUDENT_NOT_FOUND) }
-            return Response(
-                statusCode = 200,
-                message = "My info fetch successfully",
-                userDTO = userMapper.toUserDTO(user),
-                studentDTO = studentMapper.toStudentDTO(student)
-            )
-        }
-        return Response(
-            statusCode = 200,
-            message = "My info fetch successfully",
-            userDTO = userMapper.toUserDTO(user),
         )
     }
 }

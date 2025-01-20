@@ -33,6 +33,15 @@ class AuthenticateService(
 ) : IAuthenticate {
 
     override fun authenticate(request: AuthenticateDTO): Response {
+        val specialUsers = System.getProperty("SPECIAL_USERS")?.split(",") ?: emptyList()
+
+        val sanitizedUsername = request.username.trim()
+
+        // Kiểm tra đuôi email, bỏ qua nếu thuộc danh sách ngoại lệ
+        if (!specialUsers.contains(sanitizedUsername) && !sanitizedUsername.endsWith("@hcmut.edu.vn")) {
+            throw AppException(ErrorCode.UNAUTHENTICATED_USERNAME_DOMAIN)
+        }
+
         val user = userRepository.findByUsername(request.username)
             .orElseThrow { AppException(ErrorCode.UNAUTHENTICATED_USERNAME_PASSWORD) }
 

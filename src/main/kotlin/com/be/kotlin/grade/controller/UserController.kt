@@ -29,6 +29,13 @@ class UserController(
     }
 
     @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/create-admin")
+    fun createAdmin(@RequestBody userRequestDTO: UserRequestDTO): ResponseEntity<Response> {
+        val response = userService.createAdmin(userRequestDTO)
+        return ResponseEntity.status(response.statusCode).body(response)
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/create-lecturers")
     fun createLecturer(@RequestBody userRequestDTO: UserRequestDTO): ResponseEntity<Response> {
         val response = userService.createLecturer(userRequestDTO)
