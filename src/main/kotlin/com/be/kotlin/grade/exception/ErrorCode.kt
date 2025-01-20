@@ -11,7 +11,6 @@ enum class ErrorCode(val code: Int, val message: String) {
     SCORE_INVALID(400, "Score must be between 0 and 10"),
     WEIGHT_LIMIT_INVALID(400, "Weight exceeds limit"),
     GRADE_NOT_MATCH_INVALID(400, "Grade does not belong to the specified study"),
-    CLASS_INVALID(400, "Class not belong to the specified lecturer"),
     OTP_INVALID(400, "OTP invalid"),
     OTP_EXPIRED(400, "OTP has expired"),
     CLASS_ALREADY_HAS_LECTURERS(400, "Class already has enough lecturers"),
@@ -27,6 +26,7 @@ enum class ErrorCode(val code: Int, val message: String) {
     //Unauthenticated
     UNAUTHENTICATED_USERNAME_PASSWORD(401, "Please check email or password again"),
     UNAUTHENTICATED_USERNAME(401, "Please check email again"),
+    UNAUTHENTICATED_USERNAME_DOMAIN(401, "Please enter @hcmut.edu.vn email "),
 
     //Resource not found
     USER_NOT_FOUND(404, "User not found"),

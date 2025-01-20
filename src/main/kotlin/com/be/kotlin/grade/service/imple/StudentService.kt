@@ -25,6 +25,12 @@ class StudentService(
     private val studyRepository: StudyRepository
 ) : IStudent {
     override fun register(userDTO: UserRequestDTO, studentDTO: StudentDTO): Response {
+        val sanitizedUsername = userDTO.username.trim()
+
+        // Kiểm tra đuôi email, bỏ qua nếu thuộc danh sách ngoại lệ
+        if ( !sanitizedUsername.endsWith("@hcmut.edu.vn")) {
+            throw AppException(ErrorCode.UNAUTHENTICATED_USERNAME_DOMAIN)
+        }
 
         if (userRepository.existsByUsername(userDTO.username) || studentRepository.existsByStudentId(studentDTO.studentId)) {
             throw AppException(ErrorCode.USER_EXISTED)

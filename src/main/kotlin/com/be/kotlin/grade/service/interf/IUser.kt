@@ -12,4 +12,5 @@ interface IUser {
     fun deleteUser(id: Long):Response;
     fun updateInfo(userDTO: UserUpdateRequestDTO): Response
     fun getMyInfo(): Response
+    fun createAdmin(userRequestDTO: UserRequestDTO): Response
 }

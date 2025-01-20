@@ -28,6 +28,7 @@ fun main(args: Array<String>) {
 		System.setProperty("SERVER_PORT", dotenv["SERVER_PORT"] ?: "")
 		System.setProperty("SERVER_CONTEXT_PATH", dotenv["SERVER_CONTEXT_PATH"] ?: "")
 		System.setProperty("JWT_SIGNER_KEY", dotenv["JWT_SIGNER_KEY"] ?: "")
+		System.setProperty("SPECIAL_USERS", dotenv["SPECIAL_USERS"] ?: "")
 		System.setProperty("SPRING_MAIL_HOST", dotenv["SPRING_MAIL_HOST"] ?: "")
 		System.setProperty("SPRING_MAIL_PORT", dotenv["SPRING_MAIL_PORT"] ?: "")
 		System.setProperty("SPRING_MAIL_USERNAME", dotenv["SPRING_MAIL_USERNAME"] ?: "")
