@@ -5,16 +5,16 @@ import jakarta.validation.constraints.NotNull
 
 data class SubjectDTO (
     @NotNull(message = "Id is required")
-    var id: String = "",
+    val id: String = "",
 
     @NotBlank(message = "Subject name is required")
-    var name: String,
+    val name: String,
 
     @NotNull(message = "Subject credits is required")
-    var credits: Int = 0,
+    val credits: Int = 0,
 
     @NotBlank(message = "Subject faculty is required")
-    var faculty: String,
+    val faculty: String,
 
-    var major: String? = null
+    val major: String? = null
 )

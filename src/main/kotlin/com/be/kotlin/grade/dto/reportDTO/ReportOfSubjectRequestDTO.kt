@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotNull
 
 data class ReportOfSubjectRequestDTO (
     @NotNull(message = "Id is required")
-    var subjectId: String,
-    var semester: Int?,
-    var year: Int?
+    val subjectId: String,
+    val semester: Int?,
+    val year: Int?
 )

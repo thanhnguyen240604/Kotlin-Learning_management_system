@@ -43,4 +43,15 @@ interface ClassRepository: JpaRepository<Class, Long> {
         @Param("lecturerId") lecturerId: Long,
         pageable: Pageable
     ): Page<Class>
+
+    @Query("""
+        SELECT DISTINCT c 
+        FROM Class c
+        WHERE c.name = :className AND c.subject.id = :subjectId AND c.semester = :semester
+    """)
+    fun findBySubjectAndNameAndSemester(
+        @Param("subjectId") subjectId: String,
+        @Param("className") className: String,
+        @Param("semester") semester: Int
+    ): Class?
 }

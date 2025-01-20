@@ -3,6 +3,7 @@ package com.be.kotlin.grade.controller
 import com.be.kotlin.grade.dto.Response
 import com.be.kotlin.grade.dto.classDTO.ClassDTO
 import com.be.kotlin.grade.service.imple.ClassService
+import com.be.kotlin.grade.service.interf.IClass
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
@@ -11,23 +12,25 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/classes")
-class ClassController(private val classService: ClassService) {
+class ClassController(
+    private val classService: IClass
+) {
 
-    @PreAuthorize("hasRole('ROLE_LECTURER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/add")
     fun addClass(@RequestBody classDTO: ClassDTO): ResponseEntity<Response> {
         val response = classService.addClass(classDTO)
         return ResponseEntity.status(response.statusCode).body(response)
     }
 
-    @PreAuthorize("hasRole('ROLE_LECTURER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/update")
     fun updateClass(@RequestBody classDTO: ClassDTO): ResponseEntity<Response> {
         val response = classService.updateClass(classDTO)
         return ResponseEntity.status(response.statusCode).body(response)
     }
 
-    @PreAuthorize("hasRole('ROLE_LECTURER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/delete/{id}")
     fun deleteClass(@PathVariable id: Long): ResponseEntity<Response> {
         val response = classService.deleteClass(id)
@@ -79,6 +82,7 @@ class ClassController(private val classService: ClassService) {
         return ResponseEntity.status(response.statusCode).body(response)
     }
 
+    //Sẽ fix
     @PreAuthorize("hasRole('ROLE_LECTURER')")
     @PostMapping("/register/{classId}")
     fun registerLecturerToClass(@PathVariable classId: Long): ResponseEntity<Response> {

@@ -4,5 +4,5 @@ import jakarta.validation.constraints.NotBlank
 
 class SubjectIdDTO (
     @NotBlank(message = "Id is required")
-    var id: String = ""
+    val id: String = ""
 )

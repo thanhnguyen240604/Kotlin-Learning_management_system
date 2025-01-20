@@ -20,13 +20,13 @@ data class Study(
 
     @ManyToOne
     @JoinColumn(name = "class_id", referencedColumnName = "id", nullable = false)
-    val studyClass: Class = Class(),
+    var studyClass: Class = Class(),
 
     @Column(name = "semester", nullable = false)
-    val semester: Int = 0,
+    var semester: Int = 0,
 
-    @Column(name = "elective_study", nullable = false)
-    val isElective: Boolean = false,
+    @Column(name = "elective_study")
+    var isElective: Boolean = false,
 
     var score: Float = 13F,
 

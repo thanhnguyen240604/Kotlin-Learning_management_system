@@ -11,6 +11,7 @@ import com.be.kotlin.grade.dto.loginDTO.ForgotPasswordRequest
 import com.be.kotlin.grade.dto.reportDTO.ReportOfSubjectResponseDTO
 import com.be.kotlin.grade.dto.studentDTO.StudentDTO
 import com.be.kotlin.grade.dto.studentDTO.StudentResponseDTO
+import com.be.kotlin.grade.dto.subjectDTO.SubjectRegisterDTO
 import org.springframework.core.io.FileSystemResource
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonInclude
@@ -19,38 +20,44 @@ import com.fasterxml.jackson.annotation.JsonInclude
 data class Response(
     var statusCode: Int = 0,
     var message: String = "",
-    var role: String? = null,
-    var token: String? = null,
-    var authenticated: Boolean? = null,
-    val gpa : Float? = null,
+    val role: String? = null,
+    val token: String? = null,
+    val authenticated: Boolean? = null,
 
     // DTO response
-    var authenticateDTO: AuthenticateDTO? = null,
-    var introspectDTO: IntrospectDTO?= null,
-    var userDTO: UserResponseDTO? = null,
-    var subjectDTO: SubjectDTO? = null,
-    var studyDTO: StudyDTO? = null,
-    var gradeDTO: GradeDTO? = null,
-    var classDTO: ClassDTO? = null,
-    var studentDTO: StudentDTO? = null,
-    var reportSubjectDTO: ReportOfSubjectResponseDTO? = null,
-    var forgotPasswordDTO: ForgotPasswordRequest? = null,
+    val authenticateDTO: AuthenticateDTO? = null,
+    val introspectDTO: IntrospectDTO?= null,
+    val userDTO: UserResponseDTO? = null,
+    val subjectDTO: SubjectDTO? = null,
+    val studyDTO: StudyDTO? = null,
+    val gradeDTO: GradeDTO? = null,
+    val classDTO: ClassDTO? = null,
+    val studentDTO: StudentDTO? = null,
+    val reportSubjectDTO: ReportOfSubjectResponseDTO? = null,
+    val forgotPasswordDTO: ForgotPasswordRequest? = null,
+    val subjectRegisterDTO: SubjectRegisterDTO? = null,
 
     // List DTO response
-    var listUserDTO: List<UserResponseDTO>? = null,
-    var listSubjectDTO: List<SubjectDTO>? = null,
-    var listClassDTO: List<ClassDTO>? = null,
-    var listStudyDTO: List<StudyDTO>? = null,
-    var listGradeDTO: List<GradeDTO>? = null,
-    var listStudent: List<StudentDTO>? = null,
-    var listStudentDTO: MutableList<StudentResponseDTO>? = null,
+    val listUserDTO: List<UserResponseDTO>? = null,
+    val listSubjectDTO: List<SubjectDTO>? = null,
+    val listClassDTO: List<ClassDTO>? = null,
+    val listStudyDTO: List<StudyDTO>? = null,
+    val listGradeDTO: List<GradeDTO>? = null,
+    val listStudent: List<StudentDTO>? = null,
+    val listStudentDTO: MutableList<StudentResponseDTO>? = null,
     val lecturers: List<UserResponseDTO>? = null,
-    var totalCredits : Int? = null,
+    val totalCredits : Int? = null,
+
+    //Next semester
+    val nextSemester: Int? = null,
+
+    //GPA
+    val gpa : Float? = null,
 
     // Pagination
-    var totalPages: Int? = null,
-    var totalElements: Long? = null,
-    var currentPage: Int? = null,
+    val totalPages: Int? = null,
+    val totalElements: Long? = null,
+    val currentPage: Int? = null,
 
     // File attachment
     @JsonIgnore
