@@ -11,27 +11,51 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface StudyRepository: JpaRepository<Study, Long> {
-    fun findByStudentStudentIdAndSubjectIdAndSemester(
-        studentId: Long,
-        subjectId: String,
-        semester: Int
+    @Query("""
+        SELECT DISTINCT s 
+        FROM Study s
+        WHERE s.student.studentId = :studentId AND s.studyClass.subject.id = :subjectId AND s.studyClass.semester = :semester
+    """)
+    fun findByStudentIdAndSubjectIdAndSemester(
+        @Param("studentId") studentId: Long,
+        @Param("subjectId") subjectId: String,
+        @Param("semester") semester: Int
     ): Study?
 
     @Query("SELECT s.studyClass.id FROM Study s WHERE s.student.studentId = :studentId")
     fun findClassIdsByStudentId(@Param("studentId") studentId: Long): List<Long>
 
-    fun findByStudentUserUsernameAndSemester(username: String, semester: Int, pageable: Pageable): Page<Study>
-    fun findByStudentUserUsernameAndSemester(username: String, semester: Int): List<Study>
+    @Query("""
+        SELECT DISTINCT s 
+        FROM Study s
+        WHERE s.student.user.username = :username AND s.studyClass.semester = :semester
+    """)
+    fun findByStudentUserUsernameAndSemester(
+        @Param("username") username: String,
+        @Param("semester") semester: Int,
+        pageable: Pageable
+    ): Page<Study>
+
+    @Query("""
+        SELECT DISTINCT s 
+        FROM Study s
+        WHERE s.student.user.username = :username AND s.studyClass.semester = :semester
+    """)
+    fun findByStudentUserUsernameAndSemester(
+        @Param("username") username: String,
+        @Param("semester") semester: Int
+    ): List<Study>
+
     fun findByStudyClass(studyClass : Class) : MutableList<Study>
 
     @Query(
         """
     SELECT COUNT(s)
     FROM Study s
-    WHERE s.subject.id = :subjectId
+    WHERE s.studyClass.subject.id = :subjectId
       AND s.score >= :minScore
       AND s.score < :maxScore
-      AND s.semester BETWEEN :startSemester AND :endSemester
+      AND s.studyClass.semester BETWEEN :startSemester AND :endSemester
     """
     )
     fun countByScoreRangeAndSubjectIdAndSemester(
@@ -47,7 +71,7 @@ interface StudyRepository: JpaRepository<Study, Long> {
         """
         SELECT COUNT(s)
         FROM Study s
-        WHERE s.subject.id = :subjectId
+        WHERE s.studyClass.subject.id = :subjectId
           AND s.score >= :minScore
           AND s.score < :maxScore
         """
@@ -61,11 +85,4 @@ interface StudyRepository: JpaRepository<Study, Long> {
     @Query("SELECT s.student.studentId FROM Study s WHERE s.studyClass.id = :classId")
     fun findStudentIdByClassId(@Param("classId") classId: Long): List<Long>
 
-    @Query("SELECT s.id FROM Study s WHERE s.student.studentId = :studentId AND s.subject.id = :subjectId AND s.studyClass.id = :classId AND s.semester = :semester")
-    fun findStudyIdByClassIdAndSubjectIdAndStudentIdAndSemester(
-        @Param("classId") classId: Long,
-        @Param("subjectId") subjectId: String,
-        @Param("studentId") studentId: Long,
-        @Param("semester") semester: Int
-    ): Long?
 }

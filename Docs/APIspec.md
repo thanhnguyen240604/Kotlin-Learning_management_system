@@ -782,9 +782,7 @@
 ```json
 {
   "studentId": 2212870,
-  "subjectId": "CO2000",
-  "classId": 1,
-  "semester": 1
+  "classId": 1
 }
 ```
 
@@ -855,9 +853,7 @@
 ```json
 {
   "studentId": 2212870,
-  "subjectId": "CO2000",
   "classId": 1,
-  "semester": 1,
   "gradesList": [
     {
       "gradeType": "Midterm",
