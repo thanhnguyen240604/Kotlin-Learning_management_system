@@ -85,4 +85,12 @@ interface StudyRepository: JpaRepository<Study, Long> {
     @Query("SELECT s.student.studentId FROM Study s WHERE s.studyClass.id = :classId")
     fun findStudentIdByClassId(@Param("classId") classId: Long): List<Long>
 
+    @Query(
+        """
+        SELECT COUNT(s)
+        FROM Study s
+        WHERE s.studyClass.id = :classId
+        """
+    )
+    fun countByClassId(@Param("classId") classId: Long): Int?
 }

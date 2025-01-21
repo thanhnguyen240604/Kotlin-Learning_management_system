@@ -120,16 +120,21 @@ class SubjectService(
         )
     }
 
-    override fun registerSubject(register: SubjectRegisterDTO): Response {
-        val existingSubject = subjectRepository.findById(register.subjectId).
+    override fun registerSubject(subjectRegister: SubjectRegisterDTO): Response {
+        val existingSubject = subjectRepository.findById(subjectRegister.subjectId).
             orElseThrow { AppException(ErrorCode.SUBJECT_NOT_FOUND) }
 
-        var newClass = classRepository.findBySubjectAndNameAndSemester(register.subjectId, "L00", register.semester)
+        var newClass = classRepository.findBySubjectAndNameAndSemester(
+            subjectRegister.subjectId,
+            "L00",
+            subjectRegister.semester
+        )
+
         if (newClass == null) {
             newClass = Class (
                 name = "L00",
                 subject = existingSubject,
-                semester = register.semester
+                semester = subjectRegister.semester
             )
             classRepository.save(newClass)
         }
@@ -147,7 +152,27 @@ class SubjectService(
         return Response (
             statusCode = 200,
             message = "Subject registered successfully",
-            subjectRegisterDTO = register
+            subjectRegisterDTO = subjectRegister
+        )
+    }
+
+    override fun getRegisterNumber(subjectRegister: SubjectRegisterDTO): Response {
+        val existingClass = classRepository.findBySubjectAndNameAndSemester(
+            subjectRegister.subjectId,
+            "L00",
+            subjectRegister.semester
+        )
+
+        val registerNum = existingClass?.id?.let { studyRepository.countByClassId(it) } ?: 0
+
+        return Response(
+            statusCode = 200,
+            message = if (existingClass == null) {
+                "No student has registered this subject this semester yet"
+            } else {
+                "Number of student registered fetch successfully"
+            },
+            registerNum = registerNum
         )
     }
 }

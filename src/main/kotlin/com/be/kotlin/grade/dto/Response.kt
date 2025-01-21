@@ -54,6 +54,9 @@ data class Response(
     //GPA
     val gpa : Float? = null,
 
+    //Number of register subject
+    val registerNum: Int? = null,
+
     // Pagination
     val totalPages: Int? = null,
     val totalElements: Long? = null,
