@@ -55,6 +55,13 @@ class SubjectController(
         return ResponseEntity.status(response.statusCode).body(response)
     }
 
+    @PreAuthorize("hasRole('ROLE_STUDENT') OR hasRole('ROLE_LECTURER') OR hasRole('ROLE_ADMIN')")
+    @GetMapping("/next-semester")
+    fun getNextSemester(): ResponseEntity<Response> {
+        val response = subjectService.getNextSemester()
+        return ResponseEntity.status(response.statusCode).body(response)
+    }
+
     @PreAuthorize("hasRole('ROLE_STUDENT')")
     @PostMapping("/register")
     fun registerSubject(@RequestBody subjectRegister: SubjectRegisterDTO): ResponseEntity<Response> {
@@ -63,9 +70,16 @@ class SubjectController(
     }
 
     @PreAuthorize("hasRole('ROLE_STUDENT') OR hasRole('ROLE_LECTURER') OR hasRole('ROLE_ADMIN')")
-    @GetMapping("/next-semester")
-    fun getNextSemester(): ResponseEntity<Response> {
-        val response = subjectService.getNextSemester()
+    @PostMapping("/register-num")
+    fun getRegisterNumber(@RequestBody subjectRequest: SubjectRegisterDTO): ResponseEntity<Response> {
+        val response = subjectService.getRegisterNumber(subjectRequest)
+        return ResponseEntity.status(response.statusCode).body(response)
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PostMapping("/open")
+    fun openClasses(@RequestBody subjectRequest: SubjectRegisterDTO): ResponseEntity<Response> {
+        val response = subjectService.openClasses(subjectRequest)
         return ResponseEntity.status(response.statusCode).body(response)
     }
 }

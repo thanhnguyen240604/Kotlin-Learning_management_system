@@ -7,6 +7,7 @@ import com.be.kotlin.grade.dto.studyDTO.StudyDTO
 import com.be.kotlin.grade.dto.subjectDTO.SubjectDTO
 import com.be.kotlin.grade.dto.userDTO.UserResponseDTO
 import com.be.kotlin.grade.dto.classDTO.ClassDTO
+import com.be.kotlin.grade.dto.classDTO.UpdateClassDTO
 import com.be.kotlin.grade.dto.loginDTO.ForgotPasswordRequest
 import com.be.kotlin.grade.dto.reportDTO.ReportOfSubjectResponseDTO
 import com.be.kotlin.grade.dto.studentDTO.StudentDTO
@@ -32,6 +33,7 @@ data class Response(
     val studyDTO: StudyDTO? = null,
     val gradeDTO: GradeDTO? = null,
     val classDTO: ClassDTO? = null,
+    val updateClassDTO: UpdateClassDTO? = null,
     val studentDTO: StudentDTO? = null,
     val reportSubjectDTO: ReportOfSubjectResponseDTO? = null,
     val forgotPasswordDTO: ForgotPasswordRequest? = null,
@@ -53,6 +55,9 @@ data class Response(
 
     //GPA
     val gpa : Float? = null,
+
+    //Number of register subject
+    val registerNum: Int? = null,
 
     // Pagination
     val totalPages: Int? = null,

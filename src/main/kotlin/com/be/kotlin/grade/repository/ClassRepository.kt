@@ -64,4 +64,14 @@ interface ClassRepository: JpaRepository<Class, Long> {
         @Param("subjectId") subjectId: String,
         @Param("semester") semester: Int
     ): List<Class>
+
+    @Query("""
+        SELECT c.name 
+        FROM Class c 
+        WHERE c.subject.id = :subjectId AND c.semester = :semester
+    """)
+    fun getClassNameBySubjectIdAndSemester(
+        @Param("subjectId") subjectId: String,
+        @Param("semester") semester: Int
+    ): List<String>
 }

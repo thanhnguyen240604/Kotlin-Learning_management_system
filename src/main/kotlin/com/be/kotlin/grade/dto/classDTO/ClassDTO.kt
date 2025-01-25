@@ -9,7 +9,7 @@ import java.time.LocalTime
 data class ClassDTO(
     val id: Long? = null,
 
-    val lecturers: MutableList<User>? = mutableListOf(),
+    val lecturersUsernameList: MutableList<String>? = mutableListOf(),
 
     @NotBlank(message = "Class name is required")
     val name: String = "",

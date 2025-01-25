@@ -3,6 +3,7 @@ package com.be.kotlin.grade.service.imple
 import com.be.kotlin.grade.dto.Response
 import com.be.kotlin.grade.dto.studentDTO.StudentResponseDTO
 import com.be.kotlin.grade.dto.classDTO.ClassDTO
+import com.be.kotlin.grade.dto.classDTO.UpdateClassDTO
 import com.be.kotlin.grade.exception.AppException
 import com.be.kotlin.grade.exception.ErrorCode
 import com.be.kotlin.grade.mapper.ClassMapper
@@ -21,7 +22,6 @@ import org.springframework.stereotype.Service
 @Service
 class ClassService(
     private val classRepository: ClassRepository,
-    private val subjectRepository: SubjectRepository,
     private val userRepository: UserRepository,
     private val classMapper: ClassMapper,
     private val studyRepository: StudyRepository,
@@ -30,8 +30,6 @@ class ClassService(
 ) : IClass {
 
     override fun addClass(classDTO: ClassDTO): Response {
-        val subject = subjectRepository.findById(classDTO.subjectId)
-            .orElseThrow { AppException(ErrorCode.SUBJECT_NOT_FOUND) }
 
         if (classRepository.findBySubjectAndNameAndSemester(classDTO.subjectId, classDTO.name, classDTO.semester) != null)
             throw AppException(ErrorCode.CLASS_EXISTED)
@@ -50,7 +48,7 @@ class ClassService(
             }
         }
 
-        val newClass = classMapper.toClass(classDTO, subject)
+        val newClass = classMapper.toClass(classDTO)
         if (newClass != null) {
             classRepository.save(newClass)
         }
@@ -62,22 +60,24 @@ class ClassService(
         )
     }
 
-    override fun updateClass(classDTO: ClassDTO): Response {
-        val existingClass = classRepository.findById(classDTO.id!!)
+    override fun updateClass(updateClassDTO: UpdateClassDTO): Response {
+        val existingClass = classRepository.findById(updateClassDTO.id!!)
             .orElseThrow { AppException(ErrorCode.CLASS_NOT_FOUND) }
 
-        val subject = subjectRepository.findById(classDTO.subjectId)
-            .orElseThrow { AppException(ErrorCode.SUBJECT_NOT_FOUND) }
+        if (updateClassDTO.name in (classRepository.getClassNameBySubjectIdAndSemester(
+            existingClass.subject.id, existingClass.semester
+        )))
+            throw AppException(ErrorCode.CLASS_NAME_EXISTED)
 
-        val updatedClass = classMapper.toClass(classDTO, subject)
+        val updatedClass = classMapper.toClass(updateClassDTO)
         if (updatedClass != null) {
             classRepository.save(updatedClass)
         }
 
         return Response(
-            classDTO = updatedClass?.let { classMapper.toClassDTO(it) },
             statusCode = 200,
-            message = "Class updated successfully"
+            message = "Class updated successfully",
+            updateClassDTO = updateClassDTO
         )
     }
 

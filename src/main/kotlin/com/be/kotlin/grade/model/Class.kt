@@ -30,8 +30,12 @@ data class Class (
     var semester: Int = 0,
 
     @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "class_days", joinColumns = [JoinColumn(name = "class_id")])
-    @Column(name = "day_of_week")
+    @CollectionTable(
+        name = "class_days",
+        joinColumns = [JoinColumn(name = "class_id", referencedColumnName = "id")]
+    )
+    @Enumerated(EnumType.STRING)
+    @Column(name = "day_of_week", nullable = false)
     var daysOfWeek: MutableList<DayOfWeek> = mutableListOf(),
 
     @Column(name = "start_time")
@@ -39,4 +43,7 @@ data class Class (
 
     @Column(name = "end_time")
     var endTime: LocalTime = LocalTime.of(0, 0),
+
+    @Column(name = "max_student")
+    var maxStudent: Int? = 0,
 )

@@ -2,6 +2,7 @@ package com.be.kotlin.grade.controller
 
 import com.be.kotlin.grade.dto.Response
 import com.be.kotlin.grade.dto.classDTO.ClassDTO
+import com.be.kotlin.grade.dto.classDTO.UpdateClassDTO
 import com.be.kotlin.grade.service.imple.ClassService
 import com.be.kotlin.grade.service.interf.IClass
 import org.springframework.data.domain.PageRequest
@@ -25,8 +26,8 @@ class ClassController(
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/update")
-    fun updateClass(@RequestBody classDTO: ClassDTO): ResponseEntity<Response> {
-        val response = classService.updateClass(classDTO)
+    fun updateClass(@RequestBody updateClassDTO: UpdateClassDTO): ResponseEntity<Response> {
+        val response = classService.updateClass(updateClassDTO)
         return ResponseEntity.status(response.statusCode).body(response)
     }
 
