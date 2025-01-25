@@ -14,4 +14,5 @@ interface ISubject {
     fun getNextSemester(): Response
     fun registerSubject(subjectRegister: SubjectRegisterDTO): Response
     fun getRegisterNumber(subjectRegister: SubjectRegisterDTO): Response
+    fun openClasses(subjectRequest: SubjectRegisterDTO): Response
 }

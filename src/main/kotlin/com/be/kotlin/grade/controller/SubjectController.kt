@@ -75,4 +75,11 @@ class SubjectController(
         val response = subjectService.getRegisterNumber(subjectRequest)
         return ResponseEntity.status(response.statusCode).body(response)
     }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PostMapping("/open")
+    fun openClasses(@RequestBody subjectRequest: SubjectRegisterDTO): ResponseEntity<Response> {
+        val response = subjectService.openClasses(subjectRequest)
+        return ResponseEntity.status(response.statusCode).body(response)
+    }
 }
