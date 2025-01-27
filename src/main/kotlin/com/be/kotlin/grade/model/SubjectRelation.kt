@@ -13,11 +13,6 @@ data class SubjectRelation (
     @Column(name = "credit_type", nullable = false)
     var creditType: CreditType = CreditType.OPTIONAL,
 
-    @ManyToOne
-    @JoinColumn(name = "pre_subject_id", nullable = true)
-    val preSubject: Subject? = null,
-
-    @ManyToOne
-    @JoinColumn(name = "post_subject_id", nullable = true)
-    val postSubject: Subject? = null,
+    val preSubjectId: String? = null,
+    val postSubject: String? = null,
 )

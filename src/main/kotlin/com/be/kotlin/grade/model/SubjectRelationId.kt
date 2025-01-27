@@ -6,18 +6,18 @@ import jakarta.persistence.Embeddable
 @Embeddable
 data class SubjectRelationId(
     @Column(name = "subject_id", nullable = false)
-    val relationSubjectId: String = "",
+    val subjectId: String = "",
 
     @Column(name = "faculty_code", nullable = false)
-    val facultyCode: String = ""
+    val faculty: String = ""
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is SubjectRelationId) return false
-        return relationSubjectId == other.relationSubjectId && facultyCode == other.facultyCode
+        return subjectId == other.subjectId && faculty == other.faculty
     }
 
     override fun hashCode(): Int {
-        return relationSubjectId.hashCode() * 31 + facultyCode.hashCode()
+        return subjectId.hashCode() * 31 + faculty.hashCode()
     }
 }

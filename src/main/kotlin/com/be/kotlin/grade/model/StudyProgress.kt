@@ -11,7 +11,7 @@ data class StudyProgress (
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
 
-    @OneToOne
+    @OneToOne(cascade = [CascadeType.REMOVE], fetch = FetchType.LAZY)
     @JoinColumn(name= "student_id")
     val student: Student = Student(),
 
