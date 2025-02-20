@@ -11,13 +11,8 @@ data class SubjectRelation (
 
     @Enumerated(EnumType.STRING)
     @Column(name = "credit_type", nullable = false)
-    var creditType: CreditType = CreditType.OPTIONAL,
+    var creditType: CreditType = CreditType.ELECTIVE,
 
-    @ManyToOne
-    @JoinColumn(name = "pre_subject_id", nullable = true)
-    val preSubject: Subject? = null,
-
-    @ManyToOne
-    @JoinColumn(name = "post_subject_id", nullable = true)
-    val postSubject: Subject? = null,
+    val preSubjectId: String? = null,
+    val postSubject: String? = null,
 )

@@ -13,6 +13,7 @@ import com.be.kotlin.grade.dto.reportDTO.ReportOfSubjectResponseDTO
 import com.be.kotlin.grade.dto.studentDTO.StudentDTO
 import com.be.kotlin.grade.dto.studentDTO.StudentResponseDTO
 import com.be.kotlin.grade.dto.subjectDTO.SubjectRegisterDTO
+import com.be.kotlin.grade.dto.subjectDTO.SubjectRelationDTO
 import org.springframework.core.io.FileSystemResource
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonInclude
@@ -38,6 +39,7 @@ data class Response(
     val reportSubjectDTO: ReportOfSubjectResponseDTO? = null,
     val forgotPasswordDTO: ForgotPasswordRequest? = null,
     val subjectRegisterDTO: SubjectRegisterDTO? = null,
+    val subjectRelationDTO: SubjectRelationDTO? = null,
 
     // List DTO response
     val listUserDTO: List<UserResponseDTO>? = null,

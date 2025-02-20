@@ -93,4 +93,13 @@ interface StudyRepository: JpaRepository<Study, Long> {
         """
     )
     fun countByClassId(@Param("classId") classId: Long): Int?
+
+//    @Query(
+//        """
+//        SELECT Study s
+//        FROM Study
+//        WHERE s.student.studentId = :studentId AND s.isElective = true
+//        """
+//    )
+//    fun getListElectiveStudy(@Param("studentId")  studentId: Long): List<Study>
 }

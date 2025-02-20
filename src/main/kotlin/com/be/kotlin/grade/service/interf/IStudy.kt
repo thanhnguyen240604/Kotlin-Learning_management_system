@@ -4,7 +4,6 @@ import com.be.kotlin.grade.dto.studyDTO.StudyDTO
 import com.be.kotlin.grade.dto.Response
 import com.be.kotlin.grade.dto.reportDTO.ReportOfSubjectRequestDTO
 import org.springframework.data.domain.Pageable
-import org.springframework.web.multipart.MultipartFile
 
 
 interface IStudy {

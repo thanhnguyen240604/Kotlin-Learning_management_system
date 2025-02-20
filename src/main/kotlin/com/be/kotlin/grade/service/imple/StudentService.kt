@@ -12,6 +12,7 @@ import com.be.kotlin.grade.repository.StudentRepository
 import com.be.kotlin.grade.repository.StudyRepository
 import com.be.kotlin.grade.repository.UserRepository
 import com.be.kotlin.grade.service.interf.IStudent
+import com.be.kotlin.grade.service.interf.IStudyProgress
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
@@ -22,7 +23,8 @@ class StudentService(
     private val userRepository: UserRepository,
     private val userMapper: UserMapper,
     private val studentRepository: StudentRepository,
-    private val studyRepository: StudyRepository
+    private val studyRepository: StudyRepository,
+    private val studyProgressService: IStudyProgress
 ) : IStudent {
     override fun register(userDTO: UserRequestDTO, studentDTO: StudentDTO): Response {
         val sanitizedUsername = userDTO.username.trim()
@@ -45,6 +47,8 @@ class StudentService(
         val student = studentMapper.toStudent(studentDTO)
         student.user = user
         studentRepository.save(student)
+
+        studyProgressService.addStudyProgress(studentDTO.studentId)
 
         return Response(
             statusCode = 200,

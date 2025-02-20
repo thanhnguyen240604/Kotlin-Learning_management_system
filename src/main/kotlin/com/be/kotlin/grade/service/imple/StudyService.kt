@@ -32,12 +32,9 @@ class StudyService(
     private val studyRepository: StudyRepository,
     private val studyMapper: StudyMapper,
     private val studentRepository: StudentRepository,
-    private val subjectRepository: SubjectRepository,
-    private val classRepository: ClassRepository,
     private val userRepository: UserRepository,
     private val gradeRepository: GradeRepository,
     private val gradeMapper: GradeMapper,
-    private val GradeService: GradeService
 ) : IStudy {
     override fun addStudyStudent(studyDTO: StudyDTO): Response {
         val newStudy = studyMapper.toStudy(studyDTO)
@@ -48,7 +45,6 @@ class StudyService(
                 newStudy.studyClass.subject.id,
                 newStudy.studyClass.semester)
         }
-
         if (existingStudy != null) {
             throw AppException(ErrorCode.STUDY_EXISTED)
         }
@@ -96,10 +92,7 @@ class StudyService(
     }
 
     override fun updateStudyStudent(study: StudyDTO): Response {
-
-        val studyId: Long = study.id ?: throw AppException(ErrorCode.STUDY_ID_INVALID)
-
-        if (!studyRepository.findById(studyId).isPresent){
+        if (!study.id?.let { studyRepository.findById(it).isPresent }!!){
             throw AppException(ErrorCode.STUDY_NOT_FOUND)
         }
 
@@ -338,10 +331,6 @@ class StudyService(
         val matchingStudies = studyList.filter { it.studyClass.subject.id == subjectId }
 
         val studyDTOList = matchingStudies.map { studyMapper.toStudyDTO(it) }
-
-        // Find study that have same subjectId
-
-
         if (studyDTOList.isEmpty()) {
             return Response(
                 statusCode = 404,

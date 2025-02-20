@@ -147,13 +147,17 @@
 
 #### 1. Add Class
 - **URL**: `POST /grade-portal/classes/add`
-- **Authorization**: `LECTURER`
+- **Authorization**: `ADMIN`
 - **Description**: Thêm một lớp mới.
 - **Request Body**:
   ```json
   {
       "name": "Class Name",
-      "subjectId": "SubjectID"
+      "subjectId": "SubjectID",
+      "semester": 242,
+      "startTime": "09:00",
+      "endTime": "10:50",
+      "daysOfWeek": ["MONDAY"]
   }
   ```
 - **Response**:
@@ -165,7 +169,11 @@
         "classDTO": {
             "id": 1,
             "name": "Class Name",
-            "subjectId": "SubjectID"
+            "subjectId": "SubjectID",
+            "semester": 242,
+            "startTime": "09:00",
+            "endTime": "10:50",
+            "daysOfWeek": ["MONDAY"]
         } 
       }
     ```
@@ -186,14 +194,19 @@
 
 #### 2. Update Class
 - **URL**: `PUT /grade-portal/classes/update`
-- **Authorization**: `LECTURER`
+- **Authorization**: `ADMIN`
 - **Description**: Điều chỉnh name hoặc mã môn học của lớp.
 - **Request Body**:
   ```json
   {
       "id": 1,
       "name": "Updated Class Name",
-      "subjectId": "UpdatedSubjectID"
+      "subjectId": "UpdatedSubjectID",
+      "semester": 242,
+      "startTime": "07:00",
+      "endTime": "08:50",
+      "dayOfWeek": ["MONDAY"],
+      "lecturersUsernameList": ["lecturer1", "lecturer2"]
   }
   ```
 - **Response**:
@@ -205,7 +218,12 @@
         "classDTO": {
             "id": 1,
             "name": "Updated Class Name",
-            "subjectId": "UpdatedSubjectID"
+            "subjectId": "UpdatedSubjectID",
+            "semester": 242,
+            "startTime": "07:00",
+            "endTime": "08:50",
+            "dayOfWeek": ["MONDAY"],
+            "lecturersUsernameList": ["lecturer1", "lecturer2"]
         } 
       }
     ```
@@ -233,7 +251,7 @@
 
 #### 3. Delete Class
 - **URL**: `GET /grade-portal/classes/delete/{id}`
-- **Authorization**: `LECTURER`
+- **Authorization**: `ADMIN`
 - **Description**: Xóa lớp học
 - **Request Parameters**: `id` (path): ID của lớp học cần xóa.
 - **Response**
@@ -781,8 +799,10 @@
 **Request Body**:
 ```json
 {
-  "studentId": 2212870,
-  "classId": 1
+  "studentId": 2213132,
+  "subjectId": "CO3031",
+  "classId": 1,
+  "semester": 242
 }
 ```
 
@@ -852,8 +872,11 @@
 **Request Body**:
 ```json
 {
-  "studentId": 2212870,
+  "id": 1,
+  "studentId": 2213136,
+  "subjectId": "UpdatedStudyId",
   "classId": 1,
+  "semester": 242,
   "gradesList": [
     {
       "gradeType": "Midterm",
@@ -911,7 +934,7 @@
 }
 ```
 
-#### 3. Delete Study Student 
+#### 3. Delete Study Student  
 - **URL**: `DELETE /grade-portal/study/delete/{id}`
 - **Description**: Endpoint này cho phép Giảng viên xóa thông tin học tập của một sinh viên dựa trên ID.
 - **Authorization**: `LECTURER`
@@ -1207,13 +1230,6 @@
   - **page**: Số trang hiện tại (mặc định là 0)
   - **size**: Số lượng bản ghi trên 1 trang (mặc định là 3)
 - **Response**:
-  - **404 Not Found**:
-    ```json
-    {
-      "statusCode": 404,
-      "message": "Subject not found"
-    }
-    ```
   - **200 OK**:
     ```json
     {
@@ -1231,11 +1247,173 @@
     }
     ```
 
+  - **404 Not Found**:
+      ```json
+      {
+        "statusCode": 404,
+        "message": "Subject not found"
+      }
+      ```
+
+#### 6. Get Next Semester
+- **URL**:  `GET /grade-portal/subjects/next-semester`
+- **Description**: Cho phép giảng viên, admin và sinh viên biết được học kì tiếp theo.
+- **Authorization**: `LECTURER` or `ADMIN` or `STUDENT`
+
+- **Response**:
+  - **200 OK**:
+    ```json
+    {
+      "statusCode": 200,
+      "message": "This is the next semester",
+      "nextSemester": 243
+    }
+    ```
+
+#### 7. Register Subject For Next Semester
+- **URL**:  `POST /grade-portal/subjects/register`
+- **Description**: Cho phép sinh viên đăng kí môn học trong kì tiếp theo.
+- **Authorization**: `STUDENT`
+- **Request Body**:
+```json
+{
+  "semester": 243,
+  "subjectId": "RegisterSubjectId"
+}
+```
+- **Response**:
+  - **200 OK**:
+    ```json
+    {
+      "statusCode": 200,
+      "message": "Subject registered successfully",
+      "subjectRegisterDTO": [
+        {
+          "semester": 243,
+          "subjectId": "RegisterSubjectId"
+        }
+      ]
+    }
+    ```
+
+
+| Status Code | Description           | Example Response                                        |
+|-------------|-----------------------|---------------------------------------------------------|
+| 404         | Subject không tồn tại | `{ "statusCode": 404, "message": "Subject not found" }` |
+| 404         | Student không tồn tại | `{ "statusCode": 400, "message": "Student not found" }` |
+
+
+#### 8. Get Number Of Registered Students For One Subject
+- **URL**:  `POST /grade-portal/subjects/register`
+- **Description**: Cho phép mọi người xem số lượng sinh viên đăng kí 1 môn của kì tiếp theo.
+- **Authorization**: `STUDENT` or `LECTURER` or `ADMIN`
+- **Request Body**:
+```json
+{
+  "semester": 243,
+  "subjectId": "RegisterSubjectId"
+}
+```
+- **Response**:
+  - **200 OK**: Trường hợp chưa có sinh viên đăng kí
+    ```json
+    {
+      "statusCode": 200,
+      "message": "No student has registered this subject in this semester yet",
+      "registerNum": 0
+    }
+    ```
+
+  - **200 OK**: Trường hợp đã có sinh viên đăng kí
+    ```json
+    {
+      "statusCode": 200,
+      "message": "Number of student registered this subject in this semester fetch successfully",
+      "registerNum": 100
+    }
+    ```
+
+  - **404 Not Found**:
+      ```json
+      {
+        "statusCode": 404,
+        "message": "Class not found"
+      }
+      ```
+
+#### 9. Open New Classes For A Qualified Subject In New Semester
+- **URL**:  `POST /grade-portal/subjects/open`
+- **Description**: Cho phép admin mở các lớp học mới cho một môn học đủ số lượng sinh viên đăng kí nhất định.
+- **Authorization**: `ADMIN`
+- **Request Body**:
+```json
+{
+  "maxStudent": 40,
+  "semester": 243,
+  "subjectId": "QualifiedSubjectId"
+}
+```
+- **Response**:
+  - **200 OK**: 
+    ```json
+    {
+      "statusCode": 200,
+      "message": "Classes opened successfully",
+      "listClassDTO": [
+      {
+        "name": "Class_01",
+        "subjectId": "QualifiedSubjectId",
+        "semester": 243
+      },
+      {
+        "name": "Class_02",
+        "subjectId": "QualifiedSubjectId",
+        "semester": 243
+      }
+    ]
+    }
+    ```
+
+  - **404 Not Found**:
+      ```json
+      {
+        "statusCode": 404,
+        "message": "Class not found"
+      }
+      ```
+
 
 ### User APIs
 
+#### 1. Create Admin
+- **URL**:  `POST /grade-portal/users/create-admin`
+- **Description**: Cho phép admin tạo admin mới trong hệ thống.
+- **Authorization**: `ADMIN`
+- **Request Body**:
+  ```json
+  {
+    "username": "admin2",
+    "password": "123",
+    "name": "Admin 2"
+  }
+  ```
+- **Response**:
+  - **409 Conflict**:
+    ```json
+    {
+      "statusCode": 409,
+      "message": "User existed"
+    }
+    ```
+  - **200 OK**:
+    ```json
+    {
+      "statusCode": 200,
+      "message": "Admin created successfully"
+    }
+    ```
 
-#### 1. Create Lecturer 
+#### 2. Create Lecturer 
 - **URL**:  `POST /grade-portal/users/create-lecturers`
 - **Description**: Cho phép admin tạo giảng viên mới trong hệ thống.
 - **Authorization**: `ADMIN`
@@ -1264,7 +1442,7 @@
     ```
 
 
-#### 2. Get User by ID 
+#### 3. Get User by ID 
 - **URL**:  `GET /grade-portal/users/{id}`
 - **Description**: Cho phép admin lấy thông tin chi tiết của người dùng dựa trên id.
 - **Authorization**: `ADMIN`
@@ -1290,7 +1468,7 @@
     }
     ```
 
-#### 3. Update User Info 
+#### 4. Update User Info 
 - **URL**:  `PATCH /grade-portal/users/update`
 - **Description**: Cho phép admin cập nhật thông tin người dùng.
 - **Authorization**: `ADMIN`
@@ -1319,7 +1497,7 @@
     }
     ```
 
-#### 4. Delete User Account API
+#### 5. Delete User Account API
 - **URL**:  `DELETE /grade-portal/users/delete/{id}`
 - **Description**: Cho phép admin xóa nguười dùng dựa vào id.
 - **Authorization**: `ADMIN`

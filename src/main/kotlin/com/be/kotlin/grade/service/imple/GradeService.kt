@@ -9,8 +9,10 @@ import com.be.kotlin.grade.mapper.GradeMapper
 //import com.be.kotlin.grade.mapper.StudyMapper
 import com.be.kotlin.grade.model.Grade
 import com.be.kotlin.grade.repository.GradeRepository
+import com.be.kotlin.grade.repository.StudyProgressRepository
 import com.be.kotlin.grade.repository.StudyRepository
 import com.be.kotlin.grade.service.interf.IGrade
+import com.be.kotlin.grade.service.interf.IStudyProgress
 import org.springframework.stereotype.Service
 
 @Service
@@ -18,6 +20,7 @@ class GradeService(
     private val gradeRepository: GradeRepository,
     private val gradeMapper: GradeMapper,
     private val studyRepository: StudyRepository,
+    private val studyProgressService: IStudyProgress,
 ) : IGrade {
     private fun isWeightValid(studyId: Long, newWeight: Float, existingWeight: Float? = null): Pair<Boolean, String> {
         val study = studyRepository.findById(studyId).orElse(null) ?: return Pair(false, "Study not found")
@@ -80,6 +83,9 @@ class GradeService(
 
         val savedGradeDTO = gradeMapper.toGradeDTO(savedGrade)
 
+        //Add this study to study progress
+        if ( study.gradesList.sumOf { it.weight.toDouble() } == 100.0)
+            studyProgressService.updateStudyProgress(study)
 
         return Response(
             gradeDTO = savedGradeDTO,
@@ -159,6 +165,11 @@ class GradeService(
         study?.gradesList?.add(updatedGrade) // Thêm điểm đã cập nhật
         study.score = caculateAverageScore(study.gradesList)
         studyRepository.save(study)
+
+        //Add this study to study progress
+        if ( study.gradesList.sumOf { it.weight.toDouble() } == 100.0)
+            studyProgressService.updateStudyProgress(study)
+
         return Response(
             gradeDTO = gradeMapper.toGradeDTO(updatedGrade),
             statusCode = 200,

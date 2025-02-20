@@ -9,6 +9,7 @@ import com.be.kotlin.grade.exception.ErrorCode
 import com.be.kotlin.grade.mapper.ClassMapper
 import com.be.kotlin.grade.mapper.StudentMapper
 import com.be.kotlin.grade.mapper.UserMapper
+import com.be.kotlin.grade.model.Class
 import com.be.kotlin.grade.repository.ClassRepository
 import com.be.kotlin.grade.repository.StudyRepository
 import com.be.kotlin.grade.repository.SubjectRepository
@@ -18,6 +19,8 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
+import java.time.DayOfWeek
+import java.time.LocalTime
 
 @Service
 class ClassService(
@@ -38,14 +41,7 @@ class ClassService(
 
         // Kiểm tra trùng giờ học
         existingClasses.forEach { existingClass ->
-            classDTO.dayOfWeek.forEach { newDay ->
-                if (newDay in existingClass.daysOfWeek) {
-                    val isOverlapping = !(classDTO.endTime <= existingClass.startTime || classDTO.startTime >= existingClass.endTime)
-                    if (isOverlapping) {
-                        throw AppException(ErrorCode.CLASS_TIME_CONFLICT)
-                    }
-                }
-            }
+            checkTimeOverlap(existingClass, classDTO.dayOfWeek, classDTO.startTime, classDTO.endTime)
         }
 
         val newClass = classMapper.toClass(classDTO)
@@ -61,13 +57,18 @@ class ClassService(
     }
 
     override fun updateClass(updateClassDTO: UpdateClassDTO): Response {
-        val existingClass = classRepository.findById(updateClassDTO.id!!)
+        val baseClass = classRepository.findById(updateClassDTO.id!!)
             .orElseThrow { AppException(ErrorCode.CLASS_NOT_FOUND) }
 
-        if (updateClassDTO.name in (classRepository.getClassNameBySubjectIdAndSemester(
-            existingClass.subject.id, existingClass.semester
-        )))
+        val existingClasses = classRepository.findAllBySubjectAndSemester(baseClass.subject.id, baseClass.semester)
+
+        if (existingClasses.any { it.name == updateClassDTO.name }) {
             throw AppException(ErrorCode.CLASS_NAME_EXISTED)
+        }
+
+        existingClasses.forEach { existingClass ->
+            checkTimeOverlap(existingClass, baseClass.daysOfWeek, baseClass.startTime, baseClass.endTime)
+        }
 
         val updatedClass = classMapper.toClass(updateClassDTO)
         if (updatedClass != null) {
@@ -79,6 +80,17 @@ class ClassService(
             message = "Class updated successfully",
             updateClassDTO = updateClassDTO
         )
+    }
+
+    fun checkTimeOverlap(existingClass: Class, dayOfWeek: MutableList<DayOfWeek>, startTime: LocalTime, endTime: LocalTime) {
+        dayOfWeek.forEach { newDay ->
+            if (newDay in existingClass.daysOfWeek) {
+                val isOverlapping = !(endTime <= existingClass.startTime || startTime >= existingClass.endTime)
+                if (isOverlapping) {
+                    throw AppException(ErrorCode.CLASS_TIME_CONFLICT)
+                }
+            }
+        }
     }
 
     override fun deleteClass(id: Long): Response {
