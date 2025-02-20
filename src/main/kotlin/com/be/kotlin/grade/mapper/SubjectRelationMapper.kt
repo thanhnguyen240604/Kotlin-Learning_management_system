@@ -12,13 +12,15 @@ import org.springframework.stereotype.Component
 
 @Component
 class SubjectRelationMapper {
-    fun toSubjectRelation(request: SubjectRelationDTO): SubjectRelation {
-        return SubjectRelation(
-            id = SubjectRelationId(request.subjectId, request.faculty),
-            creditType = CreditType.valueOf(request.creditType),
-            preSubjectId = request.preSubjectId,
-            postSubject = request.postSubject
-        )
+    fun toSubjectRelation(request: SubjectRelationDTO): SubjectRelation? {
+        return request.creditType?.let { CreditType.valueOf(it) }?.let {
+            SubjectRelation(
+                id = SubjectRelationId(request.subjectId, request.faculty),
+                creditType = it,
+                preSubjectId = request.preSubjectId,
+                postSubject = request.postSubject
+            )
+        }
     }
 
     fun toSubjectRelationDTO(subjectRelation: SubjectRelation): SubjectRelationDTO {

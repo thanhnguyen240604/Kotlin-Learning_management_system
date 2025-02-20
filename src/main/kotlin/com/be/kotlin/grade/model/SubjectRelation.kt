@@ -11,7 +11,7 @@ data class SubjectRelation (
 
     @Enumerated(EnumType.STRING)
     @Column(name = "credit_type", nullable = false)
-    var creditType: CreditType = CreditType.OPTIONAL,
+    var creditType: CreditType = CreditType.ELECTIVE,
 
     val preSubjectId: String? = null,
     val postSubject: String? = null,

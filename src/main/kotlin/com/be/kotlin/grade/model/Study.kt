@@ -18,7 +18,7 @@ data class Study(
     @JoinColumn(name = "class_id", referencedColumnName = "id", nullable = false)
     var studyClass: Class = Class(),
 
-    @Column(name = "elective_study")
+    @Column(name = "elective_subject")
     var isElective: Boolean = false,
 
     var score: Float = 13F,

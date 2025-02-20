@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface StudyProgressRepository: JpaRepository<StudyProgress, Long> {
+//    fun findByStudentId(studentId: Long): StudyProgress
 }

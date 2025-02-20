@@ -24,7 +24,9 @@ class SubjectRelationService (
         }
 
         val newRelation = subjectRelationMapper.toSubjectRelation(subjectRelationDTO)
-        subjectRelationRepository.save(newRelation)
+        if (newRelation != null) {
+            subjectRelationRepository.save(newRelation)
+        }
 
         return Response(
             statusCode = 200,
@@ -43,7 +45,9 @@ class SubjectRelationService (
         }
 
         val updatedRelation = subjectRelationMapper.toSubjectRelation(subjectRelationDTO)
-        subjectRelationRepository.save(updatedRelation)
+        if (updatedRelation != null) {
+            subjectRelationRepository.save(updatedRelation)
+        }
 
         return Response(
             statusCode = 200,

@@ -12,7 +12,7 @@ data class StudyProgress (
     val id: Long? = null,
 
     @OneToOne(cascade = [CascadeType.REMOVE], fetch = FetchType.LAZY)
-    @JoinColumn(name= "student_id")
+    @JoinColumn(name= "student_id", unique = true, nullable = false)
     val student: Student = Student(),
 
     @Column(name = "total_major_credits", nullable = false)
