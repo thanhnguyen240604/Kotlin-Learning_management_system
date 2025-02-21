@@ -118,12 +118,13 @@ class AuthenticateService(
         }
 
         val passwordEncoder = BCryptPasswordEncoder(5)
-        val encodedNewPassword = passwordEncoder.encode(request.newPassword)
-        if (user.password != encodedNewPassword) {
+
+        if (passwordEncoder.matches(request.newPassword, user.password)) {
             throw AppException(ErrorCode.PASSWORD_NOT_CHANGE)
-        } else {
-            user.password = encodedNewPassword
         }
+
+        val encodedNewPassword = passwordEncoder.encode(request.newPassword)
+        user.password = encodedNewPassword
         userRepository.save(user)
         return Response(
             statusCode = 200,

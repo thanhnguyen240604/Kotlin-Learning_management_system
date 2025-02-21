@@ -657,7 +657,6 @@
   "userDTO": {
     "name": "CT",
     "faculty": "Engineering",
-    "role": "STUDENT",
     "username": "thanh.nguyen2213132@hcmut.edu.vn",
     "password": "password123"
   },

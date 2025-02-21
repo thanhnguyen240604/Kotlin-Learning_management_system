@@ -52,9 +52,7 @@ class StudentService(
 
         return Response(
             statusCode = 200,
-            message = "Student registered",
-            studentDTO = studentDTO,
-            userDTO = userMapper.toUserDTO(user)
+            message = "Student registered"
         )
     }
 
