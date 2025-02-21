@@ -1,12 +1,8 @@
 package com.be.kotlin.grade.mapper
 
 import com.be.kotlin.grade.dto.subjectDTO.SubjectRelationDTO
-import com.be.kotlin.grade.dto.userDTO.UserRequestDTO
-import com.be.kotlin.grade.dto.userDTO.UserResponseDTO
-import com.be.kotlin.grade.model.Subject
 import com.be.kotlin.grade.model.SubjectRelation
 import com.be.kotlin.grade.model.SubjectRelationId
-import com.be.kotlin.grade.model.User
 import com.be.kotlin.grade.model.enums.CreditType
 import org.springframework.stereotype.Component
 

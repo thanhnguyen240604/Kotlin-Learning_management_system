@@ -41,6 +41,7 @@ class SecurityConfig (
         }
 
         httpSecurity.csrf(AbstractHttpConfigurer<*, *>::disable)
+        httpSecurity.cors{}
         return httpSecurity.build()
     }
 
