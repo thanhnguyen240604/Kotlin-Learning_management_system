@@ -101,7 +101,6 @@ class ClassService(
         classRepository.deleteById(id)
 
         return Response(
-            classDTO = classMapper.toClassDTO(existingClass),
             statusCode = 200,
             message = "Class deleted successfully"
         )

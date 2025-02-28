@@ -70,22 +70,25 @@ class StudyService(
             studyRepository.save(newStudy)
         }
 
+        val dataStudy = newStudy?.student?.let {
+            studyRepository.findByStudentIdAndSubjectIdAndSemester(
+                it.studentId,
+                newStudy.studyClass.subject.id,
+                newStudy.studyClass.semester)
+        }
         return Response(
             statusCode = 200,
             message = "Study added successfully",
-            studyDTO = studyDTO)
+            studyDTO = dataStudy?.let { studyMapper.toStudyDTO(it) }
+        )
     }
 
     override fun deleteStudyStudent(studyIdD: Long): Response {
         if (!studyRepository.findById(studyIdD).isPresent)
             throw AppException(ErrorCode.STUDY_NOT_FOUND)
-
-        val deletedStudy = studyRepository.findById(studyIdD).get()
-
         // Xóa Study
         studyRepository.deleteById(studyIdD)
         return Response(
-            studyDTO = studyMapper.toStudyDTO(deletedStudy),
             statusCode = 200,
             message = "Study deleted successfully"
         )
