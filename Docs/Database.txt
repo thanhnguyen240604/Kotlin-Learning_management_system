@@ -30,54 +30,55 @@ SELECT id, 'MONDAY' FROM class;
 INSERT INTO study (student_id, class_id, elective_subject, score)
 VALUES
 #Add 10 students for L01 CO3001
-(2213101, (SELECT id FROM class WHERE class_name = 'L01' AND subject_id = 'CO3001' AND semester = 241), false, 13),
-(2213102, (SELECT id FROM class WHERE class_name = 'L01' AND subject_id = 'CO3001' AND semester = 241), false, 13),
-(2213103, (SELECT id FROM class WHERE class_name = 'L01' AND subject_id = 'CO3001' AND semester = 241), false, 13),
-(2213104, (SELECT id FROM class WHERE class_name = 'L01' AND subject_id = 'CO3001' AND semester = 241), false, 13),
-(2213105, (SELECT id FROM class WHERE class_name = 'L01' AND subject_id = 'CO3001' AND semester = 241), false, 13),
-(2213106, (SELECT id FROM class WHERE class_name = 'L01' AND subject_id = 'CO3001' AND semester = 241), false, 13),
-(2213107, (SELECT id FROM class WHERE class_name = 'L01' AND subject_id = 'CO3001' AND semester = 241), false, 13),
-(2213108, (SELECT id FROM class WHERE class_name = 'L01' AND subject_id = 'CO3001' AND semester = 241), false, 13),
-(2213109, (SELECT id FROM class WHERE class_name = 'L01' AND subject_id = 'CO3001' AND semester = 241), false, 13),
-(2213110, (SELECT id FROM class WHERE class_name = 'L01' AND subject_id = 'CO3001' AND semester = 241), false, 13),
+(2213101, (SELECT id FROM class WHERE class_name = 'L01' AND subject_id = 'CO3001' AND semester = 241), false, FLOOR(RAND() * 10 + 1)),
+(2213102, (SELECT id FROM class WHERE class_name = 'L01' AND subject_id = 'CO3001' AND semester = 241), false, FLOOR(RAND() * 10 + 1)),
+(2213103, (SELECT id FROM class WHERE class_name = 'L01' AND subject_id = 'CO3001' AND semester = 241), false, FLOOR(RAND() * 10 + 1)),
+(2213104, (SELECT id FROM class WHERE class_name = 'L01' AND subject_id = 'CO3001' AND semester = 241), false, FLOOR(RAND() * 10 + 1)),
+(2213105, (SELECT id FROM class WHERE class_name = 'L01' AND subject_id = 'CO3001' AND semester = 241), false, FLOOR(RAND() * 10 + 1)),
+(2213106, (SELECT id FROM class WHERE class_name = 'L01' AND subject_id = 'CO3001' AND semester = 241), false, FLOOR(RAND() * 10 + 1)),
+(2213107, (SELECT id FROM class WHERE class_name = 'L01' AND subject_id = 'CO3001' AND semester = 241), false, FLOOR(RAND() * 10 + 1)),
+(2213108, (SELECT id FROM class WHERE class_name = 'L01' AND subject_id = 'CO3001' AND semester = 241), false, FLOOR(RAND() * 10 + 1)),
+(2213109, (SELECT id FROM class WHERE class_name = 'L01' AND subject_id = 'CO3001' AND semester = 241), false, FLOOR(RAND() * 10 + 1)),
+(2213110, (SELECT id FROM class WHERE class_name = 'L01' AND subject_id = 'CO3001' AND semester = 241), false, FLOOR(RAND() * 10 + 1)),
 
 #Add 10 students for L02 CO3001
-(2213111, (SELECT id FROM class WHERE class_name = 'L02' AND subject_id = 'CO3001' AND semester = 241), false, 13),
-(2213112, (SELECT id FROM class WHERE class_name = 'L02' AND subject_id = 'CO3001' AND semester = 241), false, 13),
-(2213113, (SELECT id FROM class WHERE class_name = 'L02' AND subject_id = 'CO3001' AND semester = 241), false, 13),
-(2213114, (SELECT id FROM class WHERE class_name = 'L02' AND subject_id = 'CO3001' AND semester = 241), false, 13),
-(2213115, (SELECT id FROM class WHERE class_name = 'L02' AND subject_id = 'CO3001' AND semester = 241), false, 13),
-(2213116, (SELECT id FROM class WHERE class_name = 'L02' AND subject_id = 'CO3001' AND semester = 241), false, 13),
-(2213117, (SELECT id FROM class WHERE class_name = 'L02' AND subject_id = 'CO3001' AND semester = 241), false, 13),
-(2213118, (SELECT id FROM class WHERE class_name = 'L02' AND subject_id = 'CO3001' AND semester = 241), false, 13),
-(2213119, (SELECT id FROM class WHERE class_name = 'L02' AND subject_id = 'CO3001' AND semester = 241), false, 13),
-(2213120, (SELECT id FROM class WHERE class_name = 'L02' AND subject_id = 'CO3001' AND semester = 241), false, 13);
+(2213111, (SELECT id FROM class WHERE class_name = 'L02' AND subject_id = 'CO3001' AND semester = 241), false, FLOOR(RAND() * 10 + 1)),
+(2213112, (SELECT id FROM class WHERE class_name = 'L02' AND subject_id = 'CO3001' AND semester = 241), false, FLOOR(RAND() * 10 + 1)),
+(2213113, (SELECT id FROM class WHERE class_name = 'L02' AND subject_id = 'CO3001' AND semester = 241), false, FLOOR(RAND() * 10 + 1)),
+(2213114, (SELECT id FROM class WHERE class_name = 'L02' AND subject_id = 'CO3001' AND semester = 241), false, FLOOR(RAND() * 10 + 1)),
+(2213115, (SELECT id FROM class WHERE class_name = 'L02' AND subject_id = 'CO3001' AND semester = 241), false, FLOOR(RAND() * 10 + 1)),
+(2213116, (SELECT id FROM class WHERE class_name = 'L02' AND subject_id = 'CO3001' AND semester = 241), false, FLOOR(RAND() * 10 + 1)),
+(2213117, (SELECT id FROM class WHERE class_name = 'L02' AND subject_id = 'CO3001' AND semester = 241), false, FLOOR(RAND() * 10 + 1)),
+(2213118, (SELECT id FROM class WHERE class_name = 'L02' AND subject_id = 'CO3001' AND semester = 241), false, FLOOR(RAND() * 10 + 1)),
+(2213119, (SELECT id FROM class WHERE class_name = 'L02' AND subject_id = 'CO3001' AND semester = 241), false, FLOOR(RAND() * 10 + 1)),
+(2213120, (SELECT id FROM class WHERE class_name = 'L02' AND subject_id = 'CO3001' AND semester = 241), false, FLOOR(RAND() * 10 + 1));
 
 INSERT INTO study (student_id, class_id, elective_subject, score)
 VALUES
 #Add 10 students for L01 CO3002
-(2213101, (SELECT id FROM class WHERE class_name = 'L01' AND subject_id = 'CO3002' AND semester = 242), false, 13),
-(2213102, (SELECT id FROM class WHERE class_name = 'L01' AND subject_id = 'CO3002' AND semester = 242), false, 13),
-(2213103, (SELECT id FROM class WHERE class_name = 'L01' AND subject_id = 'CO3002' AND semester = 242), false, 13),
-(2213104, (SELECT id FROM class WHERE class_name = 'L01' AND subject_id = 'CO3002' AND semester = 242), false, 13),
-(2213105, (SELECT id FROM class WHERE class_name = 'L01' AND subject_id = 'CO3002' AND semester = 242), false, 13),
-(2213106, (SELECT id FROM class WHERE class_name = 'L01' AND subject_id = 'CO3002' AND semester = 242), false, 13),
-(2213107, (SELECT id FROM class WHERE class_name = 'L01' AND subject_id = 'CO3002' AND semester = 242), false, 13),
-(2213108, (SELECT id FROM class WHERE class_name = 'L01' AND subject_id = 'CO3002' AND semester = 242), false, 13),
-(2213109, (SELECT id FROM class WHERE class_name = 'L01' AND subject_id = 'CO3002' AND semester = 242), false, 13),
-(2213110, (SELECT id FROM class WHERE class_name = 'L01' AND subject_id = 'CO3002' AND semester = 242), false, 13),
+(2213101, (SELECT id FROM class WHERE class_name = 'L01' AND subject_id = 'CO3002' AND semester = 242), false, FLOOR(RAND() * 10 + 1)),
+(2213102, (SELECT id FROM class WHERE class_name = 'L01' AND subject_id = 'CO3002' AND semester = 242), false, FLOOR(RAND() * 10 + 1)),
+(2213103, (SELECT id FROM class WHERE class_name = 'L01' AND subject_id = 'CO3002' AND semester = 242), false, FLOOR(RAND() * 10 + 1)),
+(2213104, (SELECT id FROM class WHERE class_name = 'L01' AND subject_id = 'CO3002' AND semester = 242), false, FLOOR(RAND() * 10 + 1)),
+(2213105, (SELECT id FROM class WHERE class_name = 'L01' AND subject_id = 'CO3002' AND semester = 242), false, FLOOR(RAND() * 10 + 1)),
+(2213106, (SELECT id FROM class WHERE class_name = 'L01' AND subject_id = 'CO3002' AND semester = 242), false, FLOOR(RAND() * 10 + 1)),
+(2213107, (SELECT id FROM class WHERE class_name = 'L01' AND subject_id = 'CO3002' AND semester = 242), false, FLOOR(RAND() * 10 + 1)),
+(2213108, (SELECT id FROM class WHERE class_name = 'L01' AND subject_id = 'CO3002' AND semester = 242), false, FLOOR(RAND() * 10 + 1)),
+(2213109, (SELECT id FROM class WHERE class_name = 'L01' AND subject_id = 'CO3002' AND semester = 242), false, FLOOR(RAND() * 10 + 1)),
+(2213110, (SELECT id FROM class WHERE class_name = 'L01' AND subject_id = 'CO3002' AND semester = 242), false, FLOOR(RAND() * 10 + 1)),
 
 #Add 10 students for L01 CO3002
-(2213111, (SELECT id FROM class WHERE class_name = 'L02' AND subject_id = 'CO3002' AND semester = 242), false, 13),
-(2213112, (SELECT id FROM class WHERE class_name = 'L02' AND subject_id = 'CO3002' AND semester = 242), false, 13),
-(2213113, (SELECT id FROM class WHERE class_name = 'L02' AND subject_id = 'CO3002' AND semester = 242), false, 13),
-(2213114, (SELECT id FROM class WHERE class_name = 'L02' AND subject_id = 'CO3002' AND semester = 242), false, 13),
-(2213115, (SELECT id FROM class WHERE class_name = 'L02' AND subject_id = 'CO3002' AND semester = 242), false, 13),
-(2213116, (SELECT id FROM class WHERE class_name = 'L02' AND subject_id = 'CO3002' AND semester = 242), false, 13),
-(2213117, (SELECT id FROM class WHERE class_name = 'L02' AND subject_id = 'CO3002' AND semester = 242), false, 13),
-(2213118, (SELECT id FROM class WHERE class_name = 'L02' AND subject_id = 'CO3002' AND semester = 242), false, 13),
-(2213119, (SELECT id FROM class WHERE class_name = 'L02' AND subject_id = 'CO3002' AND semester = 242), false, 13),
-(2213120, (SELECT id FROM class WHERE class_name = 'L02' AND subject_id = 'CO3002' AND semester = 242), false, 13);
+(2213111, (SELECT id FROM class WHERE class_name = 'L02' AND subject_id = 'CO3002' AND semester = 242), false, FLOOR(RAND() * 10 + 1)),
+(2213112, (SELECT id FROM class WHERE class_name = 'L02' AND subject_id = 'CO3002' AND semester = 242), false, FLOOR(RAND() * 10 + 1)),
+(2213113, (SELECT id FROM class WHERE class_name = 'L02' AND subject_id = 'CO3002' AND semester = 242), false, FLOOR(RAND() * 10 + 1)),
+(2213114, (SELECT id FROM class WHERE class_name = 'L02' AND subject_id = 'CO3002' AND semester = 242), false, FLOOR(RAND() * 10 + 1)),
+(2213115, (SELECT id FROM class WHERE class_name = 'L02' AND subject_id = 'CO3002' AND semester = 242), false, FLOOR(RAND() * 10 + 1)),
+(2213116, (SELECT id FROM class WHERE class_name = 'L02' AND subject_id = 'CO3002' AND semester = 242), false, FLOOR(RAND() * 10 + 1)),
+(2213117, (SELECT id FROM class WHERE class_name = 'L02' AND subject_id = 'CO3002' AND semester = 242), false, FLOOR(RAND() * 10 + 1)),
+(2213118, (SELECT id FROM class WHERE class_name = 'L02' AND subject_id = 'CO3002' AND semester = 242), false, FLOOR(RAND() * 10 + 1)),
+(2213119, (SELECT id FROM class WHERE class_name = 'L02' AND subject_id = 'CO3002' AND semester = 242), false, FLOOR(RAND() * 10 + 1)),
+(2213120, (SELECT id FROM class WHERE class_name = 'L02' AND subject_id = 'CO3002' AND semester = 242), false, FLOOR(RAND() * 10 + 1));
+
 
 #CREATE STUDENTS
 #----------Add 20 student to User Table----------
