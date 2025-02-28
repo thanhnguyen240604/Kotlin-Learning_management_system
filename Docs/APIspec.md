@@ -799,9 +799,7 @@
 ```json
 {
   "studentId": 2213132,
-  "subjectId": "CO3031",
-  "classId": 1,
-  "semester": 242
+  "classId": 1
 }
 ```
 

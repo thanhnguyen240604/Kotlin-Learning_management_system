@@ -1,0 +1,128 @@
+#CREATE LECTURERS
+INSERT INTO user (username, password, faculty, name, role, otp, otpExpiry) VALUES
+('giaovien1@hcmut.edu.vn', '$2a$05$BjNV3Wx5rKac6WskOKhFHe4R1J.niu2hUFPzmMNyjG.1chmbRRUBi', 'CSE', 'Giao vien 1', 'TEACHER', NULL, NULL),
+('giaovien2@hcmut.edu.vn', '$2a$05$BjNV3Wx5rKac6WskOKhFHe4R1J.niu2hUFPzmMNyjG.1chmbRRUBi', 'IT', 'Giao vien 2', 'TEACHER', NULL, NULL),
+('giaovien3@hcmut.edu.vn', '$2a$05$BjNV3Wx5rKac6WskOKhFHe4R1J.niu2hUFPzmMNyjG.1chmbRRUBi', 'CSE', 'Giao vien 3', 'TEACHER', NULL, NULL),
+('giaovien4@hcmut.edu.vn', '$2a$05$BjNV3Wx5rKac6WskOKhFHe4R1J.niu2hUFPzmMNyjG.1chmbRRUBi', 'ECE', 'Giao vien 4', 'TEACHER', NULL, NULL),
+('giaovien5@hcmut.edu.vn', '$2a$05$BjNV3Wx5rKac6WskOKhFHe4R1J.niu2hUFPzmMNyjG.1chmbRRUBi', 'ME', 'Giao vien 5', 'TEACHER', NULL, NULL);
+
+#CREATE SUBJECTS
+INSERT INTO subject (id, subject_name, subject_credits, subject_faculty, subject_major) VALUES
+('CO3001', 'Introduction to Programming', 3, 'CSE', 'CS'),
+('CO3002', 'Data Structures and Algorithms', 4, 'CSE', 'CS');
+
+#CREATE CLASSES FOR SUBJECTS
+INSERT INTO class (class_name, subject_id, semester, start_time, end_time, max_student)
+VALUES
+#Semester 241
+('L01', 'CO3001', 241, '09:00:00', '10:50:00', 50),
+('L02', 'CO3001', 241, '13:00:00', '14:50:00', 50),
+
+#Semester 242
+('L01', 'CO3002', 242, '09:00:00', '10:50:00', 40),
+('L02', 'CO3002', 242, '13:00:00', '14:50:00', 40);
+
+#Add data to `class_days` table
+INSERT INTO class_days (class_id, day_of_week)
+SELECT id, 'MONDAY' FROM class;
+
+#CREATE STUDY FOR STUDENTS
+INSERT INTO study (student_id, class_id, elective_subject, score)
+VALUES
+#Add 10 students for L01 CO3001
+(2213101, (SELECT id FROM class WHERE class_name = 'L01' AND subject_id = 'CO3001' AND semester = 241), false, 13),
+(2213102, (SELECT id FROM class WHERE class_name = 'L01' AND subject_id = 'CO3001' AND semester = 241), false, 13),
+(2213103, (SELECT id FROM class WHERE class_name = 'L01' AND subject_id = 'CO3001' AND semester = 241), false, 13),
+(2213104, (SELECT id FROM class WHERE class_name = 'L01' AND subject_id = 'CO3001' AND semester = 241), false, 13),
+(2213105, (SELECT id FROM class WHERE class_name = 'L01' AND subject_id = 'CO3001' AND semester = 241), false, 13),
+(2213106, (SELECT id FROM class WHERE class_name = 'L01' AND subject_id = 'CO3001' AND semester = 241), false, 13),
+(2213107, (SELECT id FROM class WHERE class_name = 'L01' AND subject_id = 'CO3001' AND semester = 241), false, 13),
+(2213108, (SELECT id FROM class WHERE class_name = 'L01' AND subject_id = 'CO3001' AND semester = 241), false, 13),
+(2213109, (SELECT id FROM class WHERE class_name = 'L01' AND subject_id = 'CO3001' AND semester = 241), false, 13),
+(2213110, (SELECT id FROM class WHERE class_name = 'L01' AND subject_id = 'CO3001' AND semester = 241), false, 13),
+
+#Add 10 students for L02 CO3001
+(2213111, (SELECT id FROM class WHERE class_name = 'L02' AND subject_id = 'CO3001' AND semester = 241), false, 13),
+(2213112, (SELECT id FROM class WHERE class_name = 'L02' AND subject_id = 'CO3001' AND semester = 241), false, 13),
+(2213113, (SELECT id FROM class WHERE class_name = 'L02' AND subject_id = 'CO3001' AND semester = 241), false, 13),
+(2213114, (SELECT id FROM class WHERE class_name = 'L02' AND subject_id = 'CO3001' AND semester = 241), false, 13),
+(2213115, (SELECT id FROM class WHERE class_name = 'L02' AND subject_id = 'CO3001' AND semester = 241), false, 13),
+(2213116, (SELECT id FROM class WHERE class_name = 'L02' AND subject_id = 'CO3001' AND semester = 241), false, 13),
+(2213117, (SELECT id FROM class WHERE class_name = 'L02' AND subject_id = 'CO3001' AND semester = 241), false, 13),
+(2213118, (SELECT id FROM class WHERE class_name = 'L02' AND subject_id = 'CO3001' AND semester = 241), false, 13),
+(2213119, (SELECT id FROM class WHERE class_name = 'L02' AND subject_id = 'CO3001' AND semester = 241), false, 13),
+(2213120, (SELECT id FROM class WHERE class_name = 'L02' AND subject_id = 'CO3001' AND semester = 241), false, 13);
+
+INSERT INTO study (student_id, class_id, elective_subject, score)
+VALUES
+#Add 10 students for L01 CO3002
+(2213101, (SELECT id FROM class WHERE class_name = 'L01' AND subject_id = 'CO3002' AND semester = 242), false, 13),
+(2213102, (SELECT id FROM class WHERE class_name = 'L01' AND subject_id = 'CO3002' AND semester = 242), false, 13),
+(2213103, (SELECT id FROM class WHERE class_name = 'L01' AND subject_id = 'CO3002' AND semester = 242), false, 13),
+(2213104, (SELECT id FROM class WHERE class_name = 'L01' AND subject_id = 'CO3002' AND semester = 242), false, 13),
+(2213105, (SELECT id FROM class WHERE class_name = 'L01' AND subject_id = 'CO3002' AND semester = 242), false, 13),
+(2213106, (SELECT id FROM class WHERE class_name = 'L01' AND subject_id = 'CO3002' AND semester = 242), false, 13),
+(2213107, (SELECT id FROM class WHERE class_name = 'L01' AND subject_id = 'CO3002' AND semester = 242), false, 13),
+(2213108, (SELECT id FROM class WHERE class_name = 'L01' AND subject_id = 'CO3002' AND semester = 242), false, 13),
+(2213109, (SELECT id FROM class WHERE class_name = 'L01' AND subject_id = 'CO3002' AND semester = 242), false, 13),
+(2213110, (SELECT id FROM class WHERE class_name = 'L01' AND subject_id = 'CO3002' AND semester = 242), false, 13),
+
+#Add 10 students for L01 CO3002
+(2213111, (SELECT id FROM class WHERE class_name = 'L02' AND subject_id = 'CO3002' AND semester = 242), false, 13),
+(2213112, (SELECT id FROM class WHERE class_name = 'L02' AND subject_id = 'CO3002' AND semester = 242), false, 13),
+(2213113, (SELECT id FROM class WHERE class_name = 'L02' AND subject_id = 'CO3002' AND semester = 242), false, 13),
+(2213114, (SELECT id FROM class WHERE class_name = 'L02' AND subject_id = 'CO3002' AND semester = 242), false, 13),
+(2213115, (SELECT id FROM class WHERE class_name = 'L02' AND subject_id = 'CO3002' AND semester = 242), false, 13),
+(2213116, (SELECT id FROM class WHERE class_name = 'L02' AND subject_id = 'CO3002' AND semester = 242), false, 13),
+(2213117, (SELECT id FROM class WHERE class_name = 'L02' AND subject_id = 'CO3002' AND semester = 242), false, 13),
+(2213118, (SELECT id FROM class WHERE class_name = 'L02' AND subject_id = 'CO3002' AND semester = 242), false, 13),
+(2213119, (SELECT id FROM class WHERE class_name = 'L02' AND subject_id = 'CO3002' AND semester = 242), false, 13),
+(2213120, (SELECT id FROM class WHERE class_name = 'L02' AND subject_id = 'CO3002' AND semester = 242), false, 13);
+
+#CREATE STUDENTS
+#----------Add 20 student to User Table----------
+INSERT INTO user (username, password, faculty, name, role, otp, otpExpiry) VALUES
+('sinhvien1@hcmut.edu.vn',  '$2a$05$BjNV3Wx5rKac6WskOKhFHe4R1J.niu2hUFPzmMNyjG.1chmbRRUBi', 'CSE', 'Sinh vien 1', 'STUDENT', NULL, NULL),
+('sinhvien2@hcmut.edu.vn',  '$2a$05$BjNV3Wx5rKac6WskOKhFHe4R1J.niu2hUFPzmMNyjG.1chmbRRUBi', 'CSE', 'Sinh vien 2', 'STUDENT', NULL, NULL),
+('sinhvien3@hcmut.edu.vn',  '$2a$05$BjNV3Wx5rKac6WskOKhFHe4R1J.niu2hUFPzmMNyjG.1chmbRRUBi', 'CSE', 'Sinh vien 3', 'STUDENT', NULL, NULL),
+('sinhvien4@hcmut.edu.vn',  '$2a$05$BjNV3Wx5rKac6WskOKhFHe4R1J.niu2hUFPzmMNyjG.1chmbRRUBi', 'CSE', 'Sinh vien 4', 'STUDENT', NULL, NULL),
+('sinhvien5@hcmut.edu.vn',  '$2a$05$BjNV3Wx5rKac6WskOKhFHe4R1J.niu2hUFPzmMNyjG.1chmbRRUBi', 'CSE', 'Sinh vien 5', 'STUDENT', NULL, NULL),
+('sinhvien6@hcmut.edu.vn',  '$2a$05$BjNV3Wx5rKac6WskOKhFHe4R1J.niu2hUFPzmMNyjG.1chmbRRUBi', 'CSE', 'Sinh vien 6', 'STUDENT', NULL, NULL),
+('sinhvien7@hcmut.edu.vn',  '$2a$05$BjNV3Wx5rKac6WskOKhFHe4R1J.niu2hUFPzmMNyjG.1chmbRRUBi', 'CSE', 'Sinh vien 7', 'STUDENT', NULL, NULL),
+('sinhvien8@hcmut.edu.vn',  '$2a$05$BjNV3Wx5rKac6WskOKhFHe4R1J.niu2hUFPzmMNyjG.1chmbRRUBi', 'CSE', 'Sinh vien 8', 'STUDENT', NULL, NULL),
+('sinhvien9@hcmut.edu.vn',  '$2a$05$BjNV3Wx5rKac6WskOKhFHe4R1J.niu2hUFPzmMNyjG.1chmbRRUBi', 'CSE', 'Sinh vien 9', 'STUDENT', NULL, NULL),
+('sinhvien10@hcmut.edu.vn', '$2a$05$BjNV3Wx5rKac6WskOKhFHe4R1J.niu2hUFPzmMNyjG.1chmbRRUBi', 'CSE', 'Sinh vien 10', 'STUDENT', NULL, NULL),
+('sinhvien11@hcmut.edu.vn', '$2a$05$BjNV3Wx5rKac6WskOKhFHe4R1J.niu2hUFPzmMNyjG.1chmbRRUBi', 'CSE', 'Sinh vien 11', 'STUDENT', NULL, NULL),
+('sinhvien12@hcmut.edu.vn', '$2a$05$BjNV3Wx5rKac6WskOKhFHe4R1J.niu2hUFPzmMNyjG.1chmbRRUBi', 'CSE', 'Sinh vien 12', 'STUDENT', NULL, NULL),
+('sinhvien13@hcmut.edu.vn', '$2a$05$BjNV3Wx5rKac6WskOKhFHe4R1J.niu2hUFPzmMNyjG.1chmbRRUBi', 'CSE', 'Sinh vien 13', 'STUDENT', NULL, NULL),
+('sinhvien14@hcmut.edu.vn', '$2a$05$BjNV3Wx5rKac6WskOKhFHe4R1J.niu2hUFPzmMNyjG.1chmbRRUBi', 'CSE', 'Sinh vien 14', 'STUDENT', NULL, NULL),
+('sinhvien15@hcmut.edu.vn', '$2a$05$BjNV3Wx5rKac6WskOKhFHe4R1J.niu2hUFPzmMNyjG.1chmbRRUBi', 'CSE', 'Sinh vien 15', 'STUDENT', NULL, NULL),
+('sinhvien16@hcmut.edu.vn', '$2a$05$BjNV3Wx5rKac6WskOKhFHe4R1J.niu2hUFPzmMNyjG.1chmbRRUBi', 'CSE', 'Sinh vien 16', 'STUDENT', NULL, NULL),
+('sinhvien17@hcmut.edu.vn', '$2a$05$BjNV3Wx5rKac6WskOKhFHe4R1J.niu2hUFPzmMNyjG.1chmbRRUBi', 'CSE', 'Sinh vien 17', 'STUDENT', NULL, NULL),
+('sinhvien18@hcmut.edu.vn', '$2a$05$BjNV3Wx5rKac6WskOKhFHe4R1J.niu2hUFPzmMNyjG.1chmbRRUBi', 'CSE', 'Sinh vien 18', 'STUDENT', NULL, NULL),
+('sinhvien19@hcmut.edu.vn', '$2a$05$BjNV3Wx5rKac6WskOKhFHe4R1J.niu2hUFPzmMNyjG.1chmbRRUBi', 'CSE', 'Sinh vien 19', 'STUDENT', NULL, NULL),
+('sinhvien20@hcmut.edu.vn', '$2a$05$BjNV3Wx5rKac6WskOKhFHe4R1J.niu2hUFPzmMNyjG.1chmbRRUBi', 'CSE', 'Sinh vien 20', 'STUDENT', NULL, NULL);
+
+#----------Add 20 student to Student Table----------
+INSERT INTO student (student_id, user_id, major, enrolled_course) VALUES
+(2213101, 1, 'CS', 20),
+(2213102, 2, 'CS', 22),
+(2213103, 3, 'CS', 24),
+(2213104, 4, 'CS', 21),
+(2213105, 5, 'CS', 23),
+(2213106, 6, 'CS', 25),
+(2213107, 7, 'CS', 22),
+(2213108, 8, 'CS', 20),
+(2213109, 9, 'CS', 26),
+(2213110, 10, 'CS', 21),
+(2213111, 11, 'CS', 24),
+(2213112, 12, 'CS', 23),
+(2213113, 13, 'CS', 25),
+(2213114, 14, 'CS', 22),
+(2213115, 15, 'CS', 20),
+(2213116, 16, 'CS', 26),
+(2213117, 17, 'CS', 21),
+(2213118, 18, 'CS', 23),
+(2213119, 19, 'CS', 24),
+(2213120, 20, 'CS', 22);
+
