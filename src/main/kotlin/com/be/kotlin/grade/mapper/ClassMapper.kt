@@ -42,6 +42,7 @@ class ClassMapper (
             lecturers.username
         }.toMutableList()
         return ClassDTO(
+            id = classEntity.id,
             name = classEntity.name,
             subjectId = classEntity.subject.id,
             semester = classEntity.semester,
