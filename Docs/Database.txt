@@ -14,19 +14,15 @@ INSERT INTO subject (id, subject_name, subject_credits, subject_faculty, subject
 
 
 -- CREATE CLASSES FOR SUBJECTS
-INSERT INTO class (class_name, subject_id, semester, start_time, end_time, max_student)
+INSERT INTO class (class_name, subject_id, semester, start_time, end_time, max_student, days_of_week)
 VALUES
 -- Semester 241
-('L01', 'CO3001', 241, '09:00:00', '10:50:00', 50),
-('L02', 'CO3001', 241, '13:00:00', '14:50:00', 50),
+('L01', 'CO3001', 241, '09:00:00', '10:50:00', 50, '1'),
+('L02', 'CO3001', 241, '13:00:00', '14:50:00', 50, '0,5'),
 
 -- Semester 242
-('L01', 'CO3002', 242, '09:00:00', '10:50:00', 40),
-('L02', 'CO3002', 242, '13:00:00', '14:50:00', 40);
-
--- Add data to `class_days` table
-INSERT INTO class_days (class_id, day_of_week)
-SELECT id, 1 FROM class;
+('L01', 'CO3002', 242, '09:00:00', '10:50:00', 40, '3,5'),
+('L02', 'CO3002', 242, '13:00:00', '14:50:00', 40, '2,6');
 
 
 -- CREATE STUDENTS
