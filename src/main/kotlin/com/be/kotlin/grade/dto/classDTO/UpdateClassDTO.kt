@@ -1,5 +1,6 @@
 package com.be.kotlin.grade.dto.classDTO
 
+import com.be.kotlin.grade.model.enums.CustomDayOfWeek
 import jakarta.validation.constraints.NotNull
 import java.time.DayOfWeek
 import java.time.LocalTime
@@ -20,5 +21,5 @@ data class UpdateClassDTO(
 
     val endTime: LocalTime? = LocalTime.of(0,0),
 
-    val dayOfWeek: MutableList<DayOfWeek>? = mutableListOf(),
+    val dayOfWeek: MutableList<CustomDayOfWeek>? = mutableListOf(),
 )

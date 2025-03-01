@@ -1,5 +1,6 @@
 package com.be.kotlin.grade.model
 
+import com.be.kotlin.grade.model.enums.CustomDayOfWeek
 import jakarta.persistence.*
 import java.time.DayOfWeek
 import java.time.LocalTime
@@ -34,9 +35,9 @@ data class Class (
         name = "class_days",
         joinColumns = [JoinColumn(name = "class_id", referencedColumnName = "id")]
     )
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.ORDINAL) 
     @Column(name = "day_of_week", nullable = false)
-    var daysOfWeek: MutableList<DayOfWeek> = mutableListOf(),
+    var daysOfWeek: MutableList<CustomDayOfWeek> = mutableListOf(),
 
     @Column(name = "start_time")
     var startTime: LocalTime = LocalTime.of(0, 0),

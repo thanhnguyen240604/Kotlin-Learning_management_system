@@ -10,6 +10,7 @@ import com.be.kotlin.grade.mapper.ClassMapper
 import com.be.kotlin.grade.mapper.StudentMapper
 import com.be.kotlin.grade.mapper.UserMapper
 import com.be.kotlin.grade.model.Class
+import com.be.kotlin.grade.model.enums.CustomDayOfWeek
 import com.be.kotlin.grade.repository.ClassRepository
 import com.be.kotlin.grade.repository.StudyRepository
 import com.be.kotlin.grade.repository.SubjectRepository
@@ -45,6 +46,9 @@ class ClassService(
         }
 
         val newClass = classMapper.toClass(classDTO)
+        if (newClass != null) {
+            newClass.daysOfWeek = classDTO.dayOfWeek
+        }
         if (newClass != null) {
             classRepository.save(newClass)
         }
@@ -83,7 +87,7 @@ class ClassService(
         )
     }
 
-    fun checkTimeOverlap(existingClass: Class, dayOfWeek: MutableList<DayOfWeek>, startTime: LocalTime, endTime: LocalTime) {
+    fun checkTimeOverlap(existingClass: Class, dayOfWeek: MutableList<CustomDayOfWeek>, startTime: LocalTime, endTime: LocalTime) {
         dayOfWeek.forEach { newDay ->
             if (newDay in existingClass.daysOfWeek) {
                 val isOverlapping = !(endTime <= existingClass.startTime || startTime >= existingClass.endTime)
