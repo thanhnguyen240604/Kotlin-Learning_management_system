@@ -10,16 +10,13 @@ import com.be.kotlin.grade.mapper.ClassMapper
 import com.be.kotlin.grade.mapper.StudentMapper
 import com.be.kotlin.grade.mapper.UserMapper
 import com.be.kotlin.grade.model.Class
-import com.be.kotlin.grade.repository.ClassRepository
-import com.be.kotlin.grade.repository.StudyRepository
-import com.be.kotlin.grade.repository.SubjectRepository
-import com.be.kotlin.grade.repository.UserRepository
+import com.be.kotlin.grade.model.enums.CustomDayOfWeek
+import com.be.kotlin.grade.repository.*
 import com.be.kotlin.grade.service.interf.IClass
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
-import java.time.DayOfWeek
 import java.time.LocalTime
 
 @Service
@@ -83,7 +80,7 @@ class ClassService(
         )
     }
 
-    fun checkTimeOverlap(existingClass: Class, dayOfWeek: MutableList<DayOfWeek>, startTime: LocalTime, endTime: LocalTime) {
+    fun checkTimeOverlap(existingClass: Class, dayOfWeek: List<CustomDayOfWeek>, startTime: LocalTime, endTime: LocalTime) {
         dayOfWeek.forEach { newDay ->
             if (newDay in existingClass.daysOfWeek) {
                 val isOverlapping = !(endTime <= existingClass.startTime || startTime >= existingClass.endTime)
