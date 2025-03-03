@@ -1,6 +1,5 @@
 package com.be.kotlin.grade.service.imple
 
-import com.be.kotlin.grade.controller.StudentController
 import com.be.kotlin.grade.dto.Response
 import com.be.kotlin.grade.dto.userDTO.UserRequestDTO
 import com.be.kotlin.grade.dto.userDTO.UserUpdateRequestDTO
@@ -125,6 +124,16 @@ class UserService(
         return Response(
             statusCode = 200,
             message = "Update info successfully"
+        )
+    }
+
+    override fun getAllLecturers(): Response {
+        val lecturers = userRepository.findByRole("LECTURER")
+        val listLecturers = lecturers.map{ lecturer -> userMapper.toLecturerDTO(lecturer) }
+        return Response(
+            statusCode = 200,
+            message = "Lecturers found successfully",
+            lecturers = listLecturers
         )
     }
 }

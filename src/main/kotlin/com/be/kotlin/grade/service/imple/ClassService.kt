@@ -10,14 +10,12 @@ import com.be.kotlin.grade.mapper.ClassMapper
 import com.be.kotlin.grade.mapper.StudentMapper
 import com.be.kotlin.grade.mapper.UserMapper
 import com.be.kotlin.grade.model.Class
-import com.be.kotlin.grade.model.enums.CustomDayOfWeek
 import com.be.kotlin.grade.repository.*
 import com.be.kotlin.grade.service.interf.IClass
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
-import java.time.LocalTime
 
 @Service
 class ClassService(
@@ -66,10 +64,6 @@ class ClassService(
 
         val existingClasses = classRepository.findAllBySubjectAndSemester(baseClass.subject.id, baseClass.semester)
 
-        if (existingClasses.any { it.name == updateClassDTO.name }) {
-            throw AppException(ErrorCode.CLASS_NAME_EXISTED)
-        }
-
         existingClasses.forEach { existingClass ->
             checkTimeOverlap(existingClass, baseClass)
         }
@@ -101,9 +95,6 @@ class ClassService(
     }
 
     override fun deleteClass(id: Long): Response {
-        val existingClass = classRepository.findById(id)
-            .orElseThrow { AppException(ErrorCode.CLASS_NOT_FOUND) }
-
         classRepository.deleteById(id)
 
         return Response(
@@ -184,7 +175,7 @@ class ClassService(
 
         // Chuyển đổi các entity sang DTO
         val classDTOs = classPage.content.map { classEntity ->
-            classMapper.toClassDTO(classEntity)
+            classMapper.toGetAllClassDTO(classEntity)
         }
 
         // Trả về kết quả phân trang
@@ -212,7 +203,7 @@ class ClassService(
 
         if (classPage == null) { throw AppException(ErrorCode.CLASS_NOT_FOUND)}
         val listClassDTO = classPage.content.map { classEntity ->
-            classMapper.toClassDTO(classEntity)
+            classMapper.toGetAllClassDTO(classEntity)
         }
 
         return Response(
@@ -225,65 +216,65 @@ class ClassService(
         )
     }
 
-    override fun getHighestGradeStudent(classId: Long): Response {
-        val myClass = classRepository.findById(classId).orElse(null)
-        val studyList = studyRepository.findByStudyClass(myClass)
-        val res : MutableList<StudentResponseDTO> = mutableListOf()
-        val n = studyList.size
-        for( i in 0 until n){
-            var swapped = false
-            for( j in 0 until n-i-1){
-                if(studyList[j].score<studyList[j+1].score){
-                    val s = studyList[j]
-                    studyList[j]=studyList[j+1]
-                    studyList[j+1]=s
-                    swapped=true
-                }
-            }
-            if (swapped==false) break
-        }
-        for (i in 0 until minOf(5, studyList.size)) {
-            studyList[i].student?.let { studentMapper.toStudentResponseDto(it, studyList[i].score) }?.let { res.add(it) }
-        }
+//    override fun getHighestGradeStudent(classId: Long): Response {
+//        val myClass = classRepository.findById(classId).orElse(null)
+//        val studyList = studyRepository.findByStudyClass(myClass)
+//        val res : MutableList<StudentResponseDTO> = mutableListOf()
+//        val n = studyList.size
+//        for( i in 0 until n){
+//            var swapped = false
+//            for( j in 0 until n-i-1){
+//                if(studyList[j].score<studyList[j+1].score){
+//                    val s = studyList[j]
+//                    studyList[j]=studyList[j+1]
+//                    studyList[j+1]=s
+//                    swapped=true
+//                }
+//            }
+//            if (swapped==false) break
+//        }
+//        for (i in 0 until minOf(5, studyList.size)) {
+//            studyList[i].student?.let { studentMapper.toStudentResponseDto(it, studyList[i].score) }?.let { res.add(it) }
+//        }
+//
+//        return Response (
+//            statusCode = 200,
+//            message = "Hall of fame fetch successfully",
+//            listStudentDTO = res
+//        )
+//    }
 
-        return Response (
-            statusCode = 200,
-            message = "Hall of fame fetch successfully",
-            listStudentDTO = res
-        )
-    }
-
-    override  fun registerLecturerToClass(classId: Long): Response {
-        val username = SecurityContextHolder.getContext().authentication?.name
-
-        val lecturer = username?.let {
-            userRepository.findLecturersByUsername(it)
-        } ?: throw AppException(ErrorCode.USER_NOT_FOUND)
-
-        val classLec = classRepository.findById(classId)
-            .orElseThrow { AppException(ErrorCode.CLASS_NOT_FOUND) }
-
-        if (classLec.lecturers.size >= 2) {
-            throw AppException(ErrorCode.CLASS_ALREADY_HAS_LECTURERS)
-        }
-
-        if (lecturer.faculty != classLec.subject.faculty) {
-            throw AppException(ErrorCode.LECTURER_FACULTY_MISMATCH)
-        }
-        if (classLec.lecturers.any { it.id == lecturer.id }) {
-            throw AppException(ErrorCode.LECTURER_ALREADY_REGISTERED)
-        }
-
-        classLec.lecturers.add(lecturer)
-        classRepository.save(classLec)
-
-        val classDTO = classMapper.toClassDTO(classLec)
-        val lecturersDTO = classLec.lecturers.map { userMapper.toUserDTO(it) }
-        return Response (
-            statusCode = 200,
-            message = "Lecturer registered successfully",
-            classDTO = classDTO,
-            lecturers = lecturersDTO
-        )
-    }
+//    override  fun registerLecturerToClass(classId: Long): Response {
+//        val username = SecurityContextHolder.getContext().authentication?.name
+//
+//        val lecturer = username?.let {
+//            userRepository.findLecturersByUsername(it)
+//        } ?: throw AppException(ErrorCode.USER_NOT_FOUND)
+//
+//        val classLec = classRepository.findById(classId)
+//            .orElseThrow { AppException(ErrorCode.CLASS_NOT_FOUND) }
+//
+//        if (classLec.lecturers.size >= 2) {
+//            throw AppException(ErrorCode.CLASS_ALREADY_HAS_LECTURERS)
+//        }
+//
+//        if (lecturer.faculty != classLec.subject.faculty) {
+//            throw AppException(ErrorCode.LECTURER_FACULTY_MISMATCH)
+//        }
+//        if (classLec.lecturers.any { it.id == lecturer.id }) {
+//            throw AppException(ErrorCode.LECTURER_ALREADY_REGISTERED)
+//        }
+//
+//        classLec.lecturers.add(lecturer)
+//        classRepository.save(classLec)
+//
+//        val classDTO = classMapper.toClassDTO(classLec)
+//        val lecturersDTO = classLec.lecturers.map { userMapper.toUserDTO(it) }
+//        return Response (
+//            statusCode = 200,
+//            message = "Lecturer registered successfully",
+//            classDTO = classDTO,
+//            lecturers = lecturersDTO
+//        )
+//    }
 }

@@ -9,7 +9,6 @@ import com.be.kotlin.grade.mapper.GradeMapper
 //import com.be.kotlin.grade.mapper.StudyMapper
 import com.be.kotlin.grade.model.Grade
 import com.be.kotlin.grade.repository.GradeRepository
-import com.be.kotlin.grade.repository.StudyProgressRepository
 import com.be.kotlin.grade.repository.StudyRepository
 import com.be.kotlin.grade.service.interf.IGrade
 import com.be.kotlin.grade.service.interf.IStudyProgress

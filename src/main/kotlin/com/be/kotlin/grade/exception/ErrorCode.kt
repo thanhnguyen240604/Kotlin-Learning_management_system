@@ -1,29 +1,40 @@
 package com.be.kotlin.grade.exception
 
 enum class ErrorCode(val code: Int, val message: String) {
-    //Resource not match
+    //AUTHENTICATED INVALID
     PASSWORD_INVALID(400, "Password invalid"),
+    OTP_INVALID(400, "OTP invalid"),
+    OTP_EXPIRED(400, "OTP has expired"),
+    PASSWORD_NOT_MATCH(400, "Your confirm password does not match"),
+    PASSWORD_NOT_CHANGE(400, "Your new password cannot be the same as the old one"),
+
+    //STUDY INVALID
     STUDY_ID_INVALID(400,"StudyId cannot be null"),
     GRADE_ID_INVALID(400,"GradeId cannot be null"),
-    STUDENT_ID_INVALID(400,"Student ID cannot be null"),
-    SUBJECT_ID_INVALID(400,"Subject ID cannot be null"),
-    CLASS_ID_INVALID(400,"Class ID cannot be blank"),
     SCORE_INVALID(400, "Score must be between 0 and 10"),
     WEIGHT_LIMIT_INVALID(400, "Weight exceeds limit"),
     GRADE_NOT_MATCH_INVALID(400, "Grade does not belong to the specified study"),
-    OTP_INVALID(400, "OTP invalid"),
-    OTP_EXPIRED(400, "OTP has expired"),
+
+    //STUDENT INVALID
+    STUDENT_ID_INVALID(400,"Student ID cannot be null"),
+
+
+
+
+    //CLASS INVALID
+    CLASS_ID_INVALID(400,"Class ID cannot be blank"),
     CLASS_ALREADY_HAS_LECTURERS(400, "Class already has enough lecturers"),
     LECTURER_FACULTY_MISMATCH(400, "Class faculty must match"),
     LECTURER_ALREADY_REGISTERED(400, "Class already has registered"),
     FACULTY_MISMATCH(400, "User faculty does not match"),
     MAJOR_MISMATCH(400, "Student major does not match"),
     FACULTY_MAJOR_MISMATCH (400, "Student major and faculty does not match"),
-    PASSWORD_NOT_MATCH(400, "Your confirm password does not match"),
-    PASSWORD_NOT_CHANGE(400, "Your new password cannot be the same as the old one"),
+    SUBJECT_ID_INVALID(400,"Subject ID cannot be null"),
+    //CLASS TIME INVALID
     START_END_TIME_CONFLICT(400, "Start time must be before end time"),
     CLASS_TIME_CONFLICT(400, "This class time conflict with another class"),
     CLASS_SEMESTER_ERROR(400, "Semester can not be greater than 3"),
+
 
     //Unauthenticated
     UNAUTHENTICATED_USERNAME_PASSWORD(401, "Please check email or password again"),

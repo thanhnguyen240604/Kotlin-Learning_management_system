@@ -2,7 +2,6 @@ package com.be.kotlin.grade.service.imple
 
 import com.be.kotlin.grade.dto.reportDTO.ReportOfSubjectRequestDTO
 import com.be.kotlin.grade.dto.Response
-import com.be.kotlin.grade.dto.gradeDTO.GradeDTO
 import com.be.kotlin.grade.dto.reportDTO.ReportOfSubjectResponseDTO
 import com.be.kotlin.grade.dto.studyDTO.StudyDTO
 import com.be.kotlin.grade.exception.AppException
@@ -12,19 +11,14 @@ import com.be.kotlin.grade.mapper.StudyMapper
 import com.be.kotlin.grade.model.Subject
 import com.be.kotlin.grade.repository.*
 import com.be.kotlin.grade.service.interf.IStudy
-import org.apache.poi.ss.usermodel.CellType
 import org.springframework.core.io.FileSystemResource
 import org.springframework.data.domain.Pageable
 import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.web.multipart.MultipartFile
-import java.io.InputStream
-import org.apache.poi.ss.usermodel.WorkbookFactory
 //import org.apache.poi.xssf.usermodel.XSSFWorkbook
 //import okhttp3.*
 
 import org.springframework.stereotype.Service
 import java.io.File
-import java.util.*
 import kotlin.collections.HashMap
 
 @Service
