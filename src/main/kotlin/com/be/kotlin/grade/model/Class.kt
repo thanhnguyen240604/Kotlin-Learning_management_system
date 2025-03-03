@@ -33,7 +33,7 @@ data class Class (
 
     @Column(name = "days_of_week", nullable = false)
     @Convert(converter = CustomDayOfWeekConverter::class)
-    var daysOfWeek: List<CustomDayOfWeek> = mutableListOf(),
+    var daysOfWeek: List<CustomDayOfWeek> = listOf(),
 
     @Column(name = "start_time")
     var startTime: LocalTime = LocalTime.of(0, 0),

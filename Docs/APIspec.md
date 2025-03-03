@@ -157,7 +157,7 @@
       "semester": 242,
       "startTime": "09:00",
       "endTime": "10:50",
-      "daysOfWeek": ["MONDAY"]
+      "dayOfWeek": ["MONDAY"]
   }
   ```
 - **Response**:

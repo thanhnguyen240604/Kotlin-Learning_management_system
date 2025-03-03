@@ -46,9 +46,9 @@ class ClassService(
             classRepository.save(newClass)
         }
 
-        val dataclass = classRepository.findBySubjectAndNameAndSemester(classDTO.subjectId, classDTO.name, classDTO.semester)
+//        val dataclass = classRepository.findBySubjectAndNameAndSemester(classDTO.subjectId, classDTO.name, classDTO.semester)
         return Response(
-            classDTO = dataclass?.let { classMapper.toClassDTO(it) },
+            classDTO = newClass?.let { classMapper.toClassDTO(it) },
             statusCode = 200,
             message = "Class added successfully"
         )
