@@ -4,17 +4,15 @@ import com.be.kotlin.grade.model.enums.CustomDayOfWeek
 import jakarta.persistence.AttributeConverter
 import jakarta.persistence.Converter
 
-@Converter(autoApply = true)
+@Converter
 class CustomDayOfWeekConverter : AttributeConverter<List<CustomDayOfWeek>, String> {
-
-    override fun convertToDatabaseColumn(attribute: List<CustomDayOfWeek>?): String {
-        return attribute?.joinToString(",") { it.value.toString() } ?: ""
+    override fun convertToDatabaseColumn(p0: List<CustomDayOfWeek>?): String {
+        return p0?.joinToString(",") { it.name } ?: ""
     }
 
-    override fun convertToEntityAttribute(dbData: String?): List<CustomDayOfWeek> {
-        return dbData?.takeIf { it.isNotEmpty() }
-            ?.split(",")
-            ?.map { CustomDayOfWeek.fromValue(it.toInt()) }
-            ?: emptyList()
+    override fun convertToEntityAttribute(p0: String?): List<CustomDayOfWeek> {
+        return p0?.split(",")?.mapNotNull {
+            try { CustomDayOfWeek.valueOf(it) } catch (e: IllegalArgumentException) { null }
+        } ?: emptyList()
     }
 }

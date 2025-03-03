@@ -1,10 +1,8 @@
 package com.be.kotlin.grade.dto.classDTO
 
-import com.be.kotlin.grade.converter.CustomDayOfWeekConverter
 import com.be.kotlin.grade.converter.CustomDayOfWeekDeserializer
 import com.be.kotlin.grade.model.enums.CustomDayOfWeek
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
 import java.time.LocalTime
@@ -31,5 +29,5 @@ data class ClassDTO(
 
     @NotNull(message = "Day of week is required")
     @JsonDeserialize(using = CustomDayOfWeekDeserializer::class)
-    val dayOfWeek: List<CustomDayOfWeek> = mutableListOf(),
+    val dayOfWeek: List<CustomDayOfWeek> = listOf(),
 )

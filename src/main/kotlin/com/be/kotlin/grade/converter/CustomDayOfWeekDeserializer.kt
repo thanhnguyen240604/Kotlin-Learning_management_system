@@ -6,8 +6,14 @@ import com.fasterxml.jackson.databind.DeserializationContext
 import com.fasterxml.jackson.databind.JsonDeserializer
 
 class CustomDayOfWeekDeserializer : JsonDeserializer<List<CustomDayOfWeek>>() {
-    override fun deserialize(p: JsonParser, ctxt: DeserializationContext): List<CustomDayOfWeek> {
-        val dayIntList = p.readValueAs(List::class.java) as List<Int>  // Đọc List<Int> từ JSON
-        return dayIntList.map { CustomDayOfWeek.fromValue(it) }  // Chuyển sang List<CustomDayOfWeek>
+    override fun deserialize(parser: JsonParser, ctxt: DeserializationContext): List<CustomDayOfWeek> {
+        val node = parser.readValueAs(List::class.java)
+        return node.mapNotNull {
+            try {
+                CustomDayOfWeek.valueOf(it.toString().uppercase())
+            } catch (e: IllegalArgumentException) {
+                null
+            }
+        }
     }
 }
