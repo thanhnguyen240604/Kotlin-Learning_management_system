@@ -25,4 +25,12 @@ class UserMapper {
             username = user.username
         )
     }
+
+    fun toLecturerDTO(user: User): UserResponseDTO {
+        return UserResponseDTO(
+            id = user.id,
+            name = user.name,
+            username = user.username
+        )
+    }
 }

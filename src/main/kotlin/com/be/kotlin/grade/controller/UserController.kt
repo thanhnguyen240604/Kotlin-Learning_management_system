@@ -73,4 +73,11 @@ class UserController(
         val response = userService.deleteUser(id)
         return ResponseEntity.status(response.statusCode).body(response)
     }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/lecturers")
+    fun getAllLecturers(): ResponseEntity<Response> {
+        val response = userService.getAllLecturers()
+        return ResponseEntity.status(response.statusCode).body(response)
+    }
 }

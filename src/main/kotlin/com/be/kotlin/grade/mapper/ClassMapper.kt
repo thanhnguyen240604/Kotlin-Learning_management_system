@@ -29,9 +29,9 @@ class ClassMapper (
     }
 
     fun toClassDTO(classEntity: Class): ClassDTO {
-        val lecturersUsernameList = classEntity.lecturers.map{ lecturers ->
-            lecturers.username
-        }.toMutableList()
+//        val lecturersUsernameList = classEntity.lecturers.map{ lecturers ->
+//            lecturers.username
+//        }.toMutableList()
         return ClassDTO(
             id = classEntity.id,
             name = classEntity.name,
@@ -66,7 +66,8 @@ class ClassMapper (
                                     semester = it1,
                                     dayOfWeek = it2,
                                     startTime = it3,
-                                    endTime = it4
+                                    endTime = it4,
+                                    lecturers = lecturersList,
                                 )
                             }
                         }

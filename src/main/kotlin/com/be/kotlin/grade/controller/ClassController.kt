@@ -76,18 +76,18 @@ class ClassController(
         return ResponseEntity.status(response.statusCode).body(response)
     }
 
-    @PreAuthorize("hasRole('ROLE_LECTURER') or hasRole('ROLE_ADMIN')")
-    @GetMapping("/get/hallOfFame")
-    fun getHallOfFame(@RequestParam id : Long): ResponseEntity<Response>{
-        val response = classService.getHighestGradeStudent(id)
-        return ResponseEntity.status(response.statusCode).body(response)
-    }
+//    @PreAuthorize("hasRole('ROLE_LECTURER') or hasRole('ROLE_ADMIN')")
+//    @GetMapping("/get/hallOfFame")
+//    fun getHallOfFame(@RequestParam id : Long): ResponseEntity<Response>{
+//        val response = classService.getHighestGradeStudent(id)
+//        return ResponseEntity.status(response.statusCode).body(response)
+//    }
 
     //Sẽ fix
-    @PreAuthorize("hasRole('ROLE_LECTURER')")
-    @PostMapping("/register/{classId}")
-    fun registerLecturerToClass(@PathVariable classId: Long): ResponseEntity<Response> {
-        val response = classService.registerLecturerToClass(classId)
-        return ResponseEntity.status(response.statusCode).body(response)
-    }
+//    @PreAuthorize("hasRole('ROLE_LECTURER')")
+//    @PostMapping("/register/{classId}")
+//    fun registerLecturerToClass(@PathVariable classId: Long): ResponseEntity<Response> {
+//        val response = classService.registerLecturerToClass(classId)
+//        return ResponseEntity.status(response.statusCode).body(response)
+//    }
 }

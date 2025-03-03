@@ -11,9 +11,7 @@ import java.util.Optional
 
 @Repository
 interface UserRepository: JpaRepository<User, Long> {
-    fun findLecturersByUsername(username: String): User
     fun existsByUsername(username: String): Boolean
-    fun deleteByUsername(username:String)
     fun findByUsername(username: String): Optional<User>
 
 //    @Transactional
@@ -25,8 +23,10 @@ interface UserRepository: JpaRepository<User, Long> {
     @Transactional
     @Modifying
     @Query("update User a set a.name=:name, a.faculty=:faculty where a.username=:username")
-    fun updateUserInfo(@Param("name") name:String,
+    fun updateUserInfo(
+        @Param("name") name:String,
         @Param("faculty") faculty:String,
-                       @Param("username") username: String)
+        @Param("username") username: String)
 
+    fun findByRole(s: String): List<User>
 }

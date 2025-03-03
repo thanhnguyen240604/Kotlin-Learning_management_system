@@ -50,13 +50,15 @@ data class Response(
     val listStudent: List<StudentDTO>? = null,
     val listStudentDTO: MutableList<StudentResponseDTO>? = null,
     val lecturers: List<UserResponseDTO>? = null,
-    val totalCredits : Int? = null,
+
+    //Total credits
+    val totalCredits: Int? = null,
 
     //Next semester
     val nextSemester: Int? = null,
 
     //GPA
-    val gpa : Float? = null,
+    val gpa: Float? = null,
 
     //Number of register subject
     val registerNum: Int? = null,
@@ -68,5 +70,5 @@ data class Response(
 
     // File attachment
     @JsonIgnore
-    val file : FileSystemResource? = null
+    val file: FileSystemResource? = null
 )

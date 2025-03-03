@@ -16,14 +16,9 @@ import com.be.kotlin.grade.repository.StudyRepository
 import com.be.kotlin.grade.repository.SubjectRepository
 import com.be.kotlin.grade.service.interf.ISubject
 import org.springframework.data.domain.PageRequest
-import org.springframework.http.ResponseEntity
-import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestParam
-import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.Month
 
