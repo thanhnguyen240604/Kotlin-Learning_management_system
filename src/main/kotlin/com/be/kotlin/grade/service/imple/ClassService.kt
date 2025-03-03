@@ -175,7 +175,7 @@ class ClassService(
 
         // Chuyển đổi các entity sang DTO
         val classDTOs = classPage.content.map { classEntity ->
-            classMapper.toClassDTO(classEntity)
+            classMapper.toGetAllClassDTO(classEntity)
         }
 
         // Trả về kết quả phân trang
@@ -203,7 +203,7 @@ class ClassService(
 
         if (classPage == null) { throw AppException(ErrorCode.CLASS_NOT_FOUND)}
         val listClassDTO = classPage.content.map { classEntity ->
-            classMapper.toClassDTO(classEntity)
+            classMapper.toGetAllClassDTO(classEntity)
         }
 
         return Response(

@@ -2,6 +2,7 @@ package com.be.kotlin.grade.dto.classDTO
 
 import com.be.kotlin.grade.converter.CustomDayOfWeekDeserializer
 import com.be.kotlin.grade.model.enums.CustomDayOfWeek
+import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
