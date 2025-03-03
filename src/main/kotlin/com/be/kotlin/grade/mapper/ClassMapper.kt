@@ -5,7 +5,6 @@ import com.be.kotlin.grade.dto.classDTO.UpdateClassDTO
 import com.be.kotlin.grade.exception.AppException
 import com.be.kotlin.grade.exception.ErrorCode
 import com.be.kotlin.grade.model.Class
-import com.be.kotlin.grade.model.enums.CustomDayOfWeek
 import com.be.kotlin.grade.repository.SubjectRepository
 import com.be.kotlin.grade.repository.UserRepository
 import org.springframework.stereotype.Component
@@ -19,19 +18,13 @@ class ClassMapper (
         val subject = subjectRepository.findById(classDTO.subjectId)
             .orElseThrow { AppException(ErrorCode.SUBJECT_NOT_FOUND) }
 
-        val lecturersList = classDTO.lecturersUsernameList?.map { username ->
-            userRepository.findByUsername(username).
-                    orElse(throw AppException(ErrorCode.USER_NOT_FOUND))
-        }?.toMutableList() ?: mutableListOf()
-
         return Class(
             name = classDTO.name,
             subject = subject,
             semester = classDTO.semester,
-            daysOfWeek = classDTO.dayOfWeek,
+            dayOfWeek = classDTO.dayOfWeek,
             startTime = classDTO.startTime,
             endTime = classDTO.endTime,
-            lecturers = lecturersList
         )
     }
 
@@ -44,10 +37,9 @@ class ClassMapper (
             name = classEntity.name,
             subjectId = classEntity.subject.id,
             semester = classEntity.semester,
-            dayOfWeek = classEntity.daysOfWeek,
+            dayOfWeek = classEntity.dayOfWeek,
             startTime = classEntity.startTime,
             endTime = classEntity.endTime,
-            lecturersUsernameList = lecturersUsernameList
         )
     }
 
@@ -72,10 +64,9 @@ class ClassMapper (
                                     name = it,
                                     subject = it5,
                                     semester = it1,
-                                    daysOfWeek = it2,
+                                    dayOfWeek = it2,
                                     startTime = it3,
-                                    endTime = it4,
-                                    lecturers = lecturersList
+                                    endTime = it4
                                 )
                             }
                         }
