@@ -3,7 +3,6 @@ package com.be.kotlin.grade.model
 import com.be.kotlin.grade.converter.CustomDayOfWeekConverter
 import com.be.kotlin.grade.model.enums.CustomDayOfWeek
 import jakarta.persistence.*
-import java.time.DayOfWeek
 import java.time.LocalTime
 
 @Entity
@@ -33,7 +32,7 @@ data class Class (
 
     @Column(name = "days_of_week", nullable = false)
     @Convert(converter = CustomDayOfWeekConverter::class)
-    var daysOfWeek: List<CustomDayOfWeek> = listOf(),
+    var dayOfWeek: List<CustomDayOfWeek> = listOf(),
 
     @Column(name = "start_time")
     var startTime: LocalTime = LocalTime.of(0, 0),

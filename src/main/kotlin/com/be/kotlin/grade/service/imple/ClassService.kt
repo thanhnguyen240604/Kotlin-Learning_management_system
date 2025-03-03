@@ -34,21 +34,27 @@ class ClassService(
         if (classRepository.findBySubjectAndNameAndSemester(classDTO.subjectId, classDTO.name, classDTO.semester) != null)
             throw AppException(ErrorCode.CLASS_EXISTED)
 
-        val existingClasses = classRepository.findAllBySubjectAndSemester(classDTO.subjectId, classDTO.semester)
+        if (classDTO.startTime > classDTO.startTime)
+            throw AppException(ErrorCode.START_END_TIME_CONFLICT)
 
-        // Kiểm tra trùng giờ học
-        existingClasses.forEach { existingClass ->
-            checkTimeOverlap(existingClass, classDTO.dayOfWeek, classDTO.startTime, classDTO.endTime)
+        if (classDTO.semester % 10 > 3) {
+            throw AppException(ErrorCode.CLASS_SEMESTER_ERROR)
         }
+
+        val existingClasses = classRepository.findAllBySubjectAndSemester(classDTO.subjectId, classDTO.semester)
 
         val newClass = classMapper.toClass(classDTO)
         if (newClass != null) {
+            // Kiểm tra trùng giờ học
+            existingClasses.forEach { existingClass ->
+                checkTimeOverlap(existingClass, newClass)
+            }
             classRepository.save(newClass)
         }
 
-//        val dataclass = classRepository.findBySubjectAndNameAndSemester(classDTO.subjectId, classDTO.name, classDTO.semester)
+        val dataclass = classRepository.findBySubjectAndNameAndSemester(classDTO.subjectId, classDTO.name, classDTO.semester)
         return Response(
-            classDTO = newClass?.let { classMapper.toClassDTO(it) },
+            classDTO = dataclass?.let { classMapper.toClassDTO(it) },
             statusCode = 200,
             message = "Class added successfully"
         )
@@ -65,7 +71,7 @@ class ClassService(
         }
 
         existingClasses.forEach { existingClass ->
-            checkTimeOverlap(existingClass, baseClass.daysOfWeek, baseClass.startTime, baseClass.endTime)
+            checkTimeOverlap(existingClass, baseClass)
         }
 
         val updatedClass = classMapper.toClass(updateClassDTO)
@@ -80,12 +86,15 @@ class ClassService(
         )
     }
 
-    fun checkTimeOverlap(existingClass: Class, dayOfWeek: List<CustomDayOfWeek>, startTime: LocalTime, endTime: LocalTime) {
-        dayOfWeek.forEach { newDay ->
-            if (newDay in existingClass.daysOfWeek) {
-                val isOverlapping = !(endTime <= existingClass.startTime || startTime >= existingClass.endTime)
-                if (isOverlapping) {
-                    throw AppException(ErrorCode.CLASS_TIME_CONFLICT)
+    fun checkTimeOverlap(existingClass: Class, newClass: Class) {
+        if (existingClass.subject == newClass.subject && existingClass.semester == newClass.semester) {
+            newClass.dayOfWeek.forEach { newDay ->
+                if (newDay in existingClass.dayOfWeek) {
+                    val isOverlapping =
+                        (newClass.startTime < existingClass.endTime && newClass.endTime > existingClass.startTime)
+                    if (isOverlapping) {
+                        throw AppException(ErrorCode.CLASS_TIME_CONFLICT)
+                    }
                 }
             }
         }
