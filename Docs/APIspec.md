@@ -201,8 +201,6 @@
   {
       "id": 1,
       "name": "Updated Class Name",
-      "subjectId": "UpdatedSubjectID",
-      "semester": 242,
       "startTime": "07:00",
       "endTime": "08:50",
       "dayOfWeek": ["MONDAY"],
@@ -873,7 +871,6 @@
   "studentId": 2213136,
   "subjectId": "UpdatedStudyId",
   "classId": 1,
-  "semester": 242,
   "gradesList": [
     {
       "gradeType": "Midterm",
@@ -1513,3 +1510,139 @@
       "message": "User deleted successfully"
     }
     ```
+
+### Subject Relations APIs
+
+#### 1. Add Subject Relations
+- **URL**:  `POST /grade-portal/subject-relations/add`
+- **Description**: Cho phép admin tạo một subject relation mới.
+- **Authorization**: `ADMIN`
+- **Request Body**:
+  ```json
+  {
+    "subjectId": "CO3001",
+    "faculty": "CSE",
+    "creditType": "MANDATORY",
+    "preSubjectId": "CO3002"
+  }
+  ```
+- **Response**:
+  - **200 OK**:
+    ```json
+    {
+      "statusCode": 200,
+      "message": "Subject relation added successfully"
+    }
+    ```
+    - **404 Subject not found**:
+    ```json
+    {
+      "statusCode": 404,
+      "message": "Subject not found"
+    }
+    ```
+    - **409 Subject relation existed**:
+    ```json
+    {
+      "statusCode": 409,
+      "message": "Subject relation existed"
+    }
+    ```
+    - **400 Pre subject invalid**:
+    ```json
+    {
+      "statusCode": 400,
+      "message": "Pre-ordered subject can not be the same as subject id"
+    }
+    ```
+    - **400 Post subject invalid**:
+    ```json
+    {
+      "statusCode": 400,
+      "message": "Post-ordered subject can not be the same as subject idd"
+    }
+    ```
+
+#### 2. Update Subject Relations
+- **URL**:  `POST /grade-portal/subject-relations/update`
+- **Description**: Cho phép admin cập nhật một subject relation.
+- **Authorization**: `ADMIN`
+- **Request Body**:
+  ```json
+  {
+    "subjectId": "CO3001",
+    "faculty": "CSE",
+    "creditType": "MAJOR_ELECTIVE"
+  }
+  ```
+- **Response**:
+  - **200 OK**:
+    ```json
+    {
+      "statusCode": 200,
+      "message": "Subject relation updated successfully"
+    }
+    ```
+    - **404 Subject not found**:
+    ```json
+    {
+      "statusCode": 404,
+      "message": "Subject not found"
+    }
+    ```
+    - **409 Subject relation not found**:
+    ```json
+    {
+      "statusCode": 404,
+      "message": "Subject relation not found"
+    }
+    ```
+    - **400 Pre subject invalid**:
+    ```json
+    {
+      "statusCode": 400,
+      "message": "Pre-ordered subject can not be the same as subject id"
+    }
+    ```
+    - **400 Post subject invalid**:
+    ```json
+    {
+      "statusCode": 400,
+      "message": "Post-ordered subject can not be the same as subject idd"
+    }
+    ```
+
+#### 3. Delete Subject Relations
+- **URL**:  `POST /grade-portal/subject-relations/delete`
+- **Description**: Cho phép admin xóa một subject relation.
+- **Authorization**: `ADMIN`
+- **Request Body**:
+  ```json
+  {
+    "subjectId": "CO3001",
+    "faculty": "CSE"
+  }
+  ```
+- **Response**:
+  - **200 OK**:
+    ```json
+    {
+      "statusCode": 200,
+      "message": "Subject relation deleted successfully"
+    }
+    ```
+    - **404 Subject not found**:
+    ```json
+    {
+      "statusCode": 404,
+      "message": "Subject not found"
+    }
+    ```
+    - **409 Subject relation not found**:
+    ```json
+    {
+      "statusCode": 404,
+      "message": "Subject relation not found"
+    }
+    ```
+

@@ -14,7 +14,7 @@ class SubjectRelationMapper {
                 id = SubjectRelationId(request.subjectId, request.faculty),
                 creditType = it,
                 preSubjectId = request.preSubjectId,
-                postSubject = request.postSubject
+                postSubject = request.postSubjectId
             )
         }
     }
@@ -25,7 +25,7 @@ class SubjectRelationMapper {
             faculty = subjectRelation.id.faculty,
             creditType = subjectRelation.creditType.toString(),
             preSubjectId = subjectRelation.preSubjectId,
-            postSubject = subjectRelation.postSubject
+            postSubjectId = subjectRelation.postSubject
         )
     }
 }

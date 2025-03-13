@@ -6,7 +6,6 @@ import jakarta.persistence.*
 @Table(name = "subject")
 data class Subject (
     @Id
-    //Subject_code
     var id: String = "",
 
     @Column(name = "subject_name", nullable = false)

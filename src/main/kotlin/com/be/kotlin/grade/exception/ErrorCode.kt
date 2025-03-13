@@ -18,9 +18,6 @@ enum class ErrorCode(val code: Int, val message: String) {
     //STUDENT INVALID
     STUDENT_ID_INVALID(400,"Student ID cannot be null"),
 
-
-
-
     //CLASS INVALID
     CLASS_ID_INVALID(400,"Class ID cannot be blank"),
     CLASS_ALREADY_HAS_LECTURERS(400, "Class already has enough lecturers"),
@@ -30,11 +27,15 @@ enum class ErrorCode(val code: Int, val message: String) {
     MAJOR_MISMATCH(400, "Student major does not match"),
     FACULTY_MAJOR_MISMATCH (400, "Student major and faculty does not match"),
     SUBJECT_ID_INVALID(400,"Subject ID cannot be null"),
+
     //CLASS TIME INVALID
     START_END_TIME_CONFLICT(400, "Start time must be before end time"),
     CLASS_TIME_CONFLICT(400, "This class time conflict with another class"),
     CLASS_SEMESTER_ERROR(400, "Semester can not be greater than 3"),
 
+    //Subject Relations INVALID
+    POST_SUBJECT_INVALID(400, "Post-ordered subject can not be the same as subject id"),
+    PRE_SUBJECT_INVALID(400, "Pre-ordered subject can not be the same as subject id"),
 
     //Unauthenticated
     UNAUTHENTICATED_USERNAME_PASSWORD(401, "Please check email or password again"),

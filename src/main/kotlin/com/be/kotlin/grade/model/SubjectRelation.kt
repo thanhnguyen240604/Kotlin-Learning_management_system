@@ -13,6 +13,6 @@ data class SubjectRelation (
     @Column(name = "credit_type", nullable = false)
     var creditType: CreditType = CreditType.ELECTIVE,
 
-    val preSubjectId: String? = null,
-    val postSubject: String? = null,
+    var preSubjectId: String? = null,
+    var postSubject: String? = null,
 )

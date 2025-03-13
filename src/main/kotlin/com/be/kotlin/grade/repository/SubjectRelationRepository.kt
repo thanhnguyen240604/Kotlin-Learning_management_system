@@ -13,7 +13,7 @@ interface SubjectRelationRepository: JpaRepository<SubjectRelation, Int> {
         FROM SubjectRelation s
         WHERE s.id.subjectId = :subjectId AND s.id.faculty = :faculty
     """)
-    fun findBySubjectRelationId(
+    fun findById(
         @Param("subjectId") subjectId: String,
         @Param("faculty") faculty: String
     ): SubjectRelation?
