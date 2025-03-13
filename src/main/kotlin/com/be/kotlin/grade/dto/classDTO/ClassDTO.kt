@@ -28,5 +28,5 @@ data class ClassDTO(
 
     @NotNull(message = "Day of week is required")
     @JsonDeserialize(using = CustomDayOfWeekDeserializer::class)
-    val dayOfWeek: List<CustomDayOfWeek> = listOf(),
+    val dayOfWeek: List<CustomDayOfWeek> = mutableListOf(),
 )
