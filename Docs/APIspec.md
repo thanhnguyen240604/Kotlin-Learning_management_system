@@ -201,8 +201,6 @@
   {
       "id": 1,
       "name": "Updated Class Name",
-      "subjectId": "UpdatedSubjectID",
-      "semester": 242,
       "startTime": "07:00",
       "endTime": "08:50",
       "dayOfWeek": ["MONDAY"],

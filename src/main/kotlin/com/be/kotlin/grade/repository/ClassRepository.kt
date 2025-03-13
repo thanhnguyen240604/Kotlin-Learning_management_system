@@ -12,20 +12,6 @@ import org.springframework.data.domain.Pageable
 
 @Repository
 interface ClassRepository: JpaRepository<Class, Long> {
-    @Query("""
-        SELECT CASE WHEN COUNT(1) > 0 THEN true ELSE false END
-        FROM Class c
-        JOIN c.lecturers l
-        JOIN c.subject s
-        WHERE l.id = :lecturerId
-          AND s.id = :subjectId
-          AND c.name = :className
-    """)
-    fun existsByLecturerSubjectAndClassName(
-        @Param("lecturerId") lecturerId: Long,
-        @Param("subjectId") subjectId: String,
-        @Param("className") className: String
-    ): Boolean
 
     @Query("SELECT c FROM Class c WHERE c.id IN :classIds")
     fun findClassesByIds(
@@ -65,13 +51,5 @@ interface ClassRepository: JpaRepository<Class, Long> {
         @Param("semester") semester: Int
     ): List<Class>
 
-    @Query("""
-        SELECT c.name 
-        FROM Class c 
-        WHERE c.subject.id = :subjectId AND c.semester = :semester
-    """)
-    fun getClassNameBySubjectIdAndSemester(
-        @Param("subjectId") subjectId: String,
-        @Param("semester") semester: Int
-    ): List<String>
+    fun findClassById(id: Long): Class?
 }
