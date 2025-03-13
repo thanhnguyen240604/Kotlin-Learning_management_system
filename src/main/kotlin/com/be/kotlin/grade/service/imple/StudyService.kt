@@ -89,22 +89,23 @@ class StudyService(
     }
 
     override fun updateStudyStudent(study: StudyDTO): Response {
-        if (!study.id?.let { studyRepository.findById(it).isPresent }!!){
-            throw AppException(ErrorCode.STUDY_NOT_FOUND)
+        val existingStudy = study.id?.let {
+            studyRepository.findById(it)
+                .orElseThrow { AppException(ErrorCode.STUDY_NOT_FOUND) }
         }
 
         // Chuyển đổi từ DTO sang Entity và lưu vào cơ sở dữ liệu
         val updatedStudy = studyMapper.toStudy(study)
-        val userFaculty = updatedStudy?.student?.user?.faculty
-        val subjectFaculty = updatedStudy?.studyClass?.subject?.faculty
+        val studentFaculty = updatedStudy?.student?.user?.faculty
         val studentMajor = updatedStudy?.student?.major
+        val subjectFaculty = updatedStudy?.studyClass?.subject?.faculty
         val subjectMajor = updatedStudy?.studyClass?.subject?.major
 
-        if (userFaculty != subjectFaculty && studentMajor != subjectMajor) {
+        if (studentFaculty != subjectFaculty && studentMajor != subjectMajor) {
             throw AppException(ErrorCode.FACULTY_MAJOR_MISMATCH)
         }
 
-        if (userFaculty != subjectFaculty) {
+        if (studentFaculty != subjectFaculty) {
             throw AppException(ErrorCode.FACULTY_MISMATCH)
         }
 

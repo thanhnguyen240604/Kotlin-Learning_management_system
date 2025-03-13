@@ -60,11 +60,14 @@ class SubjectService(
     }
 
     override fun updateSubject(subject: SubjectDTO): Response {
-        if (!subjectRepository.findById(subject.id).isPresent)
-            throw AppException(ErrorCode.SUBJECT_NOT_FOUND)
+        val existingSubject = subjectRepository.findById(subject.id)
+            .orElseThrow { AppException(ErrorCode.SUBJECT_NOT_FOUND) }
 
-        val updatedSubject = subjectMapper.toSubject(subject)
-        subjectRepository.save(updatedSubject)
+        existingSubject.name = subject.name
+        existingSubject.credits = subject.credits
+        existingSubject.faculty = subject.faculty
+        existingSubject.major = subject.major
+        subjectRepository.save(existingSubject)
 
         return Response(
             subjectDTO = subject,
