@@ -6,7 +6,6 @@ import com.be.kotlin.grade.dto.classDTO.UpdateClassDTO
 import com.be.kotlin.grade.exception.AppException
 import com.be.kotlin.grade.exception.ErrorCode
 import com.be.kotlin.grade.mapper.ClassMapper
-import com.be.kotlin.grade.mapper.StudentMapper
 import com.be.kotlin.grade.mapper.UserMapper
 import com.be.kotlin.grade.model.Class
 import com.be.kotlin.grade.model.enums.CustomDayOfWeek
@@ -17,8 +16,6 @@ import org.springframework.data.domain.Pageable
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.time.DayOfWeek
-import java.time.LocalDateTime
 import java.time.LocalTime
 
 @Service
@@ -238,7 +235,7 @@ class ClassService(
         existingClass: Class,
         newStartTime: LocalTime,
         newEndTime: LocalTime,
-        newDayOfWeek: MutableList<CustomDayOfWeek>,
+        newDayOfWeek: List<CustomDayOfWeek>,
         baseClassId: Long
     ) {
         if (existingClass.id == baseClassId) {
