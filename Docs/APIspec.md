@@ -1063,8 +1063,8 @@
 **Request Body**:
 ```json
 {
-  "subjectId": "number",
-  "semester": "number"
+  "subjectId": "CO3001",
+  "semester": 241
 }
 ```
 

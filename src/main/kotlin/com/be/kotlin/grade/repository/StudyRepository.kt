@@ -94,6 +94,9 @@ interface StudyRepository: JpaRepository<Study, Long> {
     )
     fun countByClassId(@Param("classId") classId: Long): Int?
 
+    @Query("SELECT DISTINCT s FROM Study s WHERE s.studyClass.id = :classId")
+    fun findByClassId(@Param("classId") classId: Long, pageable: Pageable): Page<Study>
+
 //    @Query(
 //        """
 //        SELECT Study s

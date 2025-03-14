@@ -11,6 +11,7 @@ data class StudyDTO(
     @Positive(message = "Student ID must be a positive number")
     val studentId: Long = 0,
 
+    val subjectId: String? = null,
     @NotNull(message = "Class is required")
     @Positive(message = "Class ID must be a positive number")
     val classId: Long? = 0,

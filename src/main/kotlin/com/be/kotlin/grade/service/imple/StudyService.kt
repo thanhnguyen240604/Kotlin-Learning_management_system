@@ -123,11 +123,24 @@ class StudyService(
         )
     }
 
+    override fun getAllStudyByClassId(classId: Long, pageable: Pageable): Response {
+        val studyPage = studyRepository.findByClassId(classId, pageable)
+        val studyDTOList = studyPage.content.map { studyMapper.toStudyDTOwithSubjectId(it, it.studyClass.subject.id) }
+        return Response(
+            statusCode = 200,
+            message = "Study record for this class found successfully",
+            listStudyDTO = studyDTOList,
+            totalPages = studyPage.totalPages,
+            currentPage = studyPage.number,
+            totalElements = studyPage.totalElements
+        )
+    }
+
     override fun getStudyById(studyIdD: Long): Response {
         val studyGot = studyRepository.findById(studyIdD)
             .orElseThrow { AppException(ErrorCode.STUDY_NOT_FOUND) }
 
-        val studyDTO = studyMapper.toStudyDTO(studyGot)
+        val studyDTO = studyMapper.toStudyDTOwithSubjectId(studyGot, studyGot.studyClass.subject.id)
         return Response(
             statusCode = 200,
             message = "Study found successfully",
@@ -210,7 +223,7 @@ class StudyService(
         }
 
         val studyPage = studyRepository.findByStudentUserUsernameAndSemester(username, semester, pageable)
-        val studyDTOList = studyPage.content.map { studyMapper.toStudyDTO(it) }
+        val studyDTOList = studyPage.content.map { studyMapper.toStudyDTOwithSubjectId(it, it.studyClass.subject.id) }
 
         return Response(
             statusCode = 200,
@@ -310,48 +323,50 @@ class StudyService(
         )
     }
 
-    override fun getGradeBySubjectIdAndSemester(subjectId: String, semester: Int): Response {
-        // Find all study in semester
-        val context = SecurityContextHolder.getContext()
-        val username = context.authentication?.name
 
-        val studyList = username?.let {
-            val studies = studyRepository.findByStudentUserUsernameAndSemester(it, semester)
-            if (studies.isEmpty()) {
-                throw AppException(ErrorCode.STUDY_NOT_FOUND)
-            }
-            studies
-        } ?: throw RuntimeException("No username found in SecurityContext")
 
-        if (studyList.isEmpty())
-            throw AppException(ErrorCode.STUDY_NOT_FOUND)
-
-        val matchingStudies = studyList.filter { it.studyClass.subject.id == subjectId }
-
-        val studyDTOList = matchingStudies.map { studyMapper.toStudyDTO(it) }
-        if (studyDTOList.isEmpty()) {
-            return Response(
-                statusCode = 404,
-                message = "Subject not found in studies"
-            )
-        }
-
-        // Lấy studyId từ các study khớp
-        val studyIds = studyDTOList.mapNotNull { it.id }
-
-        val gradeList = gradeRepository.findGradeByStudyID(studyIds)
-
-        // Chuyển đổi các entity sang DTO
-        val gradeDTOs = gradeList.map { gradeEntity ->
-            gradeMapper.toGradeDTO(gradeEntity)
-        }
-
-        // Trả về thông tin
-        return Response(
-            statusCode = 200,
-            message = "Success",
-            listStudyDTO = studyDTOList,
-            listGradeDTO = gradeDTOs
-        )
-    }
+//    override fun getGradeBySubjectIdAndSemester(subjectId: String, semester: Int): Response {
+//        // Find all study in semester
+//        val context = SecurityContextHolder.getContext()
+//        val username = context.authentication?.name
+//
+//        val studyList = username?.let {
+//            val studies = studyRepository.findByStudentUserUsernameAndSemester(it, semester)
+//            if (studies.isEmpty()) {
+//                throw AppException(ErrorCode.STUDY_NOT_FOUND)
+//            }
+//            studies
+//        } ?: throw RuntimeException("No username found in SecurityContext")
+//
+//        if (studyList.isEmpty())
+//            throw AppException(ErrorCode.STUDY_NOT_FOUND)
+//
+//        val matchingStudies = studyList.filter { it.studyClass.subject.id == subjectId }
+//
+//        val studyDTOList = matchingStudies.map { studyMapper.toStudyDTO(it) }
+//        if (studyDTOList.isEmpty()) {
+//            return Response(
+//                statusCode = 404,
+//                message = "Subject not found in studies"
+//            )
+//        }
+//
+//        // Lấy studyId từ các study khớp
+//        val studyIds = studyDTOList.mapNotNull { it.id }
+//
+//        val gradeList = gradeRepository.findGradeByStudyID(studyIds)
+//
+//        // Chuyển đổi các entity sang DTO
+//        val gradeDTOs = gradeList.map { gradeEntity ->
+//            gradeMapper.toGradeDTO(gradeEntity)
+//        }
+//
+//        // Trả về thông tin
+//        return Response(
+//            statusCode = 200,
+//            message = "Success",
+//            listStudyDTO = studyDTOList,
+//            listGradeDTO = gradeDTOs
+//        )
+//    }
 }
