@@ -97,6 +97,14 @@ interface StudyRepository: JpaRepository<Study, Long> {
     @Query("SELECT DISTINCT s FROM Study s WHERE s.studyClass.id = :classId")
     fun findByClassId(@Param("classId") classId: Long, pageable: Pageable): Page<Study>
 
+    @Query("SELECT s.id FROM Study s WHERE s.student.studentId = :studentId AND s.studyClass.subject.id = :subjectId AND s.studyClass.name = :className AND s.studyClass.semester = :semester")
+    fun findStudyIdByClassNameAndSubjectIdAndStudentIdAndSemester(
+        @Param("className") className: Long,    
+        @Param("subjectId") subjectId: String,
+        @Param("studentId") studentId: Long,
+        @Param("semester") semester: Int
+    ): Long?
+
 //    @Query(
 //        """
 //        SELECT Study s

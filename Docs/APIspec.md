@@ -1055,48 +1055,133 @@
 }
 ```
 
-#### 7. Get Study by Subject and Semester 
-- **URL**: `POST /grade-portal/study/result`
-- **Description**: Cho phép Sinh viên lấy thông tin điểm của một môn học trong một học kỳ cụ thể.
-- **Authorization**: `STUDENT`
+#### 7. Get Study by Class Id
+- **URL**: `GET /grade-portal/study/result`
+- **Description**: Endpoint này cho phép user xem tất cả study của 1 lớp
+- **Authorization**: `ADMIN` or `LECTURER`
 
-**Request Body**:
-```json
-{
-  "subjectId": "CO3001",
-  "semester": 241
-}
-```
+**Param**:
+- **classId**: Class Id cần lấy thông tin (kiểu Long).
 
 **Response**:
-- **200 OK**: Trả về thông tin điểm của môn học trong học kỳ yêu cầu.
+- **200 OK**: 
 ```json
 {
-  "statusCode": 200,
-  "message": "Study result found successfully",
-  "studyResult": {
-    "subjectId": "CO2000",
-    "semester": 1,
-    "grades": [
-      {
-        "gradeType": "Midterm",
-        "gradeValue": 40.0
-      },
-      {
-        "gradeType": "Final",
-        "gradeValue": 45.5
-      }
-    ]
-  }
+    "statusCode": 200,
+    "message": "Study record for this class found successfully",
+    "listStudyDTO": [
+        {
+            "id": 7,
+            "studentId": 2213107,
+            "subjectId": "CO3001",
+            "classId": 1,
+            "score": 2.0,
+            "gradeList": []
+        },
+        {
+            "id": 8,
+            "studentId": 2213108,
+            "subjectId": "CO3001",
+            "classId": 1,
+            "score": 3.0,
+            "gradeList": []
+        },
+        {
+            "id": 9,
+            "studentId": 2213109,
+            "subjectId": "CO3001",
+            "classId": 1,
+            "score": 6.0,
+            "gradeList": []
+        }
+    ],
+    "totalPages": 4,
+    "totalElements": 10,
+    "currentPage": 2
 }
 ```
-- **404 Not Found**: Không tìm thấy thông tin điểm cho môn học trong học kỳ yêu cầu.
-```json
-{
- "statusCode": 404,
- "message": "Study result not found"
-}
-```
+
+[//]: # (#### 7. Get Study by Subject and Semester )
+
+[//]: # (- **URL**: `POST /grade-portal/study/result`)
+
+[//]: # (- **Description**: Cho phép Sinh viên lấy thông tin điểm của một môn học trong một học kỳ cụ thể.)
+
+[//]: # (- **Authorization**: `STUDENT`)
+
+[//]: # ()
+[//]: # (**Request Body**:)
+
+[//]: # (```json)
+
+[//]: # ({)
+
+[//]: # (  "subjectId": "CO3001",)
+
+[//]: # (  "semester": 241)
+
+[//]: # (})
+
+[//]: # (```)
+
+[//]: # ()
+[//]: # (**Response**:)
+
+[//]: # (- **200 OK**: Trả về thông tin điểm của môn học trong học kỳ yêu cầu.)
+
+[//]: # (```json)
+
+[//]: # ({)
+
+[//]: # (  "statusCode": 200,)
+
+[//]: # (  "message": "Study result found successfully",)
+
+[//]: # (  "studyResult": {)
+
+[//]: # (    "subjectId": "CO2000",)
+
+[//]: # (    "semester": 1,)
+
+[//]: # (    "grades": [)
+
+[//]: # (      {)
+
+[//]: # (        "gradeType": "Midterm",)
+
+[//]: # (        "gradeValue": 40.0)
+
+[//]: # (      },)
+
+[//]: # (      {)
+
+[//]: # (        "gradeType": "Final",)
+
+[//]: # (        "gradeValue": 45.5)
+
+[//]: # (      })
+
+[//]: # (    ])
+
+[//]: # (  })
+
+[//]: # (})
+
+[//]: # (```)
+
+[//]: # (- **404 Not Found**: Không tìm thấy thông tin điểm cho môn học trong học kỳ yêu cầu.)
+
+[//]: # (```json)
+
+[//]: # ({)
+
+[//]: # ( "statusCode": 404,)
+
+[//]: # ( "message": "Study result not found")
+
+[//]: # (})
+
+[//]: # (```)
 ### Subject APIs
 
 #### 1. Generate Subject Report 
@@ -1379,7 +1464,33 @@
 
 ### User APIs
 
-#### 1. Create Admin
+#### 1. Get my information
+- **URL**:  `GET /grade-portal/users/my-info`
+- **Description**: Cho phép người dùng xem thông tin cá nhân của mình.
+- **Authorization**: `ADMIN` or `LECTURER` or `STUDENT`
+- **Response**:
+  - **200 OK**:
+    ```json
+    {
+    "statusCode": 200,
+    "message": "My info fetch successfully",
+    "userDTO": {
+        "id": 7,
+        "name": "Sinh vien 1",
+        "faculty": "CSE",
+        "role": "STUDENT",
+        "username": "sinhvien1@hcmut.edu.vn"
+    },
+    "studentDTO": {
+        "studentId": 2213107,
+        "enrolledCourse": 22,
+        "major": "CS"
+    }
+}
+    ```
+    
+
+#### 2. Create Admin
 - **URL**:  `POST /grade-portal/users/create-admin`
 - **Description**: Cho phép admin tạo admin mới trong hệ thống.
 - **Authorization**: `ADMIN`
@@ -1407,7 +1518,7 @@
     }
     ```
 
-#### 2. Create Lecturer 
+#### 3. Create Lecturer 
 - **URL**:  `POST /grade-portal/users/create-lecturers`
 - **Description**: Cho phép admin tạo giảng viên mới trong hệ thống.
 - **Authorization**: `ADMIN`
@@ -1436,7 +1547,7 @@
     ```
 
 
-#### 3. Get User by ID 
+#### 4. Get User by ID 
 - **URL**:  `GET /grade-portal/users/{id}`
 - **Description**: Cho phép admin lấy thông tin chi tiết của người dùng dựa trên id.
 - **Authorization**: `ADMIN`
@@ -1462,7 +1573,7 @@
     }
     ```
 
-#### 4. Update User Info 
+#### 5. Update User Info 
 - **URL**:  `PATCH /grade-portal/users/update`
 - **Description**: Cho phép admin cập nhật thông tin người dùng.
 - **Authorization**: `ADMIN`
@@ -1491,7 +1602,7 @@
     }
     ```
 
-#### 5. Delete User Account API
+#### 6. Delete User Account API
 - **URL**:  `DELETE /grade-portal/users/delete/{id}`
 - **Description**: Cho phép admin xóa nguười dùng dựa vào id.
 - **Authorization**: `ADMIN`

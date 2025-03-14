@@ -47,7 +47,7 @@ class StudyController(
     @GetMapping("")
     fun getAllStudyByClassId(@RequestParam(defaultValue = "0") page : Int,
                              @RequestParam(defaultValue = "10") size : Int,
-                             @RequestHeader classId: Long): ResponseEntity<Response> {
+                             @RequestParam classId: Long): ResponseEntity<Response> {
         val pageable : Pageable = PageRequest.of(page, size)
         val response = studyService.getAllStudyByClassId(classId, pageable)
         return ResponseEntity.status(response.statusCode).body(response)

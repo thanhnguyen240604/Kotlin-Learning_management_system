@@ -1,9 +1,11 @@
 package com.be.kotlin.grade.dto.studyDTO
 
 import com.be.kotlin.grade.model.Grade
+import com.fasterxml.jackson.annotation.JsonInclude
 import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Positive
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 data class StudyDTO(
     val id: Long? = null,
 
