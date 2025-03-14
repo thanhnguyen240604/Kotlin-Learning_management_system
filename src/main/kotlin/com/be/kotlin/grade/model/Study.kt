@@ -1,6 +1,5 @@
 package com.be.kotlin.grade.model
 
-import com.be.kotlin.grade.model.Grade
 import jakarta.persistence.*
 
 @Entity
@@ -21,7 +20,7 @@ data class Study(
     @Column(name = "elective_subject")
     var isElective: Boolean = false,
 
-    var score: Float = 13F,
+    var score: Float = 0F,
 
     @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     @JoinColumn(name = "study_id")

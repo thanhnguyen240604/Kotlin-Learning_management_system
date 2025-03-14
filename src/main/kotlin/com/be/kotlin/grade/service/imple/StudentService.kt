@@ -56,18 +56,6 @@ class StudentService(
         )
     }
 
-    override fun getStudentById(userId: Long): Response {
-        val studentGot = studentRepository.findById(userId)
-            .orElseThrow { AppException(ErrorCode.STUDENT_NOT_FOUND) }
-
-        val studentDTO = studentMapper.toStudentDTO(studentGot)
-        return Response(
-            statusCode = 200,
-            message = "Student found successfully",
-            studentDTO = studentDTO
-        )
-    }
-
     override fun updateStudent(studentUpdateDTO: StudentUpdateDTO, username : String): Response {
         val student = studentRepository.findByUserUsername(username).orElseThrow { AppException(ErrorCode.STUDENT_NOT_FOUND) }
         if (studentRepository.existsByStudentId(studentUpdateDTO.studentId)) {
@@ -151,4 +139,15 @@ class StudentService(
         )
     }
 
+//    override fun getStudentById(userId: Long): Response {
+//        val studentGot = studentRepository.findById(userId)
+//            .orElseThrow { AppException(ErrorCode.STUDENT_NOT_FOUND) }
+//
+//        val studentDTO = studentMapper.toStudentDTO(studentGot)
+//        return Response(
+//            statusCode = 200,
+//            message = "Student found successfully",
+//            studentDTO = studentDTO
+//        )
+//    }
 }

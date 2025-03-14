@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.multipart.MultipartFile
 
 @RestController
 @RequestMapping("/grades")
@@ -42,6 +43,13 @@ class GradeController(
     @GetMapping("/{id}")
     fun getGradeById(@PathVariable id: Long): ResponseEntity<Response> {
         val response = gradeService.getGradeById(id)
+        return ResponseEntity.status(response.statusCode).body(response)
+    }
+
+    @PreAuthorize("hasRole('ROLE_LECTURER')")
+    @PostMapping("/add_excel")
+    fun addGradeByExcel(@RequestParam("file") file: MultipartFile): ResponseEntity<Response> {
+        val response = gradeService.processExcel(file)
         return ResponseEntity.status(response.statusCode).body(response)
     }
 }

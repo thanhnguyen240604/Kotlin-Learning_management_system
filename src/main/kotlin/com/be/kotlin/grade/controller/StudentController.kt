@@ -24,13 +24,6 @@ class StudentController (
         return ResponseEntity.status(response.statusCode).body(response)
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @GetMapping("/{id}")
-    fun getStudentById(@PathVariable id: Long): ResponseEntity<Response> {
-        val response = studentService.getStudentById(id)
-        return ResponseEntity.status(response.statusCode).body(response)
-    }
-
     @PreAuthorize("hasRole('ROLE_STUDENT')")
     @PutMapping("/update")
     fun updateStudent(@RequestBody studentUpdateDTO: StudentUpdateDTO): ResponseEntity<Response> {
@@ -54,4 +47,11 @@ class StudentController (
         val response = studentService.getStudentList(classId)
         return ResponseEntity.status(response.statusCode).body(response)
     }
+
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
+//    @GetMapping("/{id}")
+//    fun getStudentById(@PathVariable id: Long): ResponseEntity<Response> {
+//        val response = studentService.getStudentById(id)
+//        return ResponseEntity.status(response.statusCode).body(response)
+//    }
 }

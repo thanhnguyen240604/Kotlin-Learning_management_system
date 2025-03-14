@@ -7,8 +7,9 @@ import com.be.kotlin.grade.dto.userDTO.UserRequestDTO
 
 interface IStudent {
     fun register(userDTO: UserRequestDTO, studentDTO: StudentDTO): Response
-    fun getStudentById(userId: Long): Response
     fun updateStudent(studentUpdateDTO: StudentUpdateDTO, username : String): Response
     fun calculateGPA(semester: Int): Response
     fun getStudentList(classId: Long): Response
+
+//    fun getStudentById(userId: Long): Response
 }
