@@ -94,34 +94,34 @@ class StudentService(
           )
     }
 
-    override fun getStudentList(classId: Long): Response {
-        // Lấy danh sách studentId tương ứng với classId
-        val studentIdList = studyRepository.findStudentIdByClassId(classId)
-
-        // Nếu không tìm thấy bất kỳ studentId nào, trả về thông báo lỗi
-        if (studentIdList.isEmpty()) {
-            return Response(
-                statusCode = 404,
-                message = "No studies found for classId $classId",
-                listStudent = emptyList()
-            )
-        }
-
-        // Lấy danh sách student từ studentIdList
-        val studentList = studentRepository.findStudentByStudentIdList(studentIdList)
-
-        // Chuyển đổi danh sách studentEntity thành studentDTO
-        val studentListDTO = studentList.mapNotNull { studentEntity ->
-            studentMapper.toStudentDTO(studentEntity)
-        }
-
-        // Trả về danh sách studentDTO
-        return Response(
-            statusCode = 200,
-            message = "Get Student List successfully",
-            listStudent = studentListDTO
-        )
-    }
+//    override fun getStudentList(classId: Long): Response {
+//        // Lấy danh sách studentId tương ứng với classId
+//        val studentIdList = studyRepository.findStudentIdByClassId(classId)
+//
+//        // Nếu không tìm thấy bất kỳ studentId nào, trả về thông báo lỗi
+//        if (studentIdList.isEmpty()) {
+//            return Response(
+//                statusCode = 404,
+//                message = "No studies found for classId $classId",
+//                listStudent = emptyList()
+//            )
+//        }
+//
+//        // Lấy danh sách student từ studentIdList
+//        val studentList = studentRepository.findStudentByStudentIdList(studentIdList)
+//
+//        // Chuyển đổi danh sách studentEntity thành studentDTO
+//        val studentListDTO = studentList.mapNotNull { studentEntity ->
+//            studentMapper.toStudentDTO(studentEntity)
+//        }
+//
+//        // Trả về danh sách studentDTO
+//        return Response(
+//            statusCode = 200,
+//            message = "Get Student List successfully",
+//            listStudent = studentListDTO
+//        )
+//    }
 
 //    override fun getStudentById(userId: Long): Response {
 //        val studentGot = studentRepository.findById(userId)

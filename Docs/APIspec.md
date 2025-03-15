@@ -801,40 +801,68 @@
 ```
 
 
-#### 2. Get Student by ID 
-- **URL**: `GET /grade-portal/students/{id}`
-- **Description**: Cho phép Admin lấy thông tin chi tiết của một sinh viên dựa trên ID.
-- **Authorization**: `ADMIN`
+[//]: # (#### 2. Get Student by ID )
 
-**Path Variable**:
-- **id**: ID của sinh viên (kiểu Long).
+[//]: # (- **URL**: `GET /grade-portal/students/{id}`)
 
-**Response**:
-- **200 OK**: Trả về thông tin sinh viên nếu tìm thấy.
-```json
-{
-  "statusCode": 200,
-  "message": "Student found successfully",
-  "student": {
-    "studentId": 1234567,
-    "name": "CT",
-    "faculty": "Engineering",
-    "major": "Computer Science",
-    "enrolledCourse": 22,
-    "username": "thanh.nguyen2213132@hcmut.edu.vn"
-  }
-}
-```
-- **404 Not Found**: Nếu không tìm thấy sinh viên với ID cung cấp.
-```json
-{
-  "statusCode": 404,
-  "message": "Student not found"
-}
-```
+[//]: # (- **Description**: Cho phép Admin lấy thông tin chi tiết của một sinh viên dựa trên ID.)
+
+[//]: # (- **Authorization**: `ADMIN`)
+
+[//]: # ()
+[//]: # (**Path Variable**:)
+
+[//]: # (- **id**: ID của sinh viên &#40;kiểu Long&#41;.)
+
+[//]: # ()
+[//]: # (**Response**:)
+
+[//]: # (- **200 OK**: Trả về thông tin sinh viên nếu tìm thấy.)
+
+[//]: # (```json)
+
+[//]: # ({)
+
+[//]: # (  "statusCode": 200,)
+
+[//]: # (  "message": "Student found successfully",)
+
+[//]: # (  "student": {)
+
+[//]: # (    "studentId": 1234567,)
+
+[//]: # (    "name": "CT",)
+
+[//]: # (    "faculty": "Engineering",)
+
+[//]: # (    "major": "Computer Science",)
+
+[//]: # (    "enrolledCourse": 22,)
+
+[//]: # (    "username": "thanh.nguyen2213132@hcmut.edu.vn")
+
+[//]: # (  })
+
+[//]: # (})
+
+[//]: # (```)
+
+[//]: # (- **404 Not Found**: Nếu không tìm thấy sinh viên với ID cung cấp.)
+
+[//]: # (```json)
+
+[//]: # ({)
+
+[//]: # (  "statusCode": 404,)
+
+[//]: # (  "message": "Student not found")
+
+[//]: # (})
+
+[//]: # (```)
 
 
-#### 3. Update Student 
+#### 2. Update Student 
 - **URL**: `PUT /grade-portal/students/update`
 - **Description**: Cho phép sinh viên cập nhật thông tin cá nhân.
 - **Authorization**: `STUDENT`
@@ -871,7 +899,7 @@
 }
 ```
 
-#### 4. Calculate GPA by Semester 
+#### 3. Calculate GPA by Semester 
 - **URL**: `GET /grade-portal/students/gpa/{semester}`
 - **Description**: Cho phép sinh viên tính toán điểm GPA của một học kỳ cụ thể.
 - **Authorization**: `STUDENT`
@@ -903,6 +931,141 @@
 }
 ```
 
+#### 4. Get All Users
+- **URL**: `GET /grade-portal/users`
+- **Description**: Cho phép admin xem thông tin tất cả người dùng.
+- **Authorization**: `ADMIN`
+
+**Response**:
+- **200 OK**: Trả về thông tin thành công.
+```json
+{
+  "statusCode": 200,
+  "message": "Users found successfully",
+  "listUserDTO": [
+    {
+      "id": 1,
+      "name": "",
+      "role": "ADMIN",
+      "username": "admin"
+    },
+    {
+      "id": 2,
+      "name": "Giao vien 1",
+      "faculty": "CSE",
+      "role": "LECTURER",
+      "username": "giaovien1@hcmut.edu.vn"
+    },
+    {
+      "id": 3,
+      "name": "Giao vien 2",
+      "faculty": "CSE",
+      "role": "LECTURER",
+      "username": "giaovien2@hcmut.edu.vn"
+    },
+    {
+      "id": 4,
+      "name": "Giao vien 3",
+      "faculty": "CSE",
+      "role": "LECTURER",
+      "username": "giaovien3@hcmut.edu.vn"
+    },
+    {
+      "id": 5,
+      "name": "Giao vien 4",
+      "faculty": "CSE",
+      "role": "LECTURER",
+      "username": "giaovien4@hcmut.edu.vn"
+    }
+  ],
+  "totalPages": 6,
+  "totalElements": 27,
+  "currentPage": 0
+}
+```
+
+#### 5. Get All Lecturers
+- **URL**: `GET /grade-portal/users/lecturers`
+- **Description**: Cho phép admin xem thông tin tất cả giáo viên.
+- **Authorization**: `ADMIN`
+
+**Response**:
+- **200 OK**: Trả về thông tin thành công.
+```json
+{
+  "statusCode": 200,
+  "message": "Lecturers found successfully",
+  "lecturers": [
+    {
+      "id": 2,
+      "name": "Giao vien 1",
+      "faculty": "CSE",
+      "username": "giaovien1@hcmut.edu.vn"
+    },
+    {
+      "id": 3,
+      "name": "Giao vien 2",
+      "faculty": "CSE",
+      "username": "giaovien2@hcmut.edu.vn"
+    },
+    {
+      "id": 4,
+      "name": "Giao vien 3",
+      "faculty": "CSE",
+      "username": "giaovien3@hcmut.edu.vn"
+    }
+  ]
+}
+```
+
+#### 6. Get All Students
+- **URL**: `GET /grade-portal/users/students`
+- **Description**: Cho phép admin xem thông tin tất cả sinh viên.
+- **Authorization**: `ADMIN`
+
+**Response**:
+- **200 OK**: Trả về thông tin thành công.
+```json
+{
+  "statusCode": 200,
+  "message": "Students found successfully",
+  "lecturers": [
+    {
+      "id": 10,
+      "name": "Sinh vien 4",
+      "faculty": "CSE",
+      "username": "sinhvien4@hcmut.edu.vn",
+      "studentDTO": {
+        "studentId": 2213110,
+        "enrolledCourse": 21,
+        "major": "CS"
+      }
+    },
+    {
+      "id": 11,
+      "name": "Sinh vien 5",
+      "faculty": "CSE",
+      "username": "sinhvien5@hcmut.edu.vn",
+      "studentDTO": {
+        "studentId": 2213111,
+        "enrolledCourse": 24,
+        "major": "CS"
+      }
+    },
+    {
+      "id": 12,
+      "name": "Sinh vien 6",
+      "faculty": "CSE",
+      "username": "sinhvien6@hcmut.edu.vn",
+      "studentDTO": {
+        "studentId": 2213112,
+        "enrolledCourse": 23,
+        "major": "CS"
+      }
+    }
+  ]
+}
+```
 ### Study APIs
 
 #### 1. Add Study Student 
@@ -1617,8 +1780,8 @@
         "studentId": 2213107,
         "enrolledCourse": 22,
         "major": "CS"
+      }
     }
-}
     ```
     
 
@@ -1661,7 +1824,7 @@
     "password": "123",
     "faculty": "CSE",
     "name": "Giao vien 3"
-}
+  }
   ```
 - **Response**:
   - **409 Conflict**:

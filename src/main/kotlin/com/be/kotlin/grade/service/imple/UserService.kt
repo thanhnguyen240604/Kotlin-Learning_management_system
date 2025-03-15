@@ -133,13 +133,23 @@ class UserService(
         )
     }
 
-    override fun getAllLecturers(): Response {
-        val lecturers = userRepository.findByRole("LECTURER")
-        val listLecturers = lecturers.map{ lecturer -> userMapper.toLecturerDTO(lecturer) }
+    override fun getAllLecturers(pageable: Pageable): Response {
+        val lecturers = userRepository.findByRole("LECTURER", pageable)
+        val listLecturers = lecturers.content.map{ lecturer -> userMapper.toLecturerDTO(lecturer) }
         return Response(
             statusCode = 200,
             message = "Lecturers found successfully",
             lecturers = listLecturers
+        )
+    }
+
+    override fun getAllStudents(pageable: Pageable): Response {
+        val students = userRepository.findByRole("STUDENT", pageable)
+        val listStudents = students.content.map{ student -> userMapper.toStudentDTO(student) }
+        return Response(
+            statusCode = 200,
+            message = "Students found successfully",
+            lecturers = listStudents
         )
     }
 }

@@ -31,12 +31,12 @@ class StudentController (
         return ResponseEntity.status(response.statusCode).body(response)
     }
 
-    @PreAuthorize("hasRole('ROLE_LECTURER')")
-    @GetMapping
-    fun getStudentByClassId(@RequestParam classId: Long): ResponseEntity<Response> {
-        val response = studentService.getStudentList(classId)
-        return ResponseEntity.status(response.statusCode).body(response)
-    }
+//    @PreAuthorize("hasRole('ROLE_LECTURER')")
+//    @GetMapping
+//    fun getStudentByClassId(@RequestParam classId: Long): ResponseEntity<Response> {
+//        val response = studentService.getStudentList(classId)
+//        return ResponseEntity.status(response.statusCode).body(response)
+//    }
 
 //    @PreAuthorize("hasRole('ROLE_ADMIN')")
 //    @GetMapping("/{id}")
