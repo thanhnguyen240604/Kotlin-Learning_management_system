@@ -306,6 +306,14 @@
         }
       ```
 
+  - `400 Class not belonged to this teacher`
+      ```json
+        {
+          "statusCode": 400,
+          "message": "You don't have permission to access this class"     
+        }
+      ```
+
 
 #### 5. Get All Classes By Admin
 - **URL**: `GET /grade-portal/classes/all-admin`
@@ -1395,6 +1403,14 @@
     "currentPage": 2
 }
 ```
+- **400 Not Found**: Khi giáo viên thuộc lớp khác muốn lấy danh sách study không trong phạm vi dạy của mình.
+```json
+{
+  "statusCode": 400,
+  "message": "You don't have permission to access this class"
+}
+```
+
 
 [//]: # (#### 7. Get Study by Subject and Semester )
 

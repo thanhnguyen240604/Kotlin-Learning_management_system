@@ -21,6 +21,7 @@ enum class ErrorCode(val code: Int, val message: String) {
     //CLASS INVALID
     CLASS_ID_INVALID(400,"Class ID cannot be blank"),
     CLASS_ALREADY_HAS_LECTURERS(400, "Class already has enough lecturers"),
+    CLASS_NOT_BELONG_TO_LECTURER(400, "You don't have permission to access this class"),
     LECTURER_FACULTY_MISMATCH(400, "Class faculty must match"),
     LECTURER_ALREADY_REGISTERED(400, "Class already has registered"),
     FACULTY_MISMATCH(400, "User faculty does not match"),

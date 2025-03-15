@@ -6,7 +6,6 @@ import com.be.kotlin.grade.dto.reportDTO.ReportOfSubjectResponseDTO
 import com.be.kotlin.grade.dto.studyDTO.StudyDTO
 import com.be.kotlin.grade.exception.AppException
 import com.be.kotlin.grade.exception.ErrorCode
-import com.be.kotlin.grade.mapper.GradeMapper
 import com.be.kotlin.grade.mapper.StudyMapper
 import com.be.kotlin.grade.model.Subject
 import com.be.kotlin.grade.repository.*
@@ -14,8 +13,6 @@ import com.be.kotlin.grade.service.interf.IStudy
 import org.springframework.core.io.FileSystemResource
 import org.springframework.data.domain.Pageable
 import org.springframework.security.core.context.SecurityContextHolder
-//import org.apache.poi.xssf.usermodel.XSSFWorkbook
-//import okhttp3.*
 
 import org.springframework.stereotype.Service
 import java.io.File
@@ -27,8 +24,7 @@ class StudyService(
     private val studyMapper: StudyMapper,
     private val studentRepository: StudentRepository,
     private val userRepository: UserRepository,
-    private val gradeRepository: GradeRepository,
-    private val gradeMapper: GradeMapper,
+    private val classRepository: ClassRepository,
 ) : IStudy {
     override fun addStudyStudent(studyDTO: StudyDTO): Response {
         val newStudy = studyMapper.toStudy(studyDTO)
@@ -124,6 +120,23 @@ class StudyService(
     }
 
     override fun getAllStudyByClassId(classId: Long, pageable: Pageable): Response {
+        val classGot = classRepository.findById(classId)
+            .orElseThrow { AppException(ErrorCode.CLASS_NOT_FOUND) }
+        val context = SecurityContextHolder.getContext()
+        val username = context.authentication?.name
+        val user = username?.let {
+            userRepository.findByUsername(it).orElseThrow {
+                AppException(ErrorCode.USER_NOT_FOUND)
+
+            }
+        }
+        if (user != null) {
+            if (user.role == "LECTURER") {
+                if(!classGot.lecturersUsername.contains(username))
+                    throw AppException(ErrorCode.CLASS_NOT_BELONG_TO_LECTURER)
+            }
+        }
+
         val studyPage = studyRepository.findByClassId(classId, pageable)
         val studyDTOList = studyPage.content.map { studyMapper.toStudyDTOwithSubjectId(it, it.studyClass.subject.id) }
         return Response(

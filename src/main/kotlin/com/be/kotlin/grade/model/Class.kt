@@ -1,6 +1,7 @@
 package com.be.kotlin.grade.model
 
 import com.be.kotlin.grade.converter.CustomDayOfWeekConverter
+import com.be.kotlin.grade.converter.StringListToStringConverter
 import com.be.kotlin.grade.model.enums.CustomDayOfWeek
 import jakarta.persistence.*
 import java.time.LocalTime
@@ -15,13 +16,9 @@ data class Class (
     @Column(name = "class_name", nullable = false)
     var name: String = "",
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = [CascadeType.PERSIST, CascadeType.MERGE])
-    @JoinTable(
-        name = "class_lecturers",
-        joinColumns = [JoinColumn(name = "class_id")],
-        inverseJoinColumns = [JoinColumn(name = "lecturer_id")]
-    )
-    var lecturers: MutableList<User> = mutableListOf(),
+    @Column(name = "lecturers", columnDefinition = "TEXT")
+    @Convert(converter = StringListToStringConverter::class)
+    var lecturersUsername: List<String> = listOf(),
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "subject_id", referencedColumnName = "id", nullable = false)
