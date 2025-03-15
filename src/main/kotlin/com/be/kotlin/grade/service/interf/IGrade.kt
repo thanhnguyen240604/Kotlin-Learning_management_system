@@ -10,5 +10,5 @@ interface IGrade {
     fun deleteGrade(grade: GradeIdDTO): Response
     fun updateGrade(grade: GradeIdDTO): Response
     fun getGradeById(id: Long): Response
-    fun processExcel (file: MultipartFile): Response
+    fun processExcel (file: MultipartFile, typeAPI: String): Response
 }

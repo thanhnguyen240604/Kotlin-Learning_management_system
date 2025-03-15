@@ -768,6 +768,123 @@
 }
 ```
 
+#### 6. Update Grade By Excel File
+- **URL:** `GET /grade-portal/grades/update_excel`
+- **Description:** Cập nhật các cột điểm của nhiều sinh viên khác nhau từ file csv vào study.
+- **Authorization:** `LECTURER`
+- **Parameter:** File csv
+- **Responses:**
+- **200 OK**: Điểm được cập nhật vào thành công.
+```json
+{
+  "statusCode": 200,
+  "message": "Grade updated successfully through excel file"
+}
+```
+- **400 INVALID**: Thiếu thành phần header trong file.
+```json
+{
+  "statusCode": 400,
+  "message": "Missing header row"
+}
+```
+
+- **400 INVALID**: Thành phần header sai định dạng.
+```json
+{
+  "statusCode": 400,
+  "message": "Invalid header format"
+}
+```
+
+- **400 INVALID**: Thành phần header sai định dạng.
+```json
+{
+  "statusCode": 400,
+  "message": "Unable to find student id in file"
+}
+```
+
+- **400 INVALID**: Thành phần header sai định dạng.
+```json
+{
+  "statusCode": 400,
+  "message": "Unable to find student id in file"
+}
+```
+
+- **400 INVALID**: Không thể nhận diện header.
+```json
+{
+  "statusCode": 400,
+  "message": "Header format not recognized"
+}
+```
+
+- **400 INVALID**: Không thể nhận diện header.
+```json
+{
+  "statusCode": 400,
+  "message": "Header format not recognized"
+}
+```
+
+- **400 INVALID**: Student Id không phù hợp.
+```json
+{
+  "statusCode": 400,
+  "message": "Student ID not suitable in row 3. It must be number"
+}
+```
+
+- **400 INVALID**: Thêm điểm bị lỗi cho sinh viên với id này.
+```json
+{
+  "statusCode": 400,
+  "message": "Error adding study for student ID: 2213105"
+}
+```
+
+- **400 INVALID**: Student Id không phù hợp.
+```json
+{
+  "statusCode": 400,
+  "message": "Student ID not suitable in row 3, column 2. It must be number"
+}
+```
+
+- **400 INVALID**: Không thể tìm thấy study cho student với id này.
+```json
+{
+  "statusCode": 400,
+  "message": "Can't find study for student ID: 2213105"
+}
+```
+
+- **400 INVALID**: Lỗi khi thêm điểm ở hàng.
+```json
+{
+  "statusCode": 400,
+  "message": "Error happen when add grade at row 3."
+}
+```
+
+- **400 INVALID**: Lỗi không xác định ở hàng.
+```json
+{
+  "statusCode": 400,
+  "message": "Unidentified error at row 3."
+}
+```
+
+- **400 INVALID**: Lỗi không xác định.
+```json
+{
+  "statusCode": 400,
+  "message": "Unidentified error."
+}
+```
+
 ### Student APIs
 
 #### 1. Register Student
