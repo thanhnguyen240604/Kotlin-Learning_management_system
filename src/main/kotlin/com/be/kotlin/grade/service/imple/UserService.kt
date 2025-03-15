@@ -122,11 +122,26 @@ class UserService(
     }
 
     override fun updateInfo(userDTO: UserUpdateRequestDTO): Response {
-        if (!userRepository.existsByUsername(userDTO.username)) {
-            throw AppException(ErrorCode.USER_NOT_FOUND)
+        val existingUser = userRepository.findByUsername(userDTO.username)
+            .orElseThrow { AppException(ErrorCode.USER_NOT_FOUND)}
+
+        val sanitizedUsername = userDTO.username.trim()
+        // Kiểm tra đuôi email
+        if (!sanitizedUsername.endsWith("@hcmut.edu.vn")) {
+            throw AppException(ErrorCode.UNAUTHENTICATED_USERNAME_DOMAIN)
         }
-        //userDTO.faculty?.let { userRepository.updateUserInfo(it, userDTO.username) }
-        userDTO.faculty?.let { userRepository.updateUserInfo(userDTO.name,it,userDTO.username) }
+
+        existingUser.name = userDTO.name.toString()
+        existingUser.faculty = userDTO.faculty
+        existingUser.username = userDTO.username
+        userDTO.major?.let {
+            val studentGot = existingUser.id?.let { it1 -> studentRepository.findByUserId(it1) }
+            if (studentGot != null) {
+                studentGot.major = userDTO.major
+                studentRepository.save(studentGot)
+            }
+        }
+        userRepository.save(existingUser)
         return Response(
             statusCode = 200,
             message = "Update info successfully"

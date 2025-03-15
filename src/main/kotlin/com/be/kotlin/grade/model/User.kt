@@ -18,7 +18,7 @@ data class User (
     var role: String = "",
 
     @Column(name = "username", unique = true, nullable = false)
-    val username: String = "",
+    var username: String = "",
 
     @Column(name = "password", nullable = false)
     var password: String = "",

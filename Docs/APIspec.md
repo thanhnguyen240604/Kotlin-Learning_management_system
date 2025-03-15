@@ -2009,10 +2009,10 @@
 - **Request Body**:
   ```json
   {
-    "id": "12345",
-    "username": "nguyencongthanh2408@gmail.com",
-    "password": "newpassword123",
-    "role": "LECTURER"
+    "username": "sinhvien1@hcmut.edu.vn",
+    "name": "Nguyen Cong Thanh",
+    "faculty": "CSE",
+    "major": "CS"
   }
   ```
 - **Response**:

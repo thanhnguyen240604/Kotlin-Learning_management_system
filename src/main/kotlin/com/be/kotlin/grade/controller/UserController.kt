@@ -61,7 +61,7 @@ class UserController(
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PatchMapping("/update")
+    @PutMapping("/update")
     fun updateInfo(@RequestBody userDTO: UserUpdateRequestDTO): ResponseEntity<Response>{
         val response = userService.updateInfo(userDTO)
         return ResponseEntity.status(response.statusCode).body(response)
