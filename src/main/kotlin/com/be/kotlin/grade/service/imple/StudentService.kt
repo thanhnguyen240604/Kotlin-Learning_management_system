@@ -56,22 +56,6 @@ class StudentService(
         )
     }
 
-    override fun updateStudent(studentUpdateDTO: StudentUpdateDTO, username : String): Response {
-        val student = studentRepository.findByUserUsername(username).orElseThrow { AppException(ErrorCode.STUDENT_NOT_FOUND) }
-        if (studentRepository.existsByStudentId(studentUpdateDTO.studentId)) {
-            throw AppException(ErrorCode.STUDENT_ID_EXISTED)
-        }
-        student.user.name = studentUpdateDTO.studentName
-        student.user.faculty = studentUpdateDTO.faculty
-        student.studentId = studentUpdateDTO.studentId
-        studentRepository.save(student)
-
-        return Response(
-            statusCode = 200,
-            message = "Student updated successfully",
-          )
-    }
-
     override fun calculateGPA(semester: Int): Response {
         val username = SecurityContextHolder.getContext().authentication.name
 
@@ -148,6 +132,22 @@ class StudentService(
 //            statusCode = 200,
 //            message = "Student found successfully",
 //            studentDTO = studentDTO
+//        )
+//    }
+
+//    override fun updateStudent(studentUpdateDTO: StudentUpdateDTO, username : String): Response {
+//        val student = studentRepository.findByUserUsername(username).orElseThrow { AppException(ErrorCode.STUDENT_NOT_FOUND) }
+//        if (studentRepository.existsByStudentId(studentUpdateDTO.studentId)) {
+//            throw AppException(ErrorCode.STUDENT_ID_EXISTED)
+//        }
+//        student.user.name = studentUpdateDTO.studentName
+//        student.user.faculty = studentUpdateDTO.faculty
+//        student.studentId = studentUpdateDTO.studentId
+//        studentRepository.save(student)
+//
+//        return Response(
+//            statusCode = 200,
+//            message = "Student updated successfully",
 //        )
 //    }
 }

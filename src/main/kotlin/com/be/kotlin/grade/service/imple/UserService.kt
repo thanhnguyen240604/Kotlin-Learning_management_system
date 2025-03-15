@@ -65,6 +65,12 @@ class UserService(
         if (userRepository.existsByUsername(userRequestDTO.username)) {
             throw AppException(ErrorCode.USER_EXISTED)
         }
+        val sanitizedUsername = userRequestDTO.username.trim()
+
+        // Kiểm tra đuôi email
+        if (!sanitizedUsername.endsWith("@hcmut.edu.vn")) {
+            throw AppException(ErrorCode.UNAUTHENTICATED_USERNAME_DOMAIN)
+        }
 
         val user = userMapper.toUser(userRequestDTO)
         user.role = "LECTURER"

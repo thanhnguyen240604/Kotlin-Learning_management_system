@@ -643,6 +643,123 @@
 | 200         | Thông tin Grade được tìm thấy | `{ "statusCode": 200, "message": "Grade found successfully", "gradeDTO": { ... } }` |
 | 404         | Grade không tồn tại           | `{ "statusCode": 404, "message": "Grade not found" }`   |
 
+#### 5. Add Grade By Excel File
+- **URL:** `GET /grade-portal/grades/add_excel`
+- **Description:** Thêm các cột điểm của nhiều sinh viên khác nhau từ file csv vào study.
+- **Authorization:** `LECTURER`
+- **Parameter:** File csv
+- **Responses:**
+- **200 OK**: Điểm được thêm vào thành công.
+```json
+{
+  "statusCode": 200,
+  "message": "Grade added successfully through excel file"
+}
+```
+- **400 INVALID**: Thiếu thành phần header trong file.
+```json
+{
+  "statusCode": 400,
+  "message": "Missing header row"
+}
+```
+
+- **400 INVALID**: Thành phần header sai định dạng.
+```json
+{
+  "statusCode": 400,
+  "message": "Invalid header format"
+}
+```
+
+- **400 INVALID**: Thành phần header sai định dạng.
+```json
+{
+  "statusCode": 400,
+  "message": "Unable to find student id in file"
+}
+```
+
+- **400 INVALID**: Thành phần header sai định dạng.
+```json
+{
+  "statusCode": 400,
+  "message": "Unable to find student id in file"
+}
+```
+
+- **400 INVALID**: Không thể nhận diện header.
+```json
+{
+  "statusCode": 400,
+  "message": "Header format not recognized"
+}
+```
+
+- **400 INVALID**: Không thể nhận diện header.
+```json
+{
+  "statusCode": 400,
+  "message": "Header format not recognized"
+}
+```
+
+- **400 INVALID**: Student Id không phù hợp.
+```json
+{
+  "statusCode": 400,
+  "message": "Student ID not suitable in row 3. It must be number"
+}
+```
+
+- **400 INVALID**: Thêm điểm bị lỗi cho sinh viên với id này.
+```json
+{
+  "statusCode": 400,
+  "message": "Error adding study for student ID: 2213105"
+}
+```
+
+- **400 INVALID**: Student Id không phù hợp.
+```json
+{
+  "statusCode": 400,
+  "message": "Student ID not suitable in row 3, column 2. It must be number"
+}
+```
+
+- **400 INVALID**: Không thể tìm thấy study cho student với id này.
+```json
+{
+  "statusCode": 400,
+  "message": "Can't find study for student ID: 2213105"
+}
+```
+
+- **400 INVALID**: Lỗi khi thêm điểm ở hàng.
+```json
+{
+  "statusCode": 400,
+  "message": "Error happen when add grade at row 3."
+}
+```
+  
+- **400 INVALID**: Lỗi không xác định ở hàng.
+```json
+{
+  "statusCode": 400,
+  "message": "Unidentified error at row 3."
+}
+```
+
+- **400 INVALID**: Lỗi không xác định.
+```json
+{
+  "statusCode": 400,
+  "message": "Unidentified error."
+}
+```
+
 ### Student APIs
 
 #### 1. Register Student
@@ -1007,25 +1124,40 @@
 ```json
 {
   "statusCode": 200,
-  "message": "Studies found successfully",
-  "studies": [
+  "message": "Study record for semester 243 found successfully",
+  "listStudyDTO": [
     {
-      "studentId": 2212870,
-      "subjectId": "CO2000",
-      "classId": 1,
-      "semester": 1,
-      "grades": [
+      "id": 46,
+      "studentId": 2213110,
+      "subjectId": "CO3001",
+      "classId": 5,
+      "score": 6.3,
+      "gradeList": [
         {
-          "gradeType": "Midterm",
-          "gradeValue": 40.0
+          "id": 16,
+          "score": 5.0,
+          "weight": 20.0,
+          "studyId": 46
         },
         {
-          "gradeType": "Final",
-          "gradeValue": 45.5
+          "id": 17,
+          "score": 6.0,
+          "weight": 30.0,
+          "studyId": 46
+        },
+        {
+          "id": 18,
+          "score": 7.0,
+          "weight": 50.0,
+          "studyId": 46
         }
       ]
     }
-  ]
+  ],
+  "totalCredits": 3,
+  "totalPages": 1,
+  "totalElements": 1,
+  "currentPage": 0
 }
 ```
 - **404 Not Found**: Không tìm thấy thông tin học tập cho học kỳ yêu cầu.
@@ -1056,7 +1188,7 @@
 ```
 
 #### 7. Get Study by Class Id
-- **URL**: `GET /grade-portal/study/result`
+- **URL**: `GET /grade-portal/study`
 - **Description**: Endpoint này cho phép user xem tất cả study của 1 lớp
 - **Authorization**: `ADMIN` or `LECTURER`
 
@@ -1525,10 +1657,11 @@
 - **Request Body**:
   ```json
   {
-    "username": "nguyencongthanh2408@gmail.com",
-    "password": "12345678",
-    "name": "Thanh"
-  }
+    "username": "giaovien6@hcmut.edu.vn",
+    "password": "123",
+    "faculty": "CSE",
+    "name": "Giao vien 3"
+}
   ```
 - **Response**:
   - **409 Conflict**:

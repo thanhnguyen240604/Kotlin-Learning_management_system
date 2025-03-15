@@ -25,16 +25,6 @@ class StudentController (
     }
 
     @PreAuthorize("hasRole('ROLE_STUDENT')")
-    @PutMapping("/update")
-    fun updateStudent(@RequestBody studentUpdateDTO: StudentUpdateDTO): ResponseEntity<Response> {
-        val context = SecurityContextHolder.getContext()
-        val username = context.authentication.name
-
-        val response = studentService.updateStudent(studentUpdateDTO, username)
-        return ResponseEntity.status(response.statusCode).body(response)
-    }
-
-    @PreAuthorize("hasRole('ROLE_STUDENT')")
     @GetMapping("/gpa/{semester}")
     fun calculateGPA(@PathVariable semester: Int): ResponseEntity<Response> {
         val response = studentService.calculateGPA(semester)
@@ -52,6 +42,16 @@ class StudentController (
 //    @GetMapping("/{id}")
 //    fun getStudentById(@PathVariable id: Long): ResponseEntity<Response> {
 //        val response = studentService.getStudentById(id)
+//        return ResponseEntity.status(response.statusCode).body(response)
+//    }
+
+//    @PreAuthorize("hasRole('ROLE_STUDENT')")
+//    @PutMapping("/update")
+//    fun updateStudent(@RequestBody studentUpdateDTO: StudentUpdateDTO): ResponseEntity<Response> {
+//        val context = SecurityContextHolder.getContext()
+//        val username = context.authentication.name
+//
+//        val response = studentService.updateStudent(studentUpdateDTO, username)
 //        return ResponseEntity.status(response.statusCode).body(response)
 //    }
 }
