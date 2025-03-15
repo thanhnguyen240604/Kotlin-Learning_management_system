@@ -15,14 +15,5 @@ import java.util.Optional
 interface UserRepository: JpaRepository<User, Long> {
     fun existsByUsername(username: String): Boolean
     fun findByUsername(username: String): Optional<User>
-
-    @Transactional
-    @Modifying
-    @Query("update User a set a.name=:name, a.faculty=:faculty where a.username=:username")
-    fun updateUserInfo(
-        @Param("name") name:String,
-        @Param("faculty") faculty:String,
-        @Param("username") username: String)
-
     fun findByRole(s: String, pageable: Pageable): Page<User>
 }

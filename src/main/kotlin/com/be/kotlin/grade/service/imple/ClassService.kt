@@ -90,16 +90,7 @@ class ClassService(
         updateClassDTO.startTime?.let { baseClass.startTime = it }
         updateClassDTO.endTime?.let { baseClass.endTime = it }
         updateClassDTO.dayOfWeek?.let { baseClass.dayOfWeek = it }
-        val lectures = updateClassDTO.lecturersUsernameList
-            ?.map { username ->
-                userRepository.findByUsername(username)
-                    .orElseThrow { AppException(ErrorCode.USER_NOT_FOUND) }
-            }
-            ?.toMutableList()
-
-        updateClassDTO.lecturersUsernameList?.let {
-            baseClass.lecturers = lectures ?: mutableListOf()
-        }
+        updateClassDTO.lecturersUsernameList?.let {baseClass.lecturersUsername = it }
 
         classRepository.save(baseClass)
         return Response(
@@ -121,6 +112,21 @@ class ClassService(
     override fun getClassById(id: Long): Response {
         val classGot = classRepository.findById(id)
             .orElseThrow { AppException(ErrorCode.CLASS_NOT_FOUND) }
+        val context = SecurityContextHolder.getContext()
+        val username = context.authentication?.name
+
+        val user = username?.let {
+            userRepository.findByUsername(it).orElseThrow {
+                AppException(ErrorCode.USER_NOT_FOUND)
+
+            }
+        }
+        if (user != null) {
+            if (user.role == "LECTURER") {
+                if(!classGot.lecturersUsername.contains(username))
+                    throw AppException(ErrorCode.CLASS_NOT_BELONG_TO_LECTURER)
+            }
+        }
 
         val classDTO = classMapper.toClassDTO(classGot)
         return Response(
@@ -214,7 +220,7 @@ class ClassService(
             }
         }
 
-        val classPage = user?.id?.let { classRepository.findClassByLecturersId(it, pageable) }
+        val classPage = user?.id?.let { classRepository.findClassByLecturersUsername(it, pageable) }
 
         if (classPage == null) { throw AppException(ErrorCode.CLASS_NOT_FOUND)}
         val listClassDTO = classPage.content.map { classEntity ->

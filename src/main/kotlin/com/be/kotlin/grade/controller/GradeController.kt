@@ -49,7 +49,14 @@ class GradeController(
     @PreAuthorize("hasRole('ROLE_LECTURER')")
     @PostMapping("/add_excel")
     fun addGradeByExcel(@RequestParam("file") file: MultipartFile): ResponseEntity<Response> {
-        val response = gradeService.processExcel(file)
+        val response = gradeService.processExcel(file, "add")
+        return ResponseEntity.status(response.statusCode).body(response)
+    }
+
+    @PreAuthorize("hasRole('ROLE_LECTURER')")
+    @PostMapping("/update_excel")
+    fun updateGradeByExcel(@RequestParam("file") file: MultipartFile): ResponseEntity<Response> {
+        val response = gradeService.processExcel(file, "update")
         return ResponseEntity.status(response.statusCode).body(response)
     }
 }

@@ -7,6 +7,7 @@ import com.be.kotlin.grade.exception.AppException
 import com.be.kotlin.grade.exception.ErrorCode
 import com.be.kotlin.grade.mapper.GradeMapper
 import com.be.kotlin.grade.model.Grade
+import com.be.kotlin.grade.repository.ClassRepository
 import com.be.kotlin.grade.repository.GradeRepository
 import com.be.kotlin.grade.repository.StudyRepository
 import com.be.kotlin.grade.service.interf.IGrade
@@ -16,13 +17,15 @@ import org.springframework.web.multipart.MultipartFile
 import java.io.InputStream
 import org.apache.poi.ss.usermodel.WorkbookFactory
 import org.apache.poi.ss.usermodel.CellType
+import org.springframework.security.core.context.SecurityContextHolder
 
 @Service
 class GradeService(
     private val gradeRepository: GradeRepository,
     private val gradeMapper: GradeMapper,
     private val studyRepository: StudyRepository,
-    private val studyProgressService: IStudyProgress
+    private val studyProgressService: IStudyProgress,
+    private val classRepository: ClassRepository
 ) : IGrade {
     private fun isWeightValid(studyId: Long, newWeight: Float, existingWeight: Float? = null): Pair<Boolean, String> {
         val study = studyRepository.findById(studyId).orElse(null) ?: return Pair(false, "Study not found")
@@ -191,7 +194,7 @@ class GradeService(
         )
     }
 
-    override fun processExcel(file: MultipartFile): Response {
+    override fun processExcel(file: MultipartFile, typeAPI: String): Response {
         val responses = mutableListOf<Response>()
         val errorMessages = mutableListOf<String>()
         val successMessages = mutableListOf<String>()
@@ -237,9 +240,17 @@ class GradeService(
         val regex = """([A-Z0-9]+) - L(\d+) - (\d+)""".toRegex()
         val matchResult = regex.find(headerData) ?: return Response(statusCode = 400, message = "Header format not recognized")
         val subjectId = matchResult.groupValues[1]
-        val className = matchResult.groupValues[2].toLong()
+        val className = matchResult.groupValues[2]
         val semester = matchResult.groupValues[3].toInt()
 
+        //Kiem tra xem giao vien co day lop do khong
+        val context = SecurityContextHolder.getContext()
+        val username = context.authentication?.name
+        val classGot = classRepository.findBySubjectAndNameAndSemester(subjectId, className, semester)
+        if (classGot != null) {
+            if(!classGot.lecturersUsername.contains(username))
+                throw AppException(ErrorCode.CLASS_NOT_BELONG_TO_LECTURER)
+        }
         // Lặp qua từng dòng (bỏ qua dòng đầu tiên là tiêu đề)
         for (rowIndex in 2..sheet.lastRowNum) {
             val row = sheet.getRow(rowIndex)
@@ -260,6 +271,12 @@ class GradeService(
             val studentId = studentIdCell.numericCellValue.toLong() // Cột studentId
             val studyGot = studyRepository.findByStudentIdAndSubjectIdAndSemester(studentId, subjectId, semester)
                 ?: return Response(statusCode = 400, message = "Error adding study for student ID: $studentId")
+
+            //Xoa grade list neu la ham update
+            if (typeAPI == "update") {
+                studyGot.id?.let { deleteGradeList(it) }
+            }
+
             // Duyệt qua các cột điểm
             for (cellIndex in 1 until titleRow.lastCellNum) {
                 if (cellIndex == studentIdCol) continue // Bỏ qua cột student_id
@@ -302,25 +319,23 @@ class GradeService(
             }
 
         }
-
-        val finalMessage = StringBuilder()
-        if (successMessages.isNotEmpty()) {
-            finalMessage.append("Thêm điểm thành công cho các sinh viên sau:  ")
-            finalMessage.append(successMessages.joinToString(" --- "))
-        }
-        if (errorMessages.isNotEmpty()) {
-            if (finalMessage.isNotEmpty()) finalMessage.append(" |------| ")
-            finalMessage.append("Một số điểm không thể được thêm vào:  ")
-            finalMessage.append(errorMessages.joinToString(" --- "))
-        }
         workbook.close()
         inputStream.close()
 
 //        return Response(statusCode = 200, message = "danh sách học sinh đã được thêm vào lớp")
         return Response(
             statusCode = if (errorMessages.isNotEmpty()) 400 else 200,
-            message = if (errorMessages.isNotEmpty()) "Grade added successfully through excel file" else (errorMessages).toString(),
+            message = if (errorMessages.isNotEmpty()) (errorMessages).toString()
+                    else if (typeAPI == "add") "Grade add successfully through excel file"
+                    else "Grade updated successfully through excel file",
             listGradeDTO = responses.mapNotNull { it.gradeDTO }
         )
+    }
+
+    fun deleteGradeList(studyId: Long) {
+        val listGradeId = gradeRepository.findGradeIdByStudyID(studyId);
+        // Xóa điểm
+        listGradeId.map {gradeId -> gradeRepository.deleteById(gradeId)}
+        return
     }
 }
