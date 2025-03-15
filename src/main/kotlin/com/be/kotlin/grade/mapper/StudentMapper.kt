@@ -8,13 +8,6 @@ import java.util.*
 
 @Component
 class StudentMapper {
-    fun toStudentResponseDto(student: Student, score : Float) : StudentResponseDTO{
-        return StudentResponseDTO(
-            name = student.user.name,
-            score = score
-        )
-    }
-
     fun toStudentDTO(student: Student): StudentDTO? {
         return StudentDTO(
             studentId = student.studentId,
@@ -30,4 +23,11 @@ class StudentMapper {
             major = studentDTO.major
         )
     }
+
+//    fun toStudentResponseDto(student: Student, score : Float) : StudentResponseDTO{
+//        return StudentResponseDTO(
+//            name = student.user.name,
+//            score = score
+//        )
+//    }
 }

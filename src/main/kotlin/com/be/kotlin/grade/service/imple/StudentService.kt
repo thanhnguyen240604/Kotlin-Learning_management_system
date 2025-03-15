@@ -56,22 +56,6 @@ class StudentService(
         )
     }
 
-    override fun updateStudent(studentUpdateDTO: StudentUpdateDTO, username : String): Response {
-        val student = studentRepository.findByUserUsername(username).orElseThrow { AppException(ErrorCode.STUDENT_NOT_FOUND) }
-        if (studentRepository.existsByStudentId(studentUpdateDTO.studentId)) {
-            throw AppException(ErrorCode.STUDENT_ID_EXISTED)
-        }
-        student.user.name = studentUpdateDTO.studentName
-        student.user.faculty = studentUpdateDTO.faculty
-        student.studentId = studentUpdateDTO.studentId
-        studentRepository.save(student)
-
-        return Response(
-            statusCode = 200,
-            message = "Student updated successfully",
-          )
-    }
-
     override fun calculateGPA(semester: Int): Response {
         val username = SecurityContextHolder.getContext().authentication.name
 
@@ -110,34 +94,34 @@ class StudentService(
           )
     }
 
-    override fun getStudentList(classId: Long): Response {
-        // Lấy danh sách studentId tương ứng với classId
-        val studentIdList = studyRepository.findStudentIdByClassId(classId)
-
-        // Nếu không tìm thấy bất kỳ studentId nào, trả về thông báo lỗi
-        if (studentIdList.isEmpty()) {
-            return Response(
-                statusCode = 404,
-                message = "No studies found for classId $classId",
-                listStudent = emptyList()
-            )
-        }
-
-        // Lấy danh sách student từ studentIdList
-        val studentList = studentRepository.findStudentByStudentIdList(studentIdList)
-
-        // Chuyển đổi danh sách studentEntity thành studentDTO
-        val studentListDTO = studentList.mapNotNull { studentEntity ->
-            studentMapper.toStudentDTO(studentEntity)
-        }
-
-        // Trả về danh sách studentDTO
-        return Response(
-            statusCode = 200,
-            message = "Get Student List successfully",
-            listStudent = studentListDTO
-        )
-    }
+//    override fun getStudentList(classId: Long): Response {
+//        // Lấy danh sách studentId tương ứng với classId
+//        val studentIdList = studyRepository.findStudentIdByClassId(classId)
+//
+//        // Nếu không tìm thấy bất kỳ studentId nào, trả về thông báo lỗi
+//        if (studentIdList.isEmpty()) {
+//            return Response(
+//                statusCode = 404,
+//                message = "No studies found for classId $classId",
+//                listStudent = emptyList()
+//            )
+//        }
+//
+//        // Lấy danh sách student từ studentIdList
+//        val studentList = studentRepository.findStudentByStudentIdList(studentIdList)
+//
+//        // Chuyển đổi danh sách studentEntity thành studentDTO
+//        val studentListDTO = studentList.mapNotNull { studentEntity ->
+//            studentMapper.toStudentDTO(studentEntity)
+//        }
+//
+//        // Trả về danh sách studentDTO
+//        return Response(
+//            statusCode = 200,
+//            message = "Get Student List successfully",
+//            listStudent = studentListDTO
+//        )
+//    }
 
 //    override fun getStudentById(userId: Long): Response {
 //        val studentGot = studentRepository.findById(userId)
@@ -148,6 +132,22 @@ class StudentService(
 //            statusCode = 200,
 //            message = "Student found successfully",
 //            studentDTO = studentDTO
+//        )
+//    }
+
+//    override fun updateStudent(studentUpdateDTO: StudentUpdateDTO, username : String): Response {
+//        val student = studentRepository.findByUserUsername(username).orElseThrow { AppException(ErrorCode.STUDENT_NOT_FOUND) }
+//        if (studentRepository.existsByStudentId(studentUpdateDTO.studentId)) {
+//            throw AppException(ErrorCode.STUDENT_ID_EXISTED)
+//        }
+//        student.user.name = studentUpdateDTO.studentName
+//        student.user.faculty = studentUpdateDTO.faculty
+//        student.studentId = studentUpdateDTO.studentId
+//        studentRepository.save(student)
+//
+//        return Response(
+//            statusCode = 200,
+//            message = "Student updated successfully",
 //        )
 //    }
 }

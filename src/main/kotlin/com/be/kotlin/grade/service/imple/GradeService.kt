@@ -225,7 +225,7 @@ class GradeService(
         }
         // Kiểm tra xem cột student_id có được tìm thấy không
         if (studentIdCol == -1) {
-            errorMessages.add("Không tìm thấy cột studentid trong file.")
+            errorMessages.add("Unable to find student id in file.")
             return Response(
                 statusCode = 400,
                 message = errorMessages.joinToString(" --- "),
@@ -244,9 +244,6 @@ class GradeService(
         for (rowIndex in 2..sheet.lastRowNum) {
             val row = sheet.getRow(rowIndex)
 
-//            // Lấy dữ liệu từ các cột, kiểm tra null nếu cần
-//            val studentId = row.getCell(0)?.numericCellValue?.toLong() ?: continue
-
             // Đọc student ID
             val studentIdCell = row.getCell(studentIdCol)
             if (studentIdCell == null || studentIdCell.cellType == CellType.BLANK) {
@@ -256,7 +253,7 @@ class GradeService(
 
             // Kiểm tra xem student ID có phải là số không
             if (studentIdCell.cellType != CellType.NUMERIC) {
-                errorMessages.add("Student ID không hợp lệ ở hàng ${rowIndex + 1}. Phải là số.")
+                errorMessages.add("Student ID not suitable in row ${rowIndex + 1}. It must be number.")
                 continue
             }
 
@@ -275,7 +272,7 @@ class GradeService(
 
                 // Kiểm tra xem điểm có phải là số không
                 if (scoreCell.cellType != CellType.NUMERIC) {
-                    errorMessages.add("Điểm không hợp lệ ở hàng ${rowIndex + 1}, cột ${cellIndex + 1}. Phải là số.")
+                    errorMessages.add("Student ID not suitable in row ${rowIndex + 1}, column ${cellIndex + 1}. It must be number.")
                     continue
                 }
 
@@ -286,7 +283,7 @@ class GradeService(
                 val studyId = studyGot.id
 
                 if (studyId == null) {
-                    errorMessages.add("Không tìm thấy study cho studentId $studentId ở hàng ${rowIndex + 1}.")
+                    errorMessages.add("Can't find study for student ID: $studentId}.")
                     continue
                 }
 
@@ -298,9 +295,9 @@ class GradeService(
                     responses.add(res)
                     successMessages.add("Thêm điểm thành công cho studentId $studentId với điểm ${gradeDTO.score} và trọng số ${gradeDTO.weight} ở hàng ${rowIndex + 1}.")
                 } catch (e: AppException) {
-                    errorMessages.add("Lỗi xảy ra khi thêm điểm ở hàng ${rowIndex + 1}: ${e.message ?: "Lỗi không xác định"}")
+                    errorMessages.add("Error happen when add grade at row ${rowIndex + 1}: ${e.message ?: "Unidentified error"}")
                 } catch (e: Exception) {
-                    errorMessages.add("Lỗi không xác định xảy ra ở hàng ${rowIndex + 1}: ${e.message ?: "Lỗi không xác định"}")
+                    errorMessages.add("Unidentified error at row ${rowIndex + 1}: ${e.message ?: "Unidentified error"}")
                 }
             }
 
@@ -322,7 +319,7 @@ class GradeService(
 //        return Response(statusCode = 200, message = "danh sách học sinh đã được thêm vào lớp")
         return Response(
             statusCode = if (errorMessages.isNotEmpty()) 400 else 200,
-            message = "Grade added successfully through excel file",
+            message = if (errorMessages.isNotEmpty()) "Grade added successfully through excel file" else (errorMessages).toString(),
             listGradeDTO = responses.mapNotNull { it.gradeDTO }
         )
     }

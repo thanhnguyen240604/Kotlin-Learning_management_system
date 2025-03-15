@@ -14,4 +14,6 @@ interface StudentRepository: JpaRepository<Student, Long> {
 
     @Query("SELECT s FROM Student s WHERE s.studentId IN :studentIdList")
     fun findStudentByStudentIdList(@Param("studentIdList") studentIdList: List<Long>): List<Student>
+
+    fun findByUserId(userId: Long): Student?
 }
