@@ -20,7 +20,8 @@ interface ClassRepository: JpaRepository<Class, Long> {
     ): Page<Class>
 
     @Query("""
-        SELECT c FROM Class c WHERE c.lecturersUsername LIKE %:lecturerUsername%
+        SELECT c FROM Class c 
+        WHERE CAST(c.lecturersUsername AS string) LIKE CONCAT('%', :lecturerUsername, '%')
     """)
     fun findClassByLecturersUsername(
         @Param("lecturerUsername") lecturerUsername: String,

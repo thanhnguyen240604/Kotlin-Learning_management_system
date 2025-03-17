@@ -97,7 +97,7 @@ class UserController(
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/lecturers_username")
+    @GetMapping("/lecturers-username")
     fun getAllLecturersUsername(): ResponseEntity<Response> {
         val response = userService.getAllLecturersUsername()
         return ResponseEntity.status(response.statusCode).body(response)
