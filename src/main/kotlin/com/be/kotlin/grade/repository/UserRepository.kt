@@ -16,4 +16,11 @@ interface UserRepository: JpaRepository<User, Long> {
     fun existsByUsername(username: String): Boolean
     fun findByUsername(username: String): Optional<User>
     fun findByRole(s: String, pageable: Pageable): Page<User>
+
+    @Query("""
+        SELECT u.username
+        FROM User u
+        WHERE u.role = :role
+    """)
+    fun findUsernameByRole(role: String): List<String>
 }

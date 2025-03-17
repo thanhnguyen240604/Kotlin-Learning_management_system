@@ -167,4 +167,13 @@ class UserService(
             lecturers = listStudents
         )
     }
+
+    override fun getAllLecturersUsername(): Response {
+        val lecturersUsername = userRepository.findUsernameByRole("LECTURER")
+        return Response(
+            statusCode = 200,
+            message = "Lecturers' username list found successfully",
+            lecturersUsername = lecturersUsername
+        )
+    }
 }
