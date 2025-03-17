@@ -45,7 +45,8 @@ class ClassMapper (
             id = classEntity.id,
             name = classEntity.name,
             subjectId = classEntity.subject.id,
-            semester = classEntity.semester
+            semester = classEntity.semester,
+            lecturersUsername = classEntity.lecturersUsername
         )
     }
 
