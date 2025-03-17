@@ -15,4 +15,5 @@ interface IUser {
     fun createAdmin(userRequestDTO: UserRequestDTO): Response
     fun getAllLecturers(pageable: Pageable): Response
     fun getAllStudents(pageable: Pageable): Response
+    fun getAllLecturersUsername(): Response
 }

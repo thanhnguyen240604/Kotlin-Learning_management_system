@@ -220,7 +220,7 @@ class ClassService(
             }
         }
 
-        val classPage = user?.id?.let { classRepository.findClassByLecturersUsername(it, pageable) }
+        val classPage = user?.username?.let { classRepository.findClassByLecturersUsername(it, pageable) }
 
         if (classPage == null) { throw AppException(ErrorCode.CLASS_NOT_FOUND)}
         val listClassDTO = classPage.content.map { classEntity ->

@@ -60,6 +60,9 @@ data class Response(
     //GPA
     val gpa: Float? = null,
 
+    //List lecturers username
+    val lecturersUsername: List<String>? = null,
+
     //Number of register subject
     val registerNum: Int? = null,
 

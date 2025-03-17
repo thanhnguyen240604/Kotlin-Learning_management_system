@@ -95,4 +95,11 @@ class UserController(
         val response = userService.getAllStudents(pageable)
         return ResponseEntity.status(response.statusCode).body(response)
     }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/lecturers_username")
+    fun getAllLecturersUsername(): ResponseEntity<Response> {
+        val response = userService.getAllLecturersUsername()
+        return ResponseEntity.status(response.statusCode).body(response)
+    }
 }
