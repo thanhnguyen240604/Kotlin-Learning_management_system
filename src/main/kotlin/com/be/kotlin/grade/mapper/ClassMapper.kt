@@ -37,6 +37,7 @@ class ClassMapper (
             dayOfWeek = classEntity.dayOfWeek,
             startTime = classEntity.startTime,
             endTime = classEntity.endTime,
+            lecturersUsername = classEntity.lecturersUsername,
         )
     }
 
