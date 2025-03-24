@@ -21,6 +21,20 @@ spring:
           starttls:
             enable: ${SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE}
         debug: ${SPRING_MAIL_PROPERTIES_MAIL_DEBUG}
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 1054955116253-ltvgl9ddhvgddbtdencqit1es8h95mhe.apps.googleusercontent.com
+            client-secret: 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
+            redirect-uri: http://localhost:8080/grade-portal/auth/google/callback
+        provider:
+          google:
+            authorization-uri: https://accounts.google.com/o/oauth2/auth
+            token-uri: https://oauth2.googleapis.com/token
+            user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
+            jwk-set-uri: https://www.googleapis.com/oauth2/v3/certs
 
 server:
   port: ${SERVER_PORT}

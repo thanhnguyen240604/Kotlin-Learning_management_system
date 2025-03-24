@@ -52,7 +52,7 @@ class StudentService(
 
         return Response(
             statusCode = 200,
-            message = "Student registered"
+            message = "Student registered successfully",
         )
     }
 

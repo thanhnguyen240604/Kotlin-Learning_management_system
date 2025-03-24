@@ -38,10 +38,15 @@ enum class ErrorCode(val code: Int, val message: String) {
     POST_SUBJECT_INVALID(400, "Post-ordered subject can not be the same as subject id"),
     PRE_SUBJECT_INVALID(400, "Pre-ordered subject can not be the same as subject id"),
 
+    //Google Access Token INVALID
+    TOKEN_FETCHED_FAIL(400, "Fail to fetch access token"),
+    USERINFO_FETCHED_FAIL(400, "Fail to fetch user info"),
+
     //Unauthenticated
     UNAUTHENTICATED_USERNAME_PASSWORD(401, "Please check email or password again"),
     UNAUTHENTICATED_USERNAME(401, "Please check email again"),
-    UNAUTHENTICATED_USERNAME_DOMAIN(401, "Please enter @hcmut.edu.vn email "),
+    UNAUTHENTICATED_USERNAME_DOMAIN(401, "Please enter @hcmut.edu.vn email"),
+    UNAUTHENTICATED_LOGIN(401, "This mail must be logan through google service"),
 
     //Resource not found
     USER_NOT_FOUND(404, "User not found"),

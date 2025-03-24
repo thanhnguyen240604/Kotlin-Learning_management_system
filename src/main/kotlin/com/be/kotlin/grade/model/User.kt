@@ -20,12 +20,10 @@ data class User (
     @Column(name = "username", unique = true, nullable = false)
     var username: String = "",
 
-    @Column(name = "password", nullable = false)
+    @Column(name = "password")
     var password: String = "",
 
-    @Column
+    val isGoogleAccount: Boolean = false,
     var otp: String? = "",
-
-    @Column
     var otpExpiry: LocalDateTime? = null
 )

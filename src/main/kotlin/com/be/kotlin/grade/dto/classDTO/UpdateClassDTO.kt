@@ -8,7 +8,7 @@ data class UpdateClassDTO(
     @NotNull(message = "Class ID is required")
     val id: Long? = null,
 
-    val lecturersUsernameList: List<String>? = listOf(),
+    val lecturersUsernameList: List<String>? = null,
 
     val name: String? = null,
 

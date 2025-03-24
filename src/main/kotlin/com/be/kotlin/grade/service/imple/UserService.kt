@@ -7,6 +7,8 @@ import com.be.kotlin.grade.exception.AppException
 import com.be.kotlin.grade.exception.ErrorCode
 import com.be.kotlin.grade.mapper.StudentMapper
 import com.be.kotlin.grade.mapper.UserMapper
+import com.be.kotlin.grade.model.Student
+import com.be.kotlin.grade.model.User
 import com.be.kotlin.grade.repository.StudentRepository
 import com.be.kotlin.grade.repository.UserRepository
 import com.be.kotlin.grade.service.interf.IUser
@@ -82,6 +84,34 @@ class UserService(
             statusCode = 200,
             message = "Lecturer created successfully",
             userDTO = userMapper.toUserDTO(user)
+        )
+    }
+
+    fun createStudent(username: String, name: String): Response {
+        if (!username.endsWith("@hcmut.edu.vn")) {
+            throw AppException(ErrorCode.UNAUTHENTICATED_USERNAME_DOMAIN)
+        }
+        if (userRepository.existsByUsername(username)) {
+            throw AppException(ErrorCode.USER_EXISTED)
+        }
+
+        val user = User(
+            username = username,
+            name = name,
+            role = "STUDENT",
+            isGoogleAccount = true,
+        )
+        userRepository.save(user)
+
+        val student = Student()
+        student.user = user
+        studentRepository.save(student)
+
+        //Thieu study progress
+
+        return Response (
+            statusCode = 200,
+            message = "Student registered successfully"
         )
     }
 

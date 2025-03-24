@@ -16,11 +16,10 @@
   - `200 OK`: Returns an authentication token.
     ```json
     {
-    "statusCode": 200,
-    "message": "Login successfully",
-    "role": null,
-    "token": "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJNeUFwcCIsInN1YiI6ImFkbWluIiwiZXhwIjoxNzM0MzY2NzA5LCJpYXQiOjE3MzQzNTk1MDksImp0aSI6IjYwMjVhNzJmLTdmYWQtNGYxYS04Y2FjLTllNjExOTkzMWM0NCIsInNjb3BlIjoiUk9MRV9BRE1JTiJ9.RhGhtazMVhvoFi952G_VnYB-hCd3nbqkEGE7u9wcNK8",
-    "authenticated": true
+      "statusCode": 200,
+      "message": "Login successfully",
+      "token": "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJNeUFwcCIsInN1YiI6ImFkbWluIiwiZXhwIjoxNzM0MzY2NzA5LCJpYXQiOjE3MzQzNTk1MDksImp0aSI6IjYwMjVhNzJmLTdmYWQtNGYxYS04Y2FjLTllNjExOTkzMWM0NCIsInNjb3BlIjoiUk9MRV9BRE1JTiJ9.RhGhtazMVhvoFi952G_VnYB-hCd3nbqkEGE7u9wcNK8",
+      "authenticated": true
     }
     ```
   - `401 Unauthorized`
@@ -37,8 +36,58 @@
         "message": "User not found"     
       }
     ```
+  - `401 Invalid login way`
+    ```json
+      {
+        "statusCode": 401,
+        "message": "This mail must be logan through google service"     
+      }
+    ```
+  - `401 Invalid mail domain`
+    ```json
+      {
+        "statusCode": 401,
+        "message": "Please enter @hcmut.edu.vn email"     
+      }
+    ```
 
-#### 2. Forgot Password
+#### 2. Login With Google
+- **URL**: `GET /grade-portal/auth/google/login`
+- **Description**: Đăng nhập vào hệ thống bằng tài khoản google
+
+- **Response**:
+  - `200 OK`: Returns an authentication token.
+    ```json
+    {
+      "statusCode": 200,
+      "message": "Login successfully",
+      "token": "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJNeUFwcCIsInN1YiI6ImFkbWluIiwiZXhwIjoxNzM0MzY2NzA5LCJpYXQiOjE3MzQzNTk1MDksImp0aSI6IjYwMjVhNzJmLTdmYWQtNGYxYS04Y2FjLTllNjExOTkzMWM0NCIsInNjb3BlIjoiUk9MRV9BRE1JTiJ9.RhGhtazMVhvoFi952G_VnYB-hCd3nbqkEGE7u9wcNK8",
+      "authenticated": true
+    }
+    ```
+  - `401 Unauthorized`
+    ```json
+      {
+        "statusCode": 401,
+        "message": "Unauthenticated"     
+      }
+    ```
+  - `404 User not found`
+    ```json
+      {
+        "statusCode": 404,
+        "message": "User not found"     
+      }
+    ```
+  - `401 Invalid mail domain`
+    ```json
+      {
+        "statusCode": 401,
+        "message": "Please enter @hcmut.edu.vn email"     
+      }
+    ```
+
+#### 3. Forgot Password
 - **URL**: `POST /grade-portal/auth/forgot-password`
 - **Description**: Khi người dùng quên mật khẩu, một otp sẽ được gửi đến email của người dùng. Người dùng nhập otp để tiến hành reset password.
 - **Request Body**:
@@ -70,7 +119,7 @@
         }
       ```
 
-#### 3. Verify OTP
+#### 4. Verify OTP
 - **URL**: `POST /grade-portal/auth/verify-otp`
 - **Description**: Kiểm tra otp đã gửi cho người dùng có đúng không.
 - **Request Body**:
@@ -110,7 +159,7 @@
       }
     ```
 
-#### 4. Reset Password
+#### 5. Reset Password
 - **URL**: `POST /grade-portal/auth/reset-password`
 - **Description**: Tạo password mới khi xác nhận otp thành công.
 - **Request Body**:
@@ -924,7 +973,41 @@
   "message": "User already exists"
 }
 ```
+- `401 Invalid mail domain`
+    ```json
+      {
+        "statusCode": 401,
+        "message": "Please enter @hcmut.edu.vn email"     
+      }
+    ```
 
+#### 2. Register Student With Google
+- **URL**:  `POST /grade-portal/students/google/register`
+- **Description**: Cho phép sinh viên đăng ký tài khoản mới bằng google account.
+
+**Response**:
+
+- **200 OK**: Sinh viên đã được đăng ký thành công.
+```json
+{
+  "statusCode": 200,
+  "message": "Student registered successfully"
+}
+```
+- **409 Conflict**: Tài khoản người dùng đã tồn tại.
+```json
+{
+  "statusCode": 409,
+  "message": "User already exists"
+}
+```
+- `401 Invalid mail domain`
+    ```json
+      {
+        "statusCode": 401,
+        "message": "Please enter @hcmut.edu.vn email"     
+      }
+    ```
 
 [//]: # (#### 2. Get Student by ID )
 
@@ -987,7 +1070,7 @@
 [//]: # (```)
 
 
-#### 2. Update Student 
+#### 3. Update Student 
 - **URL**: `PUT /grade-portal/students/update`
 - **Description**: Cho phép sinh viên cập nhật thông tin cá nhân.
 - **Authorization**: `STUDENT`
@@ -1024,7 +1107,7 @@
 }
 ```
 
-#### 3. Calculate GPA by Semester 
+#### 4. Calculate GPA by Semester 
 - **URL**: `GET /grade-portal/students/gpa/{semester}`
 - **Description**: Cho phép sinh viên tính toán điểm GPA của một học kỳ cụ thể.
 - **Authorization**: `STUDENT`
@@ -1056,7 +1139,7 @@
 }
 ```
 
-#### 4. Get All Users
+#### 5. Get All Users
 - **URL**: `GET /grade-portal/users`
 - **Description**: Cho phép admin xem thông tin tất cả người dùng.
 - **Authorization**: `ADMIN`
@@ -1109,7 +1192,7 @@
 }
 ```
 
-#### 5. Get All Lecturers
+#### 6. Get All Lecturers
 - **URL**: `GET /grade-portal/users/lecturers`
 - **Description**: Cho phép admin xem thông tin tất cả giáo viên.
 - **Authorization**: `ADMIN`
@@ -1143,7 +1226,7 @@
 }
 ```
 
-#### 6. Get All Students
+#### 7. Get All Students
 - **URL**: `GET /grade-portal/users/students`
 - **Description**: Cho phép admin xem thông tin tất cả sinh viên.
 - **Authorization**: `ADMIN`

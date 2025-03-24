@@ -51,6 +51,10 @@ data class Response(
     val listStudentDTO: MutableList<StudentResponseDTO>? = null,
     val lecturers: List<UserResponseDTO>? = null,
 
+    //Access Token
+    val url: String? = null,
+    val data: Map<*, *>? = null,
+
     //Total credits
     val totalCredits: Int? = null,
 
