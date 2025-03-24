@@ -26,15 +26,14 @@ spring:
       client:
         registration:
           google:
-            client-id: 1054955116253-ltvgl9ddhvgddbtdencqit1es8h95mhe.apps.googleusercontent.com
-            client-secret: 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
-            redirect-uri: http://localhost:8080/grade-portal/auth/google/callback
+            client-id: ${SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENT_ID}
+            client-secret: ${SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENT_SECRET}
+            redirect-uri: ${SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_REDIRECT_URI}
         provider:
           google:
-            authorization-uri: https://accounts.google.com/o/oauth2/auth
-            token-uri: https://oauth2.googleapis.com/token
-            user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
-            jwk-set-uri: https://www.googleapis.com/oauth2/v3/certs
+            authorization-uri: ${SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_GOOGLE_AUTHORIZATION_URI}
+            token-uri: ${SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_GOOGLE_TOKEN_URI}
+            user-info-uri: ${SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_GOOGLE_USER_INFO_URI}
 
 server:
   port: ${SERVER_PORT}

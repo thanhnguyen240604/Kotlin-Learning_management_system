@@ -51,7 +51,13 @@ class AuthenticateService(
     private val authUrl: String,
 
     @Value("\${spring.security.oauth2.client.registration.google.redirect-uri}")
-    private val redirectUri: String
+    private val redirectUri: String,
+
+    @Value("\${spring.security.oauth2.client.provider.google.token-uri}")
+    private val tokenUri: String,
+
+    @Value("\${spring.security.oauth2.client.provider.google.user-info-uri}")
+    private val userInfoUri: String,
 ) : IAuthenticate {
 
     override fun authenticate(request: AuthenticateDTO,isGoogleLogin: Boolean): Response {
@@ -211,7 +217,7 @@ class AuthenticateService(
 
     override fun getAccessToken(code: String, state: String): Response {
         val restTemplate = RestTemplate()
-        val tokenUrl = "https://oauth2.googleapis.com/token"
+        val tokenUrl = tokenUri
 
         val requestBody = LinkedMultiValueMap<String, String>().apply {
             add("client_id", clientId)
@@ -238,7 +244,7 @@ class AuthenticateService(
 
     fun getUserInfo(accessToken: String, state: String): Response {
         val restTemplate = RestTemplate()
-        val userInfoUrl = "https://www.googleapis.com/oauth2/v3/userinfo"
+        val userInfoUrl = userInfoUri
 
         val headers = HttpHeaders().apply {
             set("Authorization", "Bearer $accessToken")
