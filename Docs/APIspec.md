@@ -16,11 +16,10 @@
   - `200 OK`: Returns an authentication token.
     ```json
     {
-    "statusCode": 200,
-    "message": "Login successfully",
-    "role": null,
-    "token": "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJNeUFwcCIsInN1YiI6ImFkbWluIiwiZXhwIjoxNzM0MzY2NzA5LCJpYXQiOjE3MzQzNTk1MDksImp0aSI6IjYwMjVhNzJmLTdmYWQtNGYxYS04Y2FjLTllNjExOTkzMWM0NCIsInNjb3BlIjoiUk9MRV9BRE1JTiJ9.RhGhtazMVhvoFi952G_VnYB-hCd3nbqkEGE7u9wcNK8",
-    "authenticated": true
+      "statusCode": 200,
+      "message": "Login successfully",
+      "token": "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJNeUFwcCIsInN1YiI6ImFkbWluIiwiZXhwIjoxNzM0MzY2NzA5LCJpYXQiOjE3MzQzNTk1MDksImp0aSI6IjYwMjVhNzJmLTdmYWQtNGYxYS04Y2FjLTllNjExOTkzMWM0NCIsInNjb3BlIjoiUk9MRV9BRE1JTiJ9.RhGhtazMVhvoFi952G_VnYB-hCd3nbqkEGE7u9wcNK8",
+      "authenticated": true
     }
     ```
   - `401 Unauthorized`
@@ -37,8 +36,58 @@
         "message": "User not found"     
       }
     ```
+  - `401 Invalid login way`
+    ```json
+      {
+        "statusCode": 401,
+        "message": "This mail must be logan through google service"     
+      }
+    ```
+  - `401 Invalid mail domain`
+    ```json
+      {
+        "statusCode": 401,
+        "message": "Please enter @hcmut.edu.vn email"     
+      }
+    ```
 
-#### 2. Forgot Password
+#### 2. Login With Google
+- **URL**: `GET /grade-portal/auth/google/login`
+- **Description**: Đăng nhập vào hệ thống bằng tài khoản google
+
+- **Response**:
+  - `200 OK`: Returns an authentication token.
+    ```json
+    {
+      "statusCode": 200,
+      "message": "Login successfully",
+      "token": "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJNeUFwcCIsInN1YiI6ImFkbWluIiwiZXhwIjoxNzM0MzY2NzA5LCJpYXQiOjE3MzQzNTk1MDksImp0aSI6IjYwMjVhNzJmLTdmYWQtNGYxYS04Y2FjLTllNjExOTkzMWM0NCIsInNjb3BlIjoiUk9MRV9BRE1JTiJ9.RhGhtazMVhvoFi952G_VnYB-hCd3nbqkEGE7u9wcNK8",
+      "authenticated": true
+    }
+    ```
+  - `401 Unauthorized`
+    ```json
+      {
+        "statusCode": 401,
+        "message": "Unauthenticated"     
+      }
+    ```
+  - `404 User not found`
+    ```json
+      {
+        "statusCode": 404,
+        "message": "User not found"     
+      }
+    ```
+  - `401 Invalid mail domain`
+    ```json
+      {
+        "statusCode": 401,
+        "message": "Please enter @hcmut.edu.vn email"     
+      }
+    ```
+
+#### 3. Forgot Password
 - **URL**: `POST /grade-portal/auth/forgot-password`
 - **Description**: Khi người dùng quên mật khẩu, một otp sẽ được gửi đến email của người dùng. Người dùng nhập otp để tiến hành reset password.
 - **Request Body**:
@@ -70,7 +119,7 @@
         }
       ```
 
-#### 3. Verify OTP
+#### 4. Verify OTP
 - **URL**: `POST /grade-portal/auth/verify-otp`
 - **Description**: Kiểm tra otp đã gửi cho người dùng có đúng không.
 - **Request Body**:
@@ -110,7 +159,7 @@
       }
     ```
 
-#### 4. Reset Password
+#### 5. Reset Password
 - **URL**: `POST /grade-portal/auth/reset-password`
 - **Description**: Tạo password mới khi xác nhận otp thành công.
 - **Request Body**:
@@ -303,6 +352,14 @@
         {
           "statusCode": 404,
           "message": "Class not found"     
+        }
+      ```
+
+  - `400 Class not belonged to this teacher`
+      ```json
+        {
+          "statusCode": 400,
+          "message": "You don't have permission to access this class"     
         }
       ```
 
@@ -643,6 +700,240 @@
 | 200         | Thông tin Grade được tìm thấy | `{ "statusCode": 200, "message": "Grade found successfully", "gradeDTO": { ... } }` |
 | 404         | Grade không tồn tại           | `{ "statusCode": 404, "message": "Grade not found" }`   |
 
+#### 5. Add Grade By Excel File
+- **URL:** `GET /grade-portal/grades/add_excel`
+- **Description:** Thêm các cột điểm của nhiều sinh viên khác nhau từ file csv vào study.
+- **Authorization:** `LECTURER`
+- **Parameter:** File csv
+- **Responses:**
+- **200 OK**: Điểm được thêm vào thành công.
+```json
+{
+  "statusCode": 200,
+  "message": "Grade added successfully through excel file"
+}
+```
+- **400 INVALID**: Thiếu thành phần header trong file.
+```json
+{
+  "statusCode": 400,
+  "message": "Missing header row"
+}
+```
+
+- **400 INVALID**: Thành phần header sai định dạng.
+```json
+{
+  "statusCode": 400,
+  "message": "Invalid header format"
+}
+```
+
+- **400 INVALID**: Thành phần header sai định dạng.
+```json
+{
+  "statusCode": 400,
+  "message": "Unable to find student id in file"
+}
+```
+
+- **400 INVALID**: Thành phần header sai định dạng.
+```json
+{
+  "statusCode": 400,
+  "message": "Unable to find student id in file"
+}
+```
+
+- **400 INVALID**: Không thể nhận diện header.
+```json
+{
+  "statusCode": 400,
+  "message": "Header format not recognized"
+}
+```
+
+- **400 INVALID**: Không thể nhận diện header.
+```json
+{
+  "statusCode": 400,
+  "message": "Header format not recognized"
+}
+```
+
+- **400 INVALID**: Student Id không phù hợp.
+```json
+{
+  "statusCode": 400,
+  "message": "Student ID not suitable in row 3. It must be number"
+}
+```
+
+- **400 INVALID**: Thêm điểm bị lỗi cho sinh viên với id này.
+```json
+{
+  "statusCode": 400,
+  "message": "Error adding study for student ID: 2213105"
+}
+```
+
+- **400 INVALID**: Student Id không phù hợp.
+```json
+{
+  "statusCode": 400,
+  "message": "Student ID not suitable in row 3, column 2. It must be number"
+}
+```
+
+- **400 INVALID**: Không thể tìm thấy study cho student với id này.
+```json
+{
+  "statusCode": 400,
+  "message": "Can't find study for student ID: 2213105"
+}
+```
+
+- **400 INVALID**: Lỗi khi thêm điểm ở hàng.
+```json
+{
+  "statusCode": 400,
+  "message": "Error happen when add grade at row 3."
+}
+```
+  
+- **400 INVALID**: Lỗi không xác định ở hàng.
+```json
+{
+  "statusCode": 400,
+  "message": "Unidentified error at row 3."
+}
+```
+
+- **400 INVALID**: Lỗi không xác định.
+```json
+{
+  "statusCode": 400,
+  "message": "Unidentified error."
+}
+```
+
+#### 6. Update Grade By Excel File
+- **URL:** `GET /grade-portal/grades/update_excel`
+- **Description:** Cập nhật các cột điểm của nhiều sinh viên khác nhau từ file csv vào study.
+- **Authorization:** `LECTURER`
+- **Parameter:** File csv
+- **Responses:**
+- **200 OK**: Điểm được cập nhật vào thành công.
+```json
+{
+  "statusCode": 200,
+  "message": "Grade updated successfully through excel file"
+}
+```
+- **400 INVALID**: Thiếu thành phần header trong file.
+```json
+{
+  "statusCode": 400,
+  "message": "Missing header row"
+}
+```
+
+- **400 INVALID**: Thành phần header sai định dạng.
+```json
+{
+  "statusCode": 400,
+  "message": "Invalid header format"
+}
+```
+
+- **400 INVALID**: Thành phần header sai định dạng.
+```json
+{
+  "statusCode": 400,
+  "message": "Unable to find student id in file"
+}
+```
+
+- **400 INVALID**: Thành phần header sai định dạng.
+```json
+{
+  "statusCode": 400,
+  "message": "Unable to find student id in file"
+}
+```
+
+- **400 INVALID**: Không thể nhận diện header.
+```json
+{
+  "statusCode": 400,
+  "message": "Header format not recognized"
+}
+```
+
+- **400 INVALID**: Không thể nhận diện header.
+```json
+{
+  "statusCode": 400,
+  "message": "Header format not recognized"
+}
+```
+
+- **400 INVALID**: Student Id không phù hợp.
+```json
+{
+  "statusCode": 400,
+  "message": "Student ID not suitable in row 3. It must be number"
+}
+```
+
+- **400 INVALID**: Thêm điểm bị lỗi cho sinh viên với id này.
+```json
+{
+  "statusCode": 400,
+  "message": "Error adding study for student ID: 2213105"
+}
+```
+
+- **400 INVALID**: Student Id không phù hợp.
+```json
+{
+  "statusCode": 400,
+  "message": "Student ID not suitable in row 3, column 2. It must be number"
+}
+```
+
+- **400 INVALID**: Không thể tìm thấy study cho student với id này.
+```json
+{
+  "statusCode": 400,
+  "message": "Can't find study for student ID: 2213105"
+}
+```
+
+- **400 INVALID**: Lỗi khi thêm điểm ở hàng.
+```json
+{
+  "statusCode": 400,
+  "message": "Error happen when add grade at row 3."
+}
+```
+
+- **400 INVALID**: Lỗi không xác định ở hàng.
+```json
+{
+  "statusCode": 400,
+  "message": "Unidentified error at row 3."
+}
+```
+
+- **400 INVALID**: Lỗi không xác định.
+```json
+{
+  "statusCode": 400,
+  "message": "Unidentified error."
+}
+```
+
 ### Student APIs
 
 #### 1. Register Student
@@ -682,39 +973,101 @@
   "message": "User already exists"
 }
 ```
+- `401 Invalid mail domain`
+    ```json
+      {
+        "statusCode": 401,
+        "message": "Please enter @hcmut.edu.vn email"     
+      }
+    ```
 
-
-#### 2. Get Student by ID 
-- **URL**: `GET /grade-portal/students/{id}`
-- **Description**: Cho phép Admin lấy thông tin chi tiết của một sinh viên dựa trên ID.
-- **Authorization**: `ADMIN`
-
-**Path Variable**:
-- **id**: ID của sinh viên (kiểu Long).
+#### 2. Register Student With Google
+- **URL**:  `POST /grade-portal/students/google/register`
+- **Description**: Cho phép sinh viên đăng ký tài khoản mới bằng google account.
 
 **Response**:
-- **200 OK**: Trả về thông tin sinh viên nếu tìm thấy.
+
+- **200 OK**: Sinh viên đã được đăng ký thành công.
 ```json
 {
   "statusCode": 200,
-  "message": "Student found successfully",
-  "student": {
-    "studentId": 1234567,
-    "name": "CT",
-    "faculty": "Engineering",
-    "major": "Computer Science",
-    "enrolledCourse": 22,
-    "username": "thanh.nguyen2213132@hcmut.edu.vn"
-  }
+  "message": "Student registered successfully"
 }
 ```
-- **404 Not Found**: Nếu không tìm thấy sinh viên với ID cung cấp.
+- **409 Conflict**: Tài khoản người dùng đã tồn tại.
 ```json
 {
-  "statusCode": 404,
-  "message": "Student not found"
+  "statusCode": 409,
+  "message": "User already exists"
 }
 ```
+- `401 Invalid mail domain`
+    ```json
+      {
+        "statusCode": 401,
+        "message": "Please enter @hcmut.edu.vn email"     
+      }
+    ```
+
+[//]: # (#### 2. Get Student by ID )
+
+[//]: # (- **URL**: `GET /grade-portal/students/{id}`)
+
+[//]: # (- **Description**: Cho phép Admin lấy thông tin chi tiết của một sinh viên dựa trên ID.)
+
+[//]: # (- **Authorization**: `ADMIN`)
+
+[//]: # ()
+[//]: # (**Path Variable**:)
+
+[//]: # (- **id**: ID của sinh viên &#40;kiểu Long&#41;.)
+
+[//]: # ()
+[//]: # (**Response**:)
+
+[//]: # (- **200 OK**: Trả về thông tin sinh viên nếu tìm thấy.)
+
+[//]: # (```json)
+
+[//]: # ({)
+
+[//]: # (  "statusCode": 200,)
+
+[//]: # (  "message": "Student found successfully",)
+
+[//]: # (  "student": {)
+
+[//]: # (    "studentId": 1234567,)
+
+[//]: # (    "name": "CT",)
+
+[//]: # (    "faculty": "Engineering",)
+
+[//]: # (    "major": "Computer Science",)
+
+[//]: # (    "enrolledCourse": 22,)
+
+[//]: # (    "username": "thanh.nguyen2213132@hcmut.edu.vn")
+
+[//]: # (  })
+
+[//]: # (})
+
+[//]: # (```)
+
+[//]: # (- **404 Not Found**: Nếu không tìm thấy sinh viên với ID cung cấp.)
+
+[//]: # (```json)
+
+[//]: # ({)
+
+[//]: # (  "statusCode": 404,)
+
+[//]: # (  "message": "Student not found")
+
+[//]: # (})
+
+[//]: # (```)
 
 
 #### 3. Update Student 
@@ -786,6 +1139,141 @@
 }
 ```
 
+#### 5. Get All Users
+- **URL**: `GET /grade-portal/users`
+- **Description**: Cho phép admin xem thông tin tất cả người dùng.
+- **Authorization**: `ADMIN`
+
+**Response**:
+- **200 OK**: Trả về thông tin thành công.
+```json
+{
+  "statusCode": 200,
+  "message": "Users found successfully",
+  "listUserDTO": [
+    {
+      "id": 1,
+      "name": "",
+      "role": "ADMIN",
+      "username": "admin"
+    },
+    {
+      "id": 2,
+      "name": "Giao vien 1",
+      "faculty": "CSE",
+      "role": "LECTURER",
+      "username": "giaovien1@hcmut.edu.vn"
+    },
+    {
+      "id": 3,
+      "name": "Giao vien 2",
+      "faculty": "CSE",
+      "role": "LECTURER",
+      "username": "giaovien2@hcmut.edu.vn"
+    },
+    {
+      "id": 4,
+      "name": "Giao vien 3",
+      "faculty": "CSE",
+      "role": "LECTURER",
+      "username": "giaovien3@hcmut.edu.vn"
+    },
+    {
+      "id": 5,
+      "name": "Giao vien 4",
+      "faculty": "CSE",
+      "role": "LECTURER",
+      "username": "giaovien4@hcmut.edu.vn"
+    }
+  ],
+  "totalPages": 6,
+  "totalElements": 27,
+  "currentPage": 0
+}
+```
+
+#### 6. Get All Lecturers
+- **URL**: `GET /grade-portal/users/lecturers`
+- **Description**: Cho phép admin xem thông tin tất cả giáo viên.
+- **Authorization**: `ADMIN`
+
+**Response**:
+- **200 OK**: Trả về thông tin thành công.
+```json
+{
+  "statusCode": 200,
+  "message": "Lecturers found successfully",
+  "lecturers": [
+    {
+      "id": 2,
+      "name": "Giao vien 1",
+      "faculty": "CSE",
+      "username": "giaovien1@hcmut.edu.vn"
+    },
+    {
+      "id": 3,
+      "name": "Giao vien 2",
+      "faculty": "CSE",
+      "username": "giaovien2@hcmut.edu.vn"
+    },
+    {
+      "id": 4,
+      "name": "Giao vien 3",
+      "faculty": "CSE",
+      "username": "giaovien3@hcmut.edu.vn"
+    }
+  ]
+}
+```
+
+#### 7. Get All Students
+- **URL**: `GET /grade-portal/users/students`
+- **Description**: Cho phép admin xem thông tin tất cả sinh viên.
+- **Authorization**: `ADMIN`
+
+**Response**:
+- **200 OK**: Trả về thông tin thành công.
+```json
+{
+  "statusCode": 200,
+  "message": "Students found successfully",
+  "lecturers": [
+    {
+      "id": 10,
+      "name": "Sinh vien 4",
+      "faculty": "CSE",
+      "username": "sinhvien4@hcmut.edu.vn",
+      "studentDTO": {
+        "studentId": 2213110,
+        "enrolledCourse": 21,
+        "major": "CS"
+      }
+    },
+    {
+      "id": 11,
+      "name": "Sinh vien 5",
+      "faculty": "CSE",
+      "username": "sinhvien5@hcmut.edu.vn",
+      "studentDTO": {
+        "studentId": 2213111,
+        "enrolledCourse": 24,
+        "major": "CS"
+      }
+    },
+    {
+      "id": 12,
+      "name": "Sinh vien 6",
+      "faculty": "CSE",
+      "username": "sinhvien6@hcmut.edu.vn",
+      "studentDTO": {
+        "studentId": 2213112,
+        "enrolledCourse": 23,
+        "major": "CS"
+      }
+    }
+  ]
+}
+```
 ### Study APIs
 
 #### 1. Add Study Student 
@@ -1007,25 +1495,40 @@
 ```json
 {
   "statusCode": 200,
-  "message": "Studies found successfully",
-  "studies": [
+  "message": "Study record for semester 243 found successfully",
+  "listStudyDTO": [
     {
-      "studentId": 2212870,
-      "subjectId": "CO2000",
-      "classId": 1,
-      "semester": 1,
-      "grades": [
+      "id": 46,
+      "studentId": 2213110,
+      "subjectId": "CO3001",
+      "classId": 5,
+      "score": 6.3,
+      "gradeList": [
         {
-          "gradeType": "Midterm",
-          "gradeValue": 40.0
+          "id": 16,
+          "score": 5.0,
+          "weight": 20.0,
+          "studyId": 46
         },
         {
-          "gradeType": "Final",
-          "gradeValue": 45.5
+          "id": 17,
+          "score": 6.0,
+          "weight": 30.0,
+          "studyId": 46
+        },
+        {
+          "id": 18,
+          "score": 7.0,
+          "weight": 50.0,
+          "studyId": 46
         }
       ]
     }
-  ]
+  ],
+  "totalCredits": 3,
+  "totalPages": 1,
+  "totalElements": 1,
+  "currentPage": 0
 }
 ```
 - **404 Not Found**: Không tìm thấy thông tin học tập cho học kỳ yêu cầu.
@@ -1055,48 +1558,141 @@
 }
 ```
 
-#### 7. Get Study by Subject and Semester 
-- **URL**: `POST /grade-portal/study/result`
-- **Description**: Cho phép Sinh viên lấy thông tin điểm của một môn học trong một học kỳ cụ thể.
-- **Authorization**: `STUDENT`
+#### 7. Get Study by Class Id
+- **URL**: `GET /grade-portal/study`
+- **Description**: Endpoint này cho phép user xem tất cả study của 1 lớp
+- **Authorization**: `ADMIN` or `LECTURER`
 
-**Request Body**:
-```json
-{
-  "subjectId": "number",
-  "semester": "number"
-}
-```
+**Param**:
+- **classId**: Class Id cần lấy thông tin (kiểu Long).
 
 **Response**:
-- **200 OK**: Trả về thông tin điểm của môn học trong học kỳ yêu cầu.
+- **200 OK**: 
 ```json
 {
-  "statusCode": 200,
-  "message": "Study result found successfully",
-  "studyResult": {
-    "subjectId": "CO2000",
-    "semester": 1,
-    "grades": [
-      {
-        "gradeType": "Midterm",
-        "gradeValue": 40.0
-      },
-      {
-        "gradeType": "Final",
-        "gradeValue": 45.5
-      }
-    ]
-  }
+    "statusCode": 200,
+    "message": "Study record for this class found successfully",
+    "listStudyDTO": [
+        {
+            "id": 7,
+            "studentId": 2213107,
+            "subjectId": "CO3001",
+            "classId": 1,
+            "score": 2.0,
+            "gradeList": []
+        },
+        {
+            "id": 8,
+            "studentId": 2213108,
+            "subjectId": "CO3001",
+            "classId": 1,
+            "score": 3.0,
+            "gradeList": []
+        },
+        {
+            "id": 9,
+            "studentId": 2213109,
+            "subjectId": "CO3001",
+            "classId": 1,
+            "score": 6.0,
+            "gradeList": []
+        }
+    ],
+    "totalPages": 4,
+    "totalElements": 10,
+    "currentPage": 2
 }
 ```
-- **404 Not Found**: Không tìm thấy thông tin điểm cho môn học trong học kỳ yêu cầu.
+- **400 Not Found**: Khi giáo viên thuộc lớp khác muốn lấy danh sách study không trong phạm vi dạy của mình.
 ```json
 {
- "statusCode": 404,
- "message": "Study result not found"
+  "statusCode": 400,
+  "message": "You don't have permission to access this class"
 }
 ```
+
+
+[//]: # (#### 7. Get Study by Subject and Semester )
+
+[//]: # (- **URL**: `POST /grade-portal/study/result`)
+
+[//]: # (- **Description**: Cho phép Sinh viên lấy thông tin điểm của một môn học trong một học kỳ cụ thể.)
+
+[//]: # (- **Authorization**: `STUDENT`)
+
+[//]: # ()
+[//]: # (**Request Body**:)
+
+[//]: # (```json)
+
+[//]: # ({)
+
+[//]: # (  "subjectId": "CO3001",)
+
+[//]: # (  "semester": 241)
+
+[//]: # (})
+
+[//]: # (```)
+
+[//]: # ()
+[//]: # (**Response**:)
+
+[//]: # (- **200 OK**: Trả về thông tin điểm của môn học trong học kỳ yêu cầu.)
+
+[//]: # (```json)
+
+[//]: # ({)
+
+[//]: # (  "statusCode": 200,)
+
+[//]: # (  "message": "Study result found successfully",)
+
+[//]: # (  "studyResult": {)
+
+[//]: # (    "subjectId": "CO2000",)
+
+[//]: # (    "semester": 1,)
+
+[//]: # (    "grades": [)
+
+[//]: # (      {)
+
+[//]: # (        "gradeType": "Midterm",)
+
+[//]: # (        "gradeValue": 40.0)
+
+[//]: # (      },)
+
+[//]: # (      {)
+
+[//]: # (        "gradeType": "Final",)
+
+[//]: # (        "gradeValue": 45.5)
+
+[//]: # (      })
+
+[//]: # (    ])
+
+[//]: # (  })
+
+[//]: # (})
+
+[//]: # (```)
+
+[//]: # (- **404 Not Found**: Không tìm thấy thông tin điểm cho môn học trong học kỳ yêu cầu.)
+
+[//]: # (```json)
+
+[//]: # ({)
+
+[//]: # ( "statusCode": 404,)
+
+[//]: # ( "message": "Study result not found")
+
+[//]: # (})
+
+[//]: # (```)
 ### Subject APIs
 
 #### 1. Generate Subject Report 
@@ -1379,7 +1975,33 @@
 
 ### User APIs
 
-#### 1. Create Admin
+#### 1. Get my information
+- **URL**:  `GET /grade-portal/users/my-info`
+- **Description**: Cho phép người dùng xem thông tin cá nhân của mình.
+- **Authorization**: `ADMIN` or `LECTURER` or `STUDENT`
+- **Response**:
+  - **200 OK**:
+    ```json
+    {
+    "statusCode": 200,
+    "message": "My info fetch successfully",
+    "userDTO": {
+        "id": 7,
+        "name": "Sinh vien 1",
+        "faculty": "CSE",
+        "role": "STUDENT",
+        "username": "sinhvien1@hcmut.edu.vn"
+    },
+    "studentDTO": {
+        "studentId": 2213107,
+        "enrolledCourse": 22,
+        "major": "CS"
+      }
+    }
+    ```
+    
+
+#### 2. Create Admin
 - **URL**:  `POST /grade-portal/users/create-admin`
 - **Description**: Cho phép admin tạo admin mới trong hệ thống.
 - **Authorization**: `ADMIN`
@@ -1407,16 +2029,17 @@
     }
     ```
 
-#### 2. Create Lecturer 
+#### 3. Create Lecturer 
 - **URL**:  `POST /grade-portal/users/create-lecturers`
 - **Description**: Cho phép admin tạo giảng viên mới trong hệ thống.
 - **Authorization**: `ADMIN`
 - **Request Body**:
   ```json
   {
-    "username": "nguyencongthanh2408@gmail.com",
-    "password": "12345678",
-    "name": "Thanh"
+    "username": "giaovien6@hcmut.edu.vn",
+    "password": "123",
+    "faculty": "CSE",
+    "name": "Giao vien 3"
   }
   ```
 - **Response**:
@@ -1436,7 +2059,7 @@
     ```
 
 
-#### 3. Get User by ID 
+#### 4. Get User by ID 
 - **URL**:  `GET /grade-portal/users/{id}`
 - **Description**: Cho phép admin lấy thông tin chi tiết của người dùng dựa trên id.
 - **Authorization**: `ADMIN`
@@ -1462,17 +2085,17 @@
     }
     ```
 
-#### 4. Update User Info 
+#### 5. Update User Info 
 - **URL**:  `PATCH /grade-portal/users/update`
 - **Description**: Cho phép admin cập nhật thông tin người dùng.
 - **Authorization**: `ADMIN`
 - **Request Body**:
   ```json
   {
-    "id": "12345",
-    "username": "nguyencongthanh2408@gmail.com",
-    "password": "newpassword123",
-    "role": "LECTURER"
+    "username": "sinhvien1@hcmut.edu.vn",
+    "name": "Nguyen Cong Thanh",
+    "faculty": "CSE",
+    "major": "CS"
   }
   ```
 - **Response**:
@@ -1491,7 +2114,7 @@
     }
     ```
 
-#### 5. Delete User Account API
+#### 6. Delete User Account API
 - **URL**:  `DELETE /grade-portal/users/delete/{id}`
 - **Description**: Cho phép admin xóa nguười dùng dựa vào id.
 - **Authorization**: `ADMIN`

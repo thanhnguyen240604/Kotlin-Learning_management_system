@@ -20,13 +20,11 @@ interface ClassRepository: JpaRepository<Class, Long> {
     ): Page<Class>
 
     @Query("""
-        SELECT DISTINCT c 
-        FROM Class c 
-        JOIN c.lecturers l 
-        WHERE l.id = :lecturerId
+        SELECT c FROM Class c 
+        WHERE CAST(c.lecturersUsername AS string) LIKE CONCAT('%', :lecturerUsername, '%')
     """)
-    fun findClassByLecturersId(
-        @Param("lecturerId") lecturerId: Long,
+    fun findClassByLecturersUsername(
+        @Param("lecturerUsername") lecturerUsername: String,
         pageable: Pageable
     ): Page<Class>
 

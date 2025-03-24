@@ -37,6 +37,7 @@ class ClassMapper (
             dayOfWeek = classEntity.dayOfWeek,
             startTime = classEntity.startTime,
             endTime = classEntity.endTime,
+            lecturersUsername = classEntity.lecturersUsername,
         )
     }
 
@@ -45,7 +46,8 @@ class ClassMapper (
             id = classEntity.id,
             name = classEntity.name,
             subjectId = classEntity.subject.id,
-            semester = classEntity.semester
+            semester = classEntity.semester,
+            lecturersUsername = classEntity.lecturersUsername
         )
     }
 

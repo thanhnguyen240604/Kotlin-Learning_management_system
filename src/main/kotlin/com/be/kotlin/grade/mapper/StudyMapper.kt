@@ -48,4 +48,15 @@ class StudyMapper (
             gradeList = study.gradesList
         )
     }
+
+    fun toStudyDTOwithSubjectId(study: Study, subjectId: String): StudyDTO {
+        return StudyDTO(
+            id = study.id,
+            studentId = study.student.studentId,
+            subjectId = subjectId,
+            classId = study.studyClass.id,
+            score = study.score,
+            gradeList = study.gradesList
+        )
+    }
 }

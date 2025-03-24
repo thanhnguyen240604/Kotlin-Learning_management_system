@@ -13,5 +13,7 @@ interface IUser {
     fun updateInfo(userDTO: UserUpdateRequestDTO): Response
     fun getMyInfo(): Response
     fun createAdmin(userRequestDTO: UserRequestDTO): Response
-    fun getAllLecturers(): Response
+    fun getAllLecturers(pageable: Pageable): Response
+    fun getAllStudents(pageable: Pageable): Response
+    fun getAllLecturersUsername(): Response
 }

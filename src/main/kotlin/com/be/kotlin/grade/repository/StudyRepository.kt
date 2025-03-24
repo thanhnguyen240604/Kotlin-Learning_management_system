@@ -1,6 +1,7 @@
 package com.be.kotlin.grade.repository
 
 import com.be.kotlin.grade.model.Class
+import com.be.kotlin.grade.model.Student
 import com.be.kotlin.grade.model.Study
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -82,9 +83,6 @@ interface StudyRepository: JpaRepository<Study, Long> {
         @Param("maxScore") maxScore: Float
     ): Long
 
-    @Query("SELECT s.student.studentId FROM Study s WHERE s.studyClass.id = :classId")
-    fun findStudentIdByClassId(@Param("classId") classId: Long): List<Long>
-
     @Query(
         """
         SELECT COUNT(s)
@@ -94,6 +92,17 @@ interface StudyRepository: JpaRepository<Study, Long> {
     )
     fun countByClassId(@Param("classId") classId: Long): Int?
 
+    @Query("SELECT DISTINCT s FROM Study s WHERE s.studyClass.id = :classId")
+    fun findByClassId(@Param("classId") classId: Long, pageable: Pageable): Page<Study>
+
+
+//    @Query("SELECT s.id FROM Study s WHERE s.student.studentId = :studentId AND s.studyClass.subject.id = :subjectId AND s.studyClass.name = :className AND s.studyClass.semester = :semester")
+//    fun findStudyIdByClassNameAndSubjectIdAndStudentIdAndSemester(
+//        @Param("className") className: Long,
+//        @Param("subjectId") subjectId: String,
+//        @Param("studentId") studentId: Long,
+//        @Param("semester") semester: Int
+//    ): Long?
 //    @Query(
 //        """
 //        SELECT Study s
@@ -102,4 +111,7 @@ interface StudyRepository: JpaRepository<Study, Long> {
 //        """
 //    )
 //    fun getListElectiveStudy(@Param("studentId")  studentId: Long): List<Study>
+
+//    @Query("SELECT s.student.studentId FROM Study s WHERE s.studyClass.id = :classId")
+//    fun findStudentIdByClassId(@Param("classId") classId: Long): List<Long>
 }

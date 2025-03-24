@@ -61,7 +61,7 @@ class UserController(
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PatchMapping("/update")
+    @PutMapping("/update")
     fun updateInfo(@RequestBody userDTO: UserUpdateRequestDTO): ResponseEntity<Response>{
         val response = userService.updateInfo(userDTO)
         return ResponseEntity.status(response.statusCode).body(response)
@@ -76,8 +76,30 @@ class UserController(
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/lecturers")
-    fun getAllLecturers(): ResponseEntity<Response> {
-        val response = userService.getAllLecturers()
+    fun getAllLecturers(
+        @RequestParam(defaultValue = "0") page: Int,
+        @RequestParam(defaultValue = "10") size: Int
+    ): ResponseEntity<Response> {
+        val pageable = PageRequest.of(page, size)
+        val response = userService.getAllLecturers(pageable)
+        return ResponseEntity.status(response.statusCode).body(response)
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/students")
+    fun getAllStudents(
+        @RequestParam(defaultValue = "0") page: Int,
+        @RequestParam(defaultValue = "10") size: Int
+    ): ResponseEntity<Response> {
+        val pageable = PageRequest.of(page, size)
+        val response = userService.getAllStudents(pageable)
+        return ResponseEntity.status(response.statusCode).body(response)
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/lecturers-username")
+    fun getAllLecturersUsername(): ResponseEntity<Response> {
+        val response = userService.getAllLecturersUsername()
         return ResponseEntity.status(response.statusCode).body(response)
     }
 }

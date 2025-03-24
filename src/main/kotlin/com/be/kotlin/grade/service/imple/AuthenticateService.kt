@@ -16,10 +16,17 @@ import com.nimbusds.jose.crypto.MACSigner
 import com.nimbusds.jose.crypto.MACVerifier
 import com.nimbusds.jwt.JWTClaimsSet
 import com.nimbusds.jwt.SignedJWT
+import jakarta.servlet.http.HttpServletRequest
 import org.hibernate.query.sqm.tree.SqmNode.log
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.http.HttpEntity
+import org.springframework.http.HttpHeaders
+import org.springframework.http.HttpMethod
+import org.springframework.http.MediaType
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
+import org.springframework.util.LinkedMultiValueMap
+import org.springframework.web.client.RestTemplate
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
@@ -28,11 +35,32 @@ import java.util.*
 @Service
 class AuthenticateService(
     private val userRepository: UserRepository,
-    @Value("\${jwt.signerKey}") private val signerKey: String,
-    private val emailService: EmailService
+    private val userService: UserService,
+    @Value("\${jwt.signerKey}")
+    private val signerKey: String,
+
+    private val emailService: EmailService,
+
+    @Value("\${spring.security.oauth2.client.registration.google.client-id}")
+    private val clientId: String,
+
+    @Value("\${spring.security.oauth2.client.registration.google.client-secret}")
+    private val clientSecret: String,
+
+    @Value("\${spring.security.oauth2.client.provider.google.authorization-uri}")
+    private val authUrl: String,
+
+    @Value("\${spring.security.oauth2.client.registration.google.redirect-uri}")
+    private val redirectUri: String,
+
+    @Value("\${spring.security.oauth2.client.provider.google.token-uri}")
+    private val tokenUri: String,
+
+    @Value("\${spring.security.oauth2.client.provider.google.user-info-uri}")
+    private val userInfoUri: String,
 ) : IAuthenticate {
 
-    override fun authenticate(request: AuthenticateDTO): Response {
+    override fun authenticate(request: AuthenticateDTO,isGoogleLogin: Boolean): Response {
         val specialUsers = System.getProperty("SPECIAL_USERS")?.split(",") ?: emptyList()
 
         val sanitizedUsername = request.username.trim()
@@ -45,13 +73,17 @@ class AuthenticateService(
         val user = userRepository.findByUsername(request.username)
             .orElseThrow { AppException(ErrorCode.UNAUTHENTICATED_USERNAME_PASSWORD) }
 
-        val passwordEncoder = BCryptPasswordEncoder(5)
-
-        val authenticated = passwordEncoder.matches(request.password, user.password)
-        if (!authenticated) {
-            throw AppException(ErrorCode.UNAUTHENTICATED_USERNAME_PASSWORD)
+        var authenticated = false
+        if (!isGoogleLogin) {
+            if (user.isGoogleAccount) {
+                throw AppException(ErrorCode.UNAUTHENTICATED_LOGIN)
+            }
+            val passwordEncoder = BCryptPasswordEncoder(5)
+            authenticated = passwordEncoder.matches(request.password, user.password)
+            if (!authenticated) {
+                throw AppException(ErrorCode.UNAUTHENTICATED_LOGIN)
+            }
         }
-
         val token = generateToken(user)
 
         return Response(
@@ -166,5 +198,76 @@ class AuthenticateService(
         val random = Random()
         val otp = 100000 + random.nextInt(900000)
         return otp.toString()
+    }
+
+    override fun generateAuthUrl(request: HttpServletRequest, state: String): Response {
+        val url: String
+        if (state == "login") {
+            url = "$authUrl?client_id=$clientId&redirect_uri=$redirectUri&response_type=code&scope=email&state=$state"
+        }
+        else {
+            url = "$authUrl?client_id=$clientId&redirect_uri=$redirectUri&response_type=code&scope=email+profile&state=$state"
+        }
+        return Response(
+            statusCode = 200,
+            message = "Url generated successful",
+            url = url
+        )
+    }
+
+    override fun getAccessToken(code: String, state: String): Response {
+        val restTemplate = RestTemplate()
+        val tokenUrl = tokenUri
+
+        val requestBody = LinkedMultiValueMap<String, String>().apply {
+            add("client_id", clientId)
+            add("client_secret", clientSecret)
+            add("code", code)
+            add("grant_type", "authorization_code")
+            add("redirect_uri", redirectUri)
+        }
+
+        val headers = HttpHeaders().apply {
+            contentType = MediaType.APPLICATION_FORM_URLENCODED
+        }
+
+        val requestEntity = HttpEntity(requestBody, headers)
+        val response = restTemplate.postForEntity(tokenUrl, requestEntity, Map::class.java)
+
+        val accessToken = response.body?.get("access_token") as? String
+        if (!response.statusCode.is2xxSuccessful || response.body == null || accessToken == null) {
+            throw AppException(ErrorCode.TOKEN_FETCHED_FAIL)
+        }
+
+        return getUserInfo(accessToken, state)
+    }
+
+    fun getUserInfo(accessToken: String, state: String): Response {
+        val restTemplate = RestTemplate()
+        val userInfoUrl = userInfoUri
+
+        val headers = HttpHeaders().apply {
+            set("Authorization", "Bearer $accessToken")
+        }
+
+        val userRequest = HttpEntity<Void>(headers)
+        val userResponse = restTemplate.exchange(userInfoUrl, HttpMethod.GET, userRequest, Map::class.java)
+
+        val userInfo = userResponse.body
+        if (!userResponse.statusCode.is2xxSuccessful || userInfo == null) {
+            throw AppException(ErrorCode.USERINFO_FETCHED_FAIL)
+        }
+
+        if (state == "login") {
+            return authenticate(AuthenticateDTO(userInfo["email"] as? String ?: "Unknown"), true)
+        } else if (state == "register") {
+            return userService.createStudent(userInfo["email"] as? String ?: "Unknown",userInfo["name"] as? String ?: "Unknown")
+        } else {
+            return Response(
+                statusCode = 200,
+                message = "User info fetched successfully",
+                data = userInfo
+            )
+        }
     }
 }

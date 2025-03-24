@@ -6,13 +6,18 @@ import com.be.kotlin.grade.dto.gradeDTO.GradeIdDTO
 import com.be.kotlin.grade.exception.AppException
 import com.be.kotlin.grade.exception.ErrorCode
 import com.be.kotlin.grade.mapper.GradeMapper
-//import com.be.kotlin.grade.mapper.StudyMapper
 import com.be.kotlin.grade.model.Grade
+import com.be.kotlin.grade.repository.ClassRepository
 import com.be.kotlin.grade.repository.GradeRepository
 import com.be.kotlin.grade.repository.StudyRepository
 import com.be.kotlin.grade.service.interf.IGrade
 import com.be.kotlin.grade.service.interf.IStudyProgress
 import org.springframework.stereotype.Service
+import org.springframework.web.multipart.MultipartFile
+import java.io.InputStream
+import org.apache.poi.ss.usermodel.WorkbookFactory
+import org.apache.poi.ss.usermodel.CellType
+import org.springframework.security.core.context.SecurityContextHolder
 
 @Service
 class GradeService(
@@ -20,6 +25,7 @@ class GradeService(
     private val gradeMapper: GradeMapper,
     private val studyRepository: StudyRepository,
     private val studyProgressService: IStudyProgress,
+    private val classRepository: ClassRepository
 ) : IGrade {
     private fun isWeightValid(studyId: Long, newWeight: Float, existingWeight: Float? = null): Pair<Boolean, String> {
         val study = studyRepository.findById(studyId).orElse(null) ?: return Pair(false, "Study not found")
@@ -83,8 +89,8 @@ class GradeService(
         val savedGradeDTO = gradeMapper.toGradeDTO(savedGrade)
 
         //Add this study to study progress
-        if ( study.gradesList.sumOf { it.weight.toDouble() } == 100.0)
-            studyProgressService.updateStudyProgress(study)
+//        if ( study.gradesList.sumOf { it.weight.toDouble() } == 100.0)
+//            studyProgressService.updateStudyProgress(study)
 
         return Response(
             gradeDTO = savedGradeDTO,
@@ -186,5 +192,150 @@ class GradeService(
             message = "Grade found successfully",
             gradeDTO = gradeDTO
         )
+    }
+
+    override fun processExcel(file: MultipartFile, typeAPI: String): Response {
+        val responses = mutableListOf<Response>()
+        val errorMessages = mutableListOf<String>()
+        val successMessages = mutableListOf<String>()
+
+        // Chuyển file Excel thành InputStream
+        val inputStream: InputStream = file.inputStream
+
+        // Tạo Workbook từ file Excel
+        val workbook = WorkbookFactory.create(inputStream)
+        // Lấy sheet đầu tiên
+        val sheet = workbook.getSheetAt(0)
+
+        // Đọc thông tin từ dòng đầu tiên (tiêu đề)
+        val headerRow = sheet.getRow(0) ?: return Response(statusCode = 400, message = "Missing header row")
+        val headerData = headerRow.getCell(0)?.stringCellValue ?: return Response(statusCode = 400, message = "Invalid header format")
+        val titleRow = sheet.getRow(1)
+        var studentIdCol = -1
+        val weightMap = mutableMapOf<Int, Float>() // Lưu trữ chỉ số cột và trọng số tương ứng
+
+        // Xác định trọng số từ tiêu đề
+        for (cellIndex in 0 until titleRow.lastCellNum) {
+            val cellValue = titleRow.getCell(cellIndex).stringCellValue
+            if (sanitizeColumnName(cellValue).equals("studentid", ignoreCase = true)) {
+                studentIdCol = cellIndex
+            } else {
+                val weight = extractWeight(cellValue) // Trích xuất trọng số từ tiêu đề
+                if (weight > 0) {
+                    weightMap[cellIndex] = weight // Lưu trọng số nếu có
+                }
+            }
+        }
+        // Kiểm tra xem cột student_id có được tìm thấy không
+        if (studentIdCol == -1) {
+            errorMessages.add("Unable to find student id in file.")
+            return Response(
+                statusCode = 400,
+                message = errorMessages.joinToString(" --- "),
+                listGradeDTO = emptyList()
+            )
+        }
+
+        // Trích xuất mã môn học, lớp, học kỳ
+        val regex = """([A-Z0-9]+) - L(\d+) - (\d+)""".toRegex()
+        val matchResult = regex.find(headerData) ?: return Response(statusCode = 400, message = "Header format not recognized")
+        val subjectId = matchResult.groupValues[1]
+        val className = matchResult.groupValues[2]
+        val semester = matchResult.groupValues[3].toInt()
+
+        //Kiem tra xem giao vien co day lop do khong
+        val context = SecurityContextHolder.getContext()
+        val username = context.authentication?.name
+        val classGot = classRepository.findBySubjectAndNameAndSemester(subjectId, className, semester)
+        if (classGot != null) {
+            if(!classGot.lecturersUsername.contains(username))
+                throw AppException(ErrorCode.CLASS_NOT_BELONG_TO_LECTURER)
+        }
+        // Lặp qua từng dòng (bỏ qua dòng đầu tiên là tiêu đề)
+        for (rowIndex in 2..sheet.lastRowNum) {
+            val row = sheet.getRow(rowIndex)
+
+            // Đọc student ID
+            val studentIdCell = row.getCell(studentIdCol)
+            if (studentIdCell == null || studentIdCell.cellType == CellType.BLANK) {
+                // Dừng xử lý nếu hàng không có student ID
+                break
+            }
+
+            // Kiểm tra xem student ID có phải là số không
+            if (studentIdCell.cellType != CellType.NUMERIC) {
+                errorMessages.add("Student ID not suitable in row ${rowIndex + 1}. It must be number.")
+                continue
+            }
+
+            val studentId = studentIdCell.numericCellValue.toLong() // Cột studentId
+            val studyGot = studyRepository.findByStudentIdAndSubjectIdAndSemester(studentId, subjectId, semester)
+                ?: return Response(statusCode = 400, message = "Error adding study for student ID: $studentId")
+
+            //Xoa grade list neu la ham update
+            if (typeAPI == "update") {
+                studyGot.id?.let { deleteGradeList(it) }
+            }
+
+            // Duyệt qua các cột điểm
+            for (cellIndex in 1 until titleRow.lastCellNum) {
+                if (cellIndex == studentIdCol) continue // Bỏ qua cột student_id
+                val scoreCell = row.getCell(cellIndex)
+
+                // Kiểm tra xem ô điểm có hợp lệ không
+                if (scoreCell == null || scoreCell.cellType == CellType.BLANK) {
+                    continue // Bỏ qua ô điểm trống
+                }
+
+                // Kiểm tra xem điểm có phải là số không
+                if (scoreCell.cellType != CellType.NUMERIC) {
+                    errorMessages.add("Student ID not suitable in row ${rowIndex + 1}, column ${cellIndex + 1}. It must be number.")
+                    continue
+                }
+
+                val score = scoreCell.numericCellValue.toFloat() // Cột điểm
+                val weight = weightMap[cellIndex] ?: continue // Lấy trọng số tương ứng
+
+                // Tìm studyId từ classId, subjectId và studentId
+                val studyId = studyGot.id
+
+                if (studyId == null) {
+                    errorMessages.add("Can't find study for student ID: $studentId}.")
+                    continue
+                }
+
+                // Tạo đối tượng GradeDTO
+                val gradeDTO = GradeDTO(studyId = studyId, score = score, weight = weight)
+
+                try {
+                    val res = addGrade(gradeDTO)
+                    responses.add(res)
+                    successMessages.add("Thêm điểm thành công cho studentId $studentId với điểm ${gradeDTO.score} và trọng số ${gradeDTO.weight} ở hàng ${rowIndex + 1}.")
+                } catch (e: AppException) {
+                    errorMessages.add("Error happen when add grade at row ${rowIndex + 1}: ${e.message ?: "Unidentified error"}")
+                } catch (e: Exception) {
+                    errorMessages.add("Unidentified error at row ${rowIndex + 1}: ${e.message ?: "Unidentified error"}")
+                }
+            }
+
+        }
+        workbook.close()
+        inputStream.close()
+
+//        return Response(statusCode = 200, message = "danh sách học sinh đã được thêm vào lớp")
+        return Response(
+            statusCode = if (errorMessages.isNotEmpty()) 400 else 200,
+            message = if (errorMessages.isNotEmpty()) (errorMessages).toString()
+                    else if (typeAPI == "add") "Grade add successfully through excel file"
+                    else "Grade updated successfully through excel file",
+            listGradeDTO = responses.mapNotNull { it.gradeDTO }
+        )
+    }
+
+    fun deleteGradeList(studyId: Long) {
+        val listGradeId = gradeRepository.findGradeIdByStudyID(studyId);
+        // Xóa điểm
+        listGradeId.map {gradeId -> gradeRepository.deleteById(gradeId)}
+        return
     }
 }

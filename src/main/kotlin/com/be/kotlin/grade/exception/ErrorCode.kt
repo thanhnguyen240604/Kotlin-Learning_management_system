@@ -21,6 +21,7 @@ enum class ErrorCode(val code: Int, val message: String) {
     //CLASS INVALID
     CLASS_ID_INVALID(400,"Class ID cannot be blank"),
     CLASS_ALREADY_HAS_LECTURERS(400, "Class already has enough lecturers"),
+    CLASS_NOT_BELONG_TO_LECTURER(400, "You don't have permission to access this class"),
     LECTURER_FACULTY_MISMATCH(400, "Class faculty must match"),
     LECTURER_ALREADY_REGISTERED(400, "Class already has registered"),
     FACULTY_MISMATCH(400, "User faculty does not match"),
@@ -37,10 +38,15 @@ enum class ErrorCode(val code: Int, val message: String) {
     POST_SUBJECT_INVALID(400, "Post-ordered subject can not be the same as subject id"),
     PRE_SUBJECT_INVALID(400, "Pre-ordered subject can not be the same as subject id"),
 
+    //Google Access Token INVALID
+    TOKEN_FETCHED_FAIL(400, "Fail to fetch access token"),
+    USERINFO_FETCHED_FAIL(400, "Fail to fetch user info"),
+
     //Unauthenticated
     UNAUTHENTICATED_USERNAME_PASSWORD(401, "Please check email or password again"),
     UNAUTHENTICATED_USERNAME(401, "Please check email again"),
-    UNAUTHENTICATED_USERNAME_DOMAIN(401, "Please enter @hcmut.edu.vn email "),
+    UNAUTHENTICATED_USERNAME_DOMAIN(401, "Please enter @hcmut.edu.vn email"),
+    UNAUTHENTICATED_LOGIN(401, "This mail must be logan through google service"),
 
     //Resource not found
     USER_NOT_FOUND(404, "User not found"),
